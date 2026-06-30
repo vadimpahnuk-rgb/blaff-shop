@@ -12,6 +12,27 @@ router.use(authMiddleware);
 const MIN_DEPOSIT = 1;
 const MAX_DEPOSIT = 10000;
 
+// Per-user rate limit: max 3 deposit creations per 5 minutes. In-memory only —
+// resets on cold start, which is acceptable for abuse throttling.
+const RATE_LIMIT_MAX = 3;
+const RATE_LIMIT_WINDOW_MS = 5 * 60 * 1000;
+const depositHits = new Map<number, number[]>();
+
+/** Returns true if the user has exhausted their deposit quota for the window. */
+function isRateLimited(userId: number): boolean {
+  const now = Date.now();
+  const hits = (depositHits.get(userId) ?? []).filter(
+    (t) => now - t < RATE_LIMIT_WINDOW_MS,
+  );
+  if (hits.length >= RATE_LIMIT_MAX) {
+    depositHits.set(userId, hits);
+    return true;
+  }
+  hits.push(now);
+  depositHits.set(userId, hits);
+  return false;
+}
+
 const NOWPAYMENTS_API = 'https://api.nowpayments.io/v1';
 const API_KEY = process.env.NOWPAYMENTS_API_KEY || '';
 // Crypto the buyer pays in. usdttrc20 = USDT on TRON (low fees, popular).
@@ -43,6 +64,11 @@ router.post('/', async (req, res, next) => {
 
     if (!API_KEY) {
       res.status(503).json({ error: 'Payment provider is not configured' });
+      return;
+    }
+
+    if (isRateLimited(req.user!.id)) {
+      res.status(429).json({ error: 'Too many deposit requests, try again later' });
       return;
     }
 

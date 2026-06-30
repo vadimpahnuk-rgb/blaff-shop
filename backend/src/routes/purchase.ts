@@ -55,6 +55,10 @@ router.post('/:productId', async (req, res, next) => {
         return { error: 'USER_NOT_FOUND' as const };
       }
 
+      if (user.isBanned) {
+        return { error: 'ACCOUNT_BANNED' as const };
+      }
+
       const price = Number(product.price);
       const balance = Number(user.balance);
       if (balance < price) {
@@ -110,6 +114,9 @@ router.post('/:productId', async (req, res, next) => {
           return;
         case 'USER_NOT_FOUND':
           res.status(404).json({ error: 'User not found' });
+          return;
+        case 'ACCOUNT_BANNED':
+          res.status(403).json({ error: 'Account is banned' });
           return;
       }
     }

@@ -8,6 +8,10 @@ import { bot, notifyDepositConfirmed } from '../bot';
 const router = Router();
 
 const IPN_SECRET = process.env.NOWPAYMENTS_IPN_SECRET || '';
+// Crypto the buyer is expected to pay in — must match deposit.ts.
+const PAY_CURRENCY = (process.env.NOWPAYMENTS_PAY_CURRENCY || 'usdttrc20').toLowerCase();
+// Allowed slack (in the respective amount units) for network-fee rounding.
+const AMOUNT_TOLERANCE = 0.01;
 
 /* ------------------------------------------------------------------ */
 /*  Telegram bot webhook                                               */
@@ -88,6 +92,14 @@ router.post('/nowpayments', async (req, res) => {
 
   try {
     if (status === 'finished') {
+      // Defense-in-depth: never trust `finished` alone. Verify the IPN amounts
+      // and currency before crediting so a buyer cannot get credited the USD
+      // they *selected* while sending less crypto than they were *quoted*.
+      const priceAmount = Number(payload.price_amount); // USD we requested
+      const payAmount = Number(payload.pay_amount); // crypto we quoted
+      const actuallyPaid = Number(payload.actually_paid); // crypto received
+      const payCurrency = String(payload.pay_currency ?? '').toLowerCase();
+
       // Credit balance atomically and idempotently.
       const result = await db.transaction(async (tx) => {
         const [txn] = await tx
@@ -99,6 +111,37 @@ router.post('/nowpayments', async (req, res) => {
 
         if (!txn) return { state: 'NOT_FOUND' as const };
         if (txn.status === 'completed') return { state: 'ALREADY' as const };
+
+        // ---- amount / currency verification ----
+        const expectedUsd = Number(txn.amount);
+        const reasons: string[] = [];
+
+        if (payCurrency && payCurrency !== PAY_CURRENCY) {
+          reasons.push(`currency ${payCurrency} != ${PAY_CURRENCY}`);
+        }
+        // The provider must have priced the payment for the USD we recorded.
+        if (
+          Number.isFinite(priceAmount) &&
+          Math.abs(priceAmount - expectedUsd) > AMOUNT_TOLERANCE
+        ) {
+          reasons.push(`price ${priceAmount} != recorded ${expectedUsd}`);
+        }
+        // The buyer must not have underpaid the crypto amount they were quoted.
+        if (
+          Number.isFinite(actuallyPaid) &&
+          Number.isFinite(payAmount) &&
+          actuallyPaid < payAmount - AMOUNT_TOLERANCE
+        ) {
+          reasons.push(`underpaid ${actuallyPaid} < quoted ${payAmount}`);
+        }
+
+        if (reasons.length > 0) {
+          await tx
+            .update(transactions)
+            .set({ status: 'failed' })
+            .where(eq(transactions.id, txn.id));
+          return { state: 'MISMATCH' as const, reason: reasons.join('; ') };
+        }
 
         await tx
           .update(transactions)
@@ -123,6 +166,10 @@ router.post('/nowpayments', async (req, res) => {
         await notifyDepositConfirmed(result.telegramId, result.amount, result.newBalance);
       } else if (result.state === 'NOT_FOUND') {
         console.warn(`[webhook:nowpayments] no transaction for payment_id ${paymentId}`);
+      } else if (result.state === 'MISMATCH') {
+        console.warn(
+          `[webhook:nowpayments] amount mismatch for payment_id ${paymentId} -> marked failed: ${result.reason}`,
+        );
       }
     } else if (['failed', 'expired', 'refunded'].includes(status)) {
       await db

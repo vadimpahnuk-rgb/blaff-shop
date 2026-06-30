@@ -78,7 +78,7 @@ function AppContent() {
   if (loading) {
     return (
       <div className="h-full flex items-center justify-center bg-pwa-black">
-        <Loading size="lg" text="BLA AFF SHOP" />
+        <Loading size="lg" text="BLA SHOP" />
       </div>
     );
   }

@@ -3,6 +3,7 @@ import { getPurchases } from '../api/user';
 import type { Purchase } from '../types';
 import Loading from '../components/Loading';
 import EmptyState from '../components/EmptyState';
+import { PurchasesIcon } from '../icons';
 
 export default function Purchases() {
   const [purchases, setPurchases] = useState<Purchase[]>([]);
@@ -32,7 +33,7 @@ export default function Purchases() {
   if (purchases.length === 0) {
     return (
       <EmptyState
-        icon="📄"
+        icon={<PurchasesIcon size={28} />}
         title="Покупок ще немає"
         description="Придбані товари з'являться тут"
       />

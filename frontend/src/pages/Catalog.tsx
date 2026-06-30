@@ -6,6 +6,7 @@ import type { Product, Category } from '../types';
 import ProductCard from '../components/ProductCard';
 import Loading from '../components/Loading';
 import EmptyState from '../components/EmptyState';
+import { SearchIcon, CloseIcon } from '../icons';
 
 export default function Catalog() {
   const [products, setProducts] = useState<Product[]>([]);
@@ -76,15 +77,17 @@ export default function Catalog() {
           onChange={(e) => setSearchQuery(e.target.value)}
           className="w-full bg-pwa-dark border border-pwa-border rounded-xl px-4 py-3 pl-10 text-white text-sm placeholder-pwa-gray outline-none focus:border-pwa-yellow/50 transition-colors"
         />
-        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-pwa-gray text-lg">
-          🔍
-        </span>
+        <SearchIcon
+          size={18}
+          className="absolute left-3 top-1/2 -translate-y-1/2 text-pwa-gray pointer-events-none"
+        />
         {searchQuery && (
           <button
             onClick={() => setSearchQuery('')}
-            className="absolute right-3 top-1/2 -translate-y-1/2 text-pwa-gray text-sm"
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-pwa-gray hover:text-white transition-colors"
+            aria-label="Очистити"
           >
-            ✕
+            <CloseIcon size={16} />
           </button>
         )}
       </div>
@@ -156,7 +159,7 @@ export default function Catalog() {
         </div>
       ) : (
         <EmptyState
-          icon="🔍"
+          icon={<SearchIcon size={28} />}
           title="Товарів не знайдено"
           description="Спробуйте змінити параметри пошуку або фільтри"
           action={{ label: 'Скинути фільтри', onClick: () => { setSearchQuery(''); setSelectedCategory(null); setSelectedTag(null); } }}

@@ -1,10 +1,12 @@
+import type { ComponentType } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { HomeIcon, CatalogIcon, PurchasesIcon, ProfileIcon, type IconProps } from '../icons';
 
-const tabs = [
-  { label: 'Головна', icon: '🏠', path: '/' },
-  { label: 'Каталог', icon: '📋', path: '/catalog' },
-  { label: 'Покупки', icon: '📄', path: '/purchases' },
-  { label: 'Профіль', icon: '👤', path: '/profile' },
+const tabs: { label: string; Icon: ComponentType<IconProps>; path: string }[] = [
+  { label: 'Головна', Icon: HomeIcon, path: '/' },
+  { label: 'Каталог', Icon: CatalogIcon, path: '/catalog' },
+  { label: 'Покупки', Icon: PurchasesIcon, path: '/purchases' },
+  { label: 'Профіль', Icon: ProfileIcon, path: '/profile' },
 ];
 
 export default function Navigation() {
@@ -12,25 +14,30 @@ export default function Navigation() {
   const navigate = useNavigate();
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-40 bg-pwa-black/95 backdrop-blur-sm border-t border-pwa-border safe-area-bottom">
-      <div className="flex items-center justify-around h-14 px-2">
-        {tabs.map((tab) => {
-          const isActive = location.pathname === tab.path;
+    <nav className="fixed bottom-0 left-0 right-0 z-40 glass border-t border-white/5 safe-area-bottom">
+      <div className="flex items-center justify-around h-16 px-2">
+        {tabs.map(({ label, Icon, path }) => {
+          const isActive = location.pathname === path;
           return (
             <button
-              key={tab.path}
-              onClick={() => navigate(tab.path)}
-              className={`flex flex-col items-center justify-center gap-0.5 px-3 py-1 rounded-lg transition-colors min-w-[64px] ${
-                isActive ? 'text-pwa-yellow' : 'text-pwa-gray'
-              }`}
+              key={path}
+              onClick={() => navigate(path)}
+              className="relative flex flex-col items-center justify-center gap-1 px-3 py-1.5 min-w-[64px] active:scale-90 transition-transform"
             >
-              <span className="text-xl leading-none">{tab.icon}</span>
+              <Icon
+                size={23}
+                className={`transition-all duration-200 ${
+                  isActive
+                    ? 'text-pwa-yellow drop-shadow-[0_0_8px_rgba(245,197,24,0.55)]'
+                    : 'text-pwa-gray'
+                }`}
+              />
               <span
-                className={`text-[10px] font-medium ${
+                className={`text-[10px] font-medium tracking-tight transition-colors ${
                   isActive ? 'text-pwa-yellow' : 'text-pwa-gray'
                 }`}
               >
-                {tab.label}
+                {label}
               </span>
             </button>
           );

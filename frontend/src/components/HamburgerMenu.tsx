@@ -1,18 +1,32 @@
+import type { ComponentType } from 'react';
 import { useNavigate } from 'react-router-dom';
+import {
+  BlaLogo,
+  CloseIcon,
+  ChevronRightIcon,
+  HomeIcon,
+  CatalogIcon,
+  PurchasesIcon,
+  WalletIcon,
+  SupportIcon,
+  TermsIcon,
+  PartnersIcon,
+  type IconProps,
+} from '../icons';
 
 interface HamburgerMenuProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
-const menuItems = [
-  { label: 'Головна', icon: '🏠', path: '/' },
-  { label: 'Каталог', icon: '📋', path: '/catalog' },
-  { label: 'Історія покупок', icon: '📄', path: '/purchases' },
-  { label: 'Поповнити баланс', icon: '💳', path: '/deposit' },
-  { label: 'Підтримка', icon: '🆘', path: '/support' },
-  { label: 'Умови використання', icon: '📜', path: '/terms' },
-  { label: 'Партнерам', icon: '🤝', path: '/partners' },
+const menuItems: { label: string; Icon: ComponentType<IconProps>; path: string }[] = [
+  { label: 'Головна', Icon: HomeIcon, path: '/' },
+  { label: 'Каталог', Icon: CatalogIcon, path: '/catalog' },
+  { label: 'Історія покупок', Icon: PurchasesIcon, path: '/purchases' },
+  { label: 'Поповнити баланс', Icon: WalletIcon, path: '/deposit' },
+  { label: 'Підтримка', Icon: SupportIcon, path: '/support' },
+  { label: 'Умови використання', Icon: TermsIcon, path: '/terms' },
+  { label: 'Партнерам', Icon: PartnersIcon, path: '/partners' },
 ];
 
 export default function HamburgerMenu({ isOpen, onClose }: HamburgerMenuProps) {
@@ -28,47 +42,51 @@ export default function HamburgerMenu({ isOpen, onClose }: HamburgerMenuProps) {
   return (
     <>
       {/* Overlay */}
-      <div
-        className="fixed inset-0 bg-black/60 z-50"
-        onClick={onClose}
-      />
+      <div className="fixed inset-0 bg-black/70 backdrop-blur-[2px] z-50 animate-fade-in" onClick={onClose} />
 
       {/* Menu panel */}
-      <div className="fixed top-0 left-0 bottom-0 w-72 bg-pwa-black border-r border-pwa-border z-50 animate-fade-in safe-area-top">
-        <div className="flex items-center justify-between px-4 h-12 border-b border-pwa-border">
-          <span className="text-white font-bold text-lg">Меню</span>
+      <div className="fixed top-0 left-0 bottom-0 w-[78%] max-w-xs glass border-r border-white/10 z-50 animate-fade-in safe-area-top flex flex-col">
+        <div className="flex items-center justify-between px-4 h-14">
+          <div className="flex items-center gap-2">
+            <BlaLogo size={26} className="rounded-lg" />
+            <span className="font-extrabold text-base tracking-tight">
+              <span className="text-white">BLA</span>
+              <span className="text-pwa-yellow"> SHOP</span>
+            </span>
+          </div>
           <button
             onClick={onClose}
-            className="text-pwa-gray text-xl p-1"
+            className="text-pwa-gray hover:text-white active:scale-90 transition-all p-1"
             aria-label="Close menu"
           >
-            ✕
+            <CloseIcon size={22} />
           </button>
         </div>
 
-        <nav className="p-3 space-y-1">
-          {menuItems.map((item) => (
+        <nav className="flex-1 px-3 py-2 space-y-1 overflow-y-auto">
+          {menuItems.map(({ label, Icon, path }) => (
             <button
-              key={item.path}
-              onClick={() => handleNavigate(item.path)}
-              className="flex items-center gap-3 w-full px-3 py-3 rounded-lg text-white hover:bg-pwa-dark active:bg-pwa-light transition-colors text-left"
+              key={path}
+              onClick={() => handleNavigate(path)}
+              className="group flex items-center gap-3 w-full px-3 py-3 rounded-xl text-white hover:bg-white/5 active:bg-white/10 transition-colors text-left"
             >
-              <span className="text-lg">{item.icon}</span>
-              <span className="text-sm font-medium">{item.label}</span>
+              <span className="flex items-center justify-center w-9 h-9 rounded-lg bg-pwa-light/60 text-pwa-gray group-hover:text-pwa-yellow group-hover:bg-pwa-yellow/10 transition-colors">
+                <Icon size={19} />
+              </span>
+              <span className="flex-1 text-sm font-medium">{label}</span>
+              <ChevronRightIcon
+                size={16}
+                className="text-pwa-border group-hover:text-pwa-gray transition-colors"
+              />
             </button>
           ))}
         </nav>
 
-        {/* Branding */}
-        <div className="absolute bottom-6 left-0 right-0 px-6">
-          <div className="flex items-center gap-2 justify-center opacity-40">
-            <div className="w-5 h-5 bg-pwa-yellow rounded flex items-center justify-center">
-              <span className="text-pwa-black font-black text-[10px]">B</span>
-            </div>
-            <span className="text-white text-xs font-semibold">
-              BLA AFF SHOP
-            </span>
-          </div>
+        {/* Footer branding */}
+        <div className="px-6 pb-6 pt-2 safe-area-bottom">
+          <p className="text-pwa-gray/60 text-[11px] text-center">
+            BLA SHOP · цифрові товари для медіабаєрів
+          </p>
         </div>
       </div>
     </>

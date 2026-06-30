@@ -1,4 +1,5 @@
 import type { Product } from '../types';
+import { CartIcon } from '../icons';
 
 interface ProductCardProps {
   product: Product;
@@ -7,10 +8,12 @@ interface ProductCardProps {
 }
 
 export default function ProductCard({ product, onClick, onBuy }: ProductCardProps) {
+  const inStock = product.stock > 0;
+
   return (
     <div
       onClick={onClick}
-      className="bg-pwa-dark rounded-xl border border-pwa-border p-4 cursor-pointer active:scale-[0.98] transition-transform animate-fade-in"
+      className="group relative rounded-2xl border border-pwa-border bg-gradient-to-b from-pwa-dark to-[#141414] p-4 cursor-pointer overflow-hidden transition-all duration-200 hover:border-pwa-yellow/40 hover:shadow-[0_0_24px_-6px_rgba(245,197,24,0.25)] active:scale-[0.98] animate-fade-in"
     >
       {/* Tags */}
       {product.tags && product.tags.length > 0 && (
@@ -18,7 +21,7 @@ export default function ProductCard({ product, onClick, onBuy }: ProductCardProp
           {product.tags.map((tag, idx) => (
             <span
               key={idx}
-              className="text-[11px] px-2 py-0.5 rounded-full bg-pwa-light text-pwa-yellow font-medium"
+              className="text-[11px] px-2 py-0.5 rounded-full bg-pwa-yellow/10 text-pwa-yellow font-medium border border-pwa-yellow/15"
             >
               {tag}
             </span>
@@ -33,9 +36,7 @@ export default function ProductCard({ product, onClick, onBuy }: ProductCardProp
 
       {/* Description preview */}
       {product.description && (
-        <p className="text-pwa-gray text-xs mb-3 line-clamp-2">
-          {product.description}
-        </p>
+        <p className="text-pwa-gray text-xs mb-3 line-clamp-2">{product.description}</p>
       )}
 
       {/* Bottom row: stock + price */}
@@ -45,30 +46,31 @@ export default function ProductCard({ product, onClick, onBuy }: ProductCardProp
           <div
             className={`w-1.5 h-1.5 rounded-full ${
               product.stock > 10
-                ? 'bg-green-500'
-                : product.stock > 0
-                  ? 'bg-yellow-500'
+                ? 'bg-green-500 shadow-[0_0_6px_rgba(34,197,94,0.7)]'
+                : inStock
+                  ? 'bg-yellow-500 shadow-[0_0_6px_rgba(234,179,8,0.7)]'
                   : 'bg-red-500'
             }`}
           />
           <span className="text-pwa-gray text-xs">
-            {product.stock > 0 ? `${product.stock} шт` : 'Немає'}
+            {inStock ? `${product.stock} шт` : 'Немає'}
           </span>
         </div>
 
         {/* Price + Buy button */}
-        <div className="flex items-center gap-2">
-          <span className="text-white font-bold text-sm">
+        <div className="flex items-center gap-2.5">
+          <span className="text-white font-extrabold text-base tabular-nums">
             ${product.price.toFixed(2)}
           </span>
-          {onBuy && product.stock > 0 && (
+          {onBuy && inStock && (
             <button
               onClick={(e) => {
                 e.stopPropagation();
                 onBuy();
               }}
-              className="px-3 py-1.5 bg-pwa-yellow text-pwa-black text-xs font-bold rounded-lg hover:brightness-110 active:scale-95 transition-all"
+              className="flex items-center gap-1.5 pl-2.5 pr-3 py-1.5 bg-pwa-yellow text-pwa-black text-xs font-bold rounded-lg hover:brightness-110 hover:shadow-[0_0_16px_-2px_rgba(245,197,24,0.6)] active:scale-95 transition-all"
             >
+              <CartIcon size={14} />
               Купити
             </button>
           )}

@@ -1,6 +1,6 @@
 export default function Support() {
   return (
-    <div className="px-4 py-5 animate-fade-in">
+    <div className="px-6 py-5 animate-fade-in">
       <h1 className="text-xl font-bold text-white mb-4">Підтримка</h1>
 
       <div className="space-y-4">
@@ -15,12 +15,12 @@ export default function Support() {
         <div className="bg-pwa-dark rounded-xl border border-pwa-border p-4">
           <h3 className="text-white text-sm font-semibold mb-2">📱 Telegram</h3>
           <a
-            href="https://t.me/pwax_support"
+            href="https://t.me/BLA_TL"
             target="_blank"
             rel="noopener noreferrer"
             className="text-pwa-yellow text-sm font-medium hover:underline"
           >
-            @pwax_support
+            @BLA_TL
           </a>
         </div>
 

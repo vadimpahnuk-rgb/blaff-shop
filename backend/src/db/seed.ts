@@ -32,7 +32,7 @@ async function seed() {
   const categorySeed = [
     { name: 'Facebook Accounts', slug: 'facebook-accounts', icon: '📘', sortOrder: 1 },
     { name: 'Proxies', slug: 'proxies', icon: '🌐', sortOrder: 2 },
-    { name: 'Business Managers', slug: 'business-managers', icon: '💼', sortOrder: 3 },
+    { name: 'Business Manager', slug: 'business-managers', icon: '💼', sortOrder: 3 },
     { name: 'Other', slug: 'other', icon: '📦', sortOrder: 4 },
     { name: 'Фарм ФБ', slug: 'farm-fb', icon: '👤', sortOrder: 5 },
     { name: 'Агентські кабінети', slug: 'agency-cabinets', icon: '🏢', sortOrder: 6 },

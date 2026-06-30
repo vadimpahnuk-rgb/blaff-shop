@@ -41,7 +41,7 @@ export default function Purchases() {
   }
 
   return (
-    <div className="px-4 py-5 animate-fade-in">
+    <div className="px-6 py-5 animate-fade-in">
       <h1 className="text-xl font-bold text-white mb-4">Історія покупок</h1>
 
       <div className="space-y-3 pb-4">

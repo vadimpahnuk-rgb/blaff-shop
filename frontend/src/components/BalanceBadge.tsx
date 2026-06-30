@@ -6,7 +6,7 @@ interface BalanceBadgeProps {
 }
 
 export default function BalanceBadge({ balance, onClick }: BalanceBadgeProps) {
-  const formattedBalance = balance.toLocaleString('en-US', {
+  const formattedBalance = Number(balance).toLocaleString('en-US', {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   });

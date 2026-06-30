@@ -38,7 +38,7 @@ export default function ProductDetail() {
 
   if (purchaseResult) {
     return (
-      <div className="px-4 py-5 animate-fade-in">
+      <div className="px-6 py-5 animate-fade-in">
         <div className="bg-pwa-dark rounded-xl border border-green-500/30 p-6 text-center">
           <span className="text-5xl block mb-4">✅</span>
           <h2 className="text-white text-lg font-bold mb-2">Покупка успішна!</h2>
@@ -61,7 +61,7 @@ export default function ProductDetail() {
   }
 
   return (
-    <div className="px-4 py-5 animate-fade-in">
+    <div className="px-6 py-5 animate-fade-in">
       {/* Tags */}
       {product.tags && product.tags.length > 0 && (
         <div className="flex flex-wrap gap-1.5 mb-3">

@@ -4,31 +4,29 @@ import { useNavigate } from 'react-router-dom';
 import { getCategories } from '../api/categories';
 import type { Category } from '../types';
 import Loading from '../components/Loading';
-import EmptyState from '../components/EmptyState';
 import {
   BlaLogo,
   ChevronRightIcon,
   FacebookIcon,
-  ProfileIcon,
-  ProxiesIcon,
-  BmIcon,
   BusinessIcon,
-  AdsIcon,
-  ToolsIcon,
-  OtherIcon,
+  AgencyIcon,
+  PartnersIcon,
   type IconProps,
 } from '../icons';
 
-const categoryIcons: Record<string, ComponentType<IconProps>> = {
-  facebook: FacebookIcon,
-  accounts: ProfileIcon,
-  proxy: ProxiesIcon,
-  bm: BmIcon,
-  business: BusinessIcon,
-  ads: AdsIcon,
-  tools: ToolsIcon,
-  other: OtherIcon,
+type HomeTile = {
+  label: string;
+  Icon: ComponentType<IconProps>;
+  slug?: string; // resolves to /catalog?category=<id>
+  to?: string; // direct route
 };
+
+const HOME_TILES: HomeTile[] = [
+  { label: 'Facebook Accounts', Icon: FacebookIcon, slug: 'facebook-accounts' },
+  { label: 'Business Manager', Icon: BusinessIcon, slug: 'business-managers' },
+  { label: 'Агентські кабінети', Icon: AgencyIcon, slug: 'agency-cabinets' },
+  { label: 'Партнери', Icon: PartnersIcon, to: '/partners' },
+];
 
 export default function Home() {
   const [categories, setCategories] = useState<Category[]>([]);
@@ -44,8 +42,14 @@ export default function Home() {
 
   if (loading) return <Loading text="Завантаження..." />;
 
+  const goTo = (tile: HomeTile) => {
+    if (tile.to) return navigate(tile.to);
+    const cat = categories.find((c) => c.slug === tile.slug);
+    navigate(cat ? `/catalog?category=${cat.id}` : '/catalog');
+  };
+
   return (
-    <div className="px-4 pt-6 pb-6">
+    <div className="px-6 pt-6 pb-6">
       {/* Hero */}
       <div className="flex flex-col items-center text-center mb-8 animate-fade-up">
         <div className="hero-glow mb-4">
@@ -61,43 +65,36 @@ export default function Home() {
       </div>
 
       {/* Categories */}
-      {categories.length > 0 ? (
-        <div className="animate-fade-up" style={{ animationDelay: '0.08s' }}>
-          <h2 className="text-xs font-semibold text-pwa-gray uppercase tracking-[0.18em] mb-3 px-1">
-            Категорії
-          </h2>
-          <div className="grid grid-cols-2 gap-3">
-            {categories.map((cat) => {
-              const Icon = categoryIcons[cat.slug] || OtherIcon;
-              return (
-                <button
-                  key={cat.id}
-                  onClick={() => navigate(`/catalog?category=${cat.id}`)}
-                  className="group relative flex flex-col gap-3 rounded-2xl border border-pwa-border bg-gradient-to-b from-pwa-dark to-[#141414] p-4 text-left overflow-hidden transition-all duration-200 hover:border-pwa-yellow/40 hover:shadow-[0_0_24px_-6px_rgba(245,197,24,0.25)] active:scale-[0.97]"
-                >
-                  <span className="flex items-center justify-center w-11 h-11 rounded-xl bg-pwa-yellow/10 text-pwa-yellow border border-pwa-yellow/15 group-hover:bg-pwa-yellow/20 transition-colors">
-                    <Icon size={22} />
+      <div className="animate-fade-up" style={{ animationDelay: '0.08s' }}>
+        <h2 className="text-xs font-semibold text-pwa-gray uppercase tracking-[0.18em] mb-3 px-1">
+          Категорії
+        </h2>
+        <div className="grid grid-cols-2 gap-3">
+          {HOME_TILES.map((tile) => {
+            const { Icon } = tile;
+            return (
+              <button
+                key={tile.label}
+                onClick={() => goTo(tile)}
+                className="group relative flex flex-col gap-3 rounded-2xl border border-pwa-border bg-gradient-to-b from-pwa-dark to-[#141414] p-4 text-left overflow-hidden transition-all duration-200 hover:border-pwa-yellow/40 hover:shadow-[0_0_24px_-6px_rgba(245,197,24,0.25)] active:scale-[0.97]"
+              >
+                <span className="flex items-center justify-center w-11 h-11 rounded-xl bg-pwa-yellow/10 text-pwa-yellow border border-pwa-yellow/15 group-hover:bg-pwa-yellow/20 transition-colors">
+                  <Icon size={22} />
+                </span>
+                <div className="flex items-center justify-between">
+                  <span className="text-white text-sm font-semibold leading-tight">
+                    {tile.label}
                   </span>
-                  <div className="flex items-center justify-between">
-                    <span className="text-white text-sm font-semibold leading-tight">
-                      {cat.name}
-                    </span>
-                    <ChevronRightIcon
-                      size={16}
-                      className="text-pwa-border group-hover:text-pwa-yellow transition-colors shrink-0"
-                    />
-                  </div>
-                </button>
-              );
-            })}
-          </div>
+                  <ChevronRightIcon
+                    size={16}
+                    className="text-pwa-border group-hover:text-pwa-yellow transition-colors shrink-0"
+                  />
+                </div>
+              </button>
+            );
+          })}
         </div>
-      ) : (
-        <EmptyState
-          title="Категорії поки що порожні"
-          description="Зовсім скоро тут з'являться товари"
-        />
-      )}
+      </div>
     </div>
   );
 }

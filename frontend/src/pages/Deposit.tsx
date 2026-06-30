@@ -57,16 +57,17 @@ export default function Deposit() {
             Відправте точну суму на вказану адресу
           </p>
 
-          {/* Amount */}
+          {/* Amount to send */}
           <div className="bg-pwa-black rounded-lg p-3 mb-4 text-center">
-            <p className="text-pwa-gray text-xs mb-1">Сума:</p>
-            <p className="text-white text-2xl font-bold">${deposit.amount.toFixed(2)}</p>
-          </div>
-
-          {/* Currency */}
-          <div className="bg-pwa-black rounded-lg p-3 mb-4">
-            <p className="text-pwa-gray text-xs mb-1">Валюта:</p>
-            <p className="text-white text-sm font-medium">{deposit.currency}</p>
+            <p className="text-pwa-gray text-xs mb-1">Відправте точно:</p>
+            {deposit.pay_amount != null ? (
+              <p className="text-white text-2xl font-bold break-all select-all">
+                {deposit.pay_amount} {deposit.currency}
+              </p>
+            ) : (
+              <p className="text-white text-2xl font-bold">{deposit.currency}</p>
+            )}
+            <p className="text-pwa-gray text-xs mt-1">≈ ${deposit.amount.toFixed(2)}</p>
           </div>
 
           {/* Payment ID */}

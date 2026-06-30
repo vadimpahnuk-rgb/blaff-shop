@@ -58,6 +58,7 @@ export interface DepositResponse {
   address: string;
   currency: string;
   amount: number;
+  pay_amount?: number;
   qr_code?: string;
 }
 

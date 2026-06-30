@@ -100,8 +100,24 @@ async function findOrCreateUser(tgUser: TelegramWebAppUser): Promise<AuthUser> {
 }
 
 /**
- * Auth middleware: validates the `x-telegram-init-data` header and attaches
- * req.user. Returns 401 on invalid data, 403 if the user is banned.
+ * Extract the Telegram WebApp initData string from the request.
+ *
+ * Primary scheme (matches the frontend api/client.ts): the `Authorization`
+ * header carrying `tma <initData>` — the official Telegram Mini App convention.
+ * Falls back to the legacy `x-telegram-init-data` header for compatibility.
+ */
+function extractInitData(req: Request): string | undefined {
+  const auth = req.header('authorization');
+  if (auth && auth.startsWith('tma ')) {
+    return auth.slice(4).trim();
+  }
+  return req.header('x-telegram-init-data') ?? undefined;
+}
+
+/**
+ * Auth middleware: validates the Telegram WebApp initData (sent as
+ * `Authorization: tma <initData>`) and attaches req.user. Returns 401 on
+ * invalid data, 403 if the user is banned.
  *
  * Dev convenience: when NODE_ENV !== 'production' and no BOT_TOKEN is set,
  * an `x-dev-telegram-id` header can be used to authenticate locally.
@@ -112,7 +128,7 @@ export async function authMiddleware(
   next: NextFunction,
 ): Promise<void> {
   try {
-    const initData = req.header('x-telegram-init-data');
+    const initData = extractInitData(req);
 
     // ---- Local dev bypass (only when explicitly unconfigured) ----
     if (
@@ -132,7 +148,7 @@ export async function authMiddleware(
     }
 
     if (!initData) {
-      res.status(401).json({ error: 'Missing x-telegram-init-data header' });
+      res.status(401).json({ error: 'Missing Telegram init data (Authorization: tma <initData>)' });
       return;
     }
 

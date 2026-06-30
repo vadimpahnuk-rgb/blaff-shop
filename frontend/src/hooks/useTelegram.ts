@@ -98,7 +98,7 @@ export function useTelegram() {
     };
   }, []);
 
-  const applyThemeParams = (params: typeof tg extends undefined ? never : typeof tg['themeParams']) => {
+  const applyThemeParams = (params: NonNullable<Window['Telegram']>['WebApp']['themeParams']) => {
     if (!params) return;
     const root = document.documentElement;
     if (params.bg_color) root.style.setProperty('--tg-bg', params.bg_color);

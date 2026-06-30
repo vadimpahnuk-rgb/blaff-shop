@@ -67,8 +67,12 @@ app.use((err: Error, _req: Request, res: Response, _next: NextFunction) => {
 /*  Start server                                                       */
 /* ------------------------------------------------------------------ */
 
-app.listen(PORT, () => {
-  console.log(`[server] PWA-X Store API running on port ${PORT}`);
-});
+// Only start a long-running listener outside of serverless (Vercel) runtimes.
+// On Vercel the app is exported and invoked per-request via api/index.ts.
+if (!process.env.VERCEL) {
+  app.listen(PORT, () => {
+    console.log(`[server] BLA AFF SHOP API running on port ${PORT}`);
+  });
+}
 
 export default app;

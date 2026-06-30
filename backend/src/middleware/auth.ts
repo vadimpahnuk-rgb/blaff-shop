@@ -1,0 +1,173 @@
+import type { Request, Response, NextFunction } from 'express';
+import crypto from 'crypto';
+import { eq } from 'drizzle-orm';
+import { db } from '../db';
+import { users } from '../db/schema';
+import type { AuthUser, TelegramWebAppUser } from '../types';
+
+const BOT_TOKEN = process.env.BOT_TOKEN || '';
+
+/**
+ * Validate the Telegram WebApp initData string.
+ * Returns the parsed key/value map if valid, otherwise null.
+ *
+ * Algorithm (per Telegram docs):
+ *   secret_key = HMAC_SHA256(key="WebAppData", msg=bot_token)
+ *   hash       = HMAC_SHA256(key=secret_key, msg=data_check_string)
+ *   data_check_string = sorted "key=value" pairs (excluding hash) joined by "\n"
+ */
+export function validateInitData(
+  initData: string,
+  botToken: string,
+): Record<string, string> | null {
+  if (!initData || !botToken) return null;
+
+  // 2. Parse query string manually (split on '&', then '=' with URI decoding).
+  const pairs: Record<string, string> = {};
+  for (const part of initData.split('&')) {
+    if (!part) continue;
+    const eqIdx = part.indexOf('=');
+    if (eqIdx === -1) continue;
+    const key = decodeURIComponent(part.slice(0, eqIdx));
+    const value = decodeURIComponent(part.slice(eqIdx + 1));
+    pairs[key] = value;
+  }
+
+  // 3. Extract hash.
+  const providedHash = pairs['hash'];
+  if (!providedHash) return null;
+
+  // 4 + 5. Sort remaining pairs by key, build data_check_string.
+  const dataCheckString = Object.keys(pairs)
+    .filter((k) => k !== 'hash')
+    .sort()
+    .map((k) => `${k}=${pairs[k]}`)
+    .join('\n');
+
+  // 6. secret_key = HMAC-SHA256('WebAppData', bot_token)
+  const secretKey = crypto
+    .createHmac('sha256', 'WebAppData')
+    .update(botToken)
+    .digest();
+
+  // 7. hash = HMAC-SHA256(secret_key, data_check_string)
+  const calculatedHash = crypto
+    .createHmac('sha256', secretKey)
+    .update(dataCheckString)
+    .digest('hex');
+
+  // 8. Timing-safe compare.
+  const a = Buffer.from(calculatedHash, 'hex');
+  const b = Buffer.from(providedHash, 'hex');
+  if (a.length !== b.length || !crypto.timingSafeEqual(a, b)) {
+    return null;
+  }
+
+  return pairs;
+}
+
+/**
+ * Find an existing user by telegram_id or create one.
+ */
+async function findOrCreateUser(tgUser: TelegramWebAppUser): Promise<AuthUser> {
+  const existing = await db
+    .select()
+    .from(users)
+    .where(eq(users.telegramId, tgUser.id))
+    .limit(1);
+
+  let row = existing[0];
+
+  if (!row) {
+    const [inserted] = await db
+      .insert(users)
+      .values({
+        telegramId: tgUser.id,
+        firstName: tgUser.first_name ?? null,
+        username: tgUser.username ?? null,
+      })
+      .returning();
+    row = inserted;
+  }
+
+  return {
+    id: row.id,
+    telegram_id: row.telegramId,
+    role: row.role,
+    balance: Number(row.balance),
+    is_banned: row.isBanned,
+  };
+}
+
+/**
+ * Auth middleware: validates the `x-telegram-init-data` header and attaches
+ * req.user. Returns 401 on invalid data, 403 if the user is banned.
+ *
+ * Dev convenience: when NODE_ENV !== 'production' and no BOT_TOKEN is set,
+ * an `x-dev-telegram-id` header can be used to authenticate locally.
+ */
+export async function authMiddleware(
+  req: Request,
+  res: Response,
+  next: NextFunction,
+): Promise<void> {
+  try {
+    const initData = req.header('x-telegram-init-data');
+
+    // ---- Local dev bypass (only when explicitly unconfigured) ----
+    if (
+      process.env.NODE_ENV !== 'production' &&
+      !BOT_TOKEN &&
+      req.header('x-dev-telegram-id')
+    ) {
+      const devId = Number(req.header('x-dev-telegram-id'));
+      const user = await findOrCreateUser({ id: devId, first_name: 'Dev' });
+      if (user.is_banned) {
+        res.status(403).json({ error: 'User is banned' });
+        return;
+      }
+      req.user = user;
+      next();
+      return;
+    }
+
+    if (!initData) {
+      res.status(401).json({ error: 'Missing x-telegram-init-data header' });
+      return;
+    }
+
+    const parsed = validateInitData(initData, BOT_TOKEN);
+    if (!parsed) {
+      res.status(401).json({ error: 'Invalid Telegram init data' });
+      return;
+    }
+
+    // Parse the `user` JSON field from the validated payload.
+    let tgUser: TelegramWebAppUser;
+    try {
+      tgUser = JSON.parse(parsed['user'] ?? '');
+    } catch {
+      res.status(401).json({ error: 'Invalid user payload in init data' });
+      return;
+    }
+
+    if (!tgUser?.id) {
+      res.status(401).json({ error: 'Missing user id in init data' });
+      return;
+    }
+
+    const user = await findOrCreateUser(tgUser);
+
+    if (user.is_banned) {
+      res.status(403).json({ error: 'User is banned' });
+      return;
+    }
+
+    req.user = user;
+    next();
+  } catch (err) {
+    next(err);
+  }
+}
+
+export default authMiddleware;

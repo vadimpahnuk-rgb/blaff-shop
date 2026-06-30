@@ -21,13 +21,34 @@ function ensure(): void {
   if (!connectionString) {
     throw new Error('DATABASE_URL is not set. Configure it in the environment.');
   }
-  _pool = new Pool({
-    connectionString,
-    // Enable SSL automatically for hosted databases (non-local connections).
-    ssl: /localhost|127\.0\.0\.1/.test(connectionString)
-      ? false
-      : { rejectUnauthorized: false },
-  });
+
+  // Supabase pooler URLs contain a dot in the username (postgres.<ref>).
+  // Newer pg-connection-string parsers strip the dot suffix, so we
+  // parse the URL manually and pass individual params when needed.
+  const isPooler = connectionString.includes('pooler.supabase.com');
+  const needsSsl = !/localhost|127\.0\.0\.1/.test(connectionString);
+
+  if (isPooler) {
+    const url = new URL(connectionString);
+    const user = decodeURIComponent(url.username);
+    const password = decodeURIComponent(url.password);
+    _pool = new Pool({
+      host: url.hostname,
+      port: Number(url.port),
+      database: url.pathname.replace(/^\//, ''),
+      user,
+      password,
+      max: 1,
+      idleTimeoutMillis: 10000,
+      connectionTimeoutMillis: 10000,
+      ssl: needsSsl ? { rejectUnauthorized: false } : false,
+    });
+  } else {
+    _pool = new Pool({
+      connectionString,
+      ssl: needsSsl ? { rejectUnauthorized: false } : false,
+    });
+  }
   _db = drizzle(_pool, { schema });
 }
 

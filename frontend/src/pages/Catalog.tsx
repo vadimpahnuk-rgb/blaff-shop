@@ -67,7 +67,7 @@ export default function Catalog() {
   if (loading) return <Loading text="Завантаження товарів..." />;
 
   return (
-    <div className="px-4 py-5 animate-fade-in">
+    <div className="px-6 py-5 animate-fade-in">
       {/* Search */}
       <div className="relative mb-4">
         <input

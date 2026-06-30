@@ -50,7 +50,7 @@ export default function Deposit() {
 
   if (deposit) {
     return (
-      <div className="px-4 py-5 animate-fade-in">
+      <div className="px-6 py-5 animate-fade-in">
         <div className="bg-pwa-dark rounded-xl border border-pwa-border p-5">
           <h2 className="text-white text-lg font-bold mb-2 text-center">Оплата</h2>
           <p className="text-pwa-gray text-sm text-center mb-4">

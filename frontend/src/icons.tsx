@@ -100,6 +100,16 @@ export const AdsIcon = (p: IconProps) => (
   </Svg>
 );
 
+/* Agency / ad-cabinet office building */
+export const AgencyIcon = (p: IconProps) => (
+  <Svg {...p}>
+    <path d="M3 21h18" />
+    <path d="M5 21V6a1 1 0 0 1 1-1h7a1 1 0 0 1 1 1v15" />
+    <path d="M14 21V10h4a1 1 0 0 1 1 1v10" />
+    <path d="M8 8h2M8 11.5h2M8 15h2" />
+  </Svg>
+);
+
 export const ToolsIcon = (p: IconProps) => (
   <Svg {...p}>
     <path d="M14.7 6.3a4 4 0 0 0-5.3 5.2l-5 5a1.6 1.6 0 0 0 2.3 2.3l5-5a4 4 0 0 0 5.2-5.3l-2.3 2.3-2-2 2.1-2.5Z" />

@@ -32,8 +32,10 @@ async function seed() {
   const categorySeed = [
     { name: 'Facebook Accounts', slug: 'facebook-accounts', icon: '📘', sortOrder: 1 },
     { name: 'Proxies', slug: 'proxies', icon: '🌐', sortOrder: 2 },
-    { name: 'Business Managers', slug: 'business-managers', icon: '💼', sortOrder: 3 },
+    { name: 'Business Manager', slug: 'business-managers', icon: '💼', sortOrder: 3 },
     { name: 'Other', slug: 'other', icon: '📦', sortOrder: 4 },
+    { name: 'Фарм ФБ', slug: 'farm-fb', icon: '👤', sortOrder: 5 },
+    { name: 'Агентські кабінети', slug: 'agency-cabinets', icon: '🏢', sortOrder: 6 },
   ];
 
   const categoryIdBySlug: Record<string, number> = {};
@@ -105,6 +107,36 @@ async function seed() {
       stock: 60,
       tags: ['gmail', 'aged', 'app-password'],
       data: 'email: aged_gmail_user@gmail.com\npassword: Gm@ilPass\napp_password: abcd efgh ijkl mnop',
+    },
+    {
+      categorySlug: 'farm-fb',
+      name: 'Фарм ФБ акаунт (30+ днів)',
+      description:
+        'Прогрітий Facebook акаунт, фарм 30+ днів. Пройдена активність, друзі, заповнений профіль. Готовий під рекламу після прогріву.',
+      price: '15.00000000',
+      stock: 20,
+      tags: ['farm', 'aged', 'warmed'],
+      data: 'login: farm_user@example.com\npassword: FarmP@ss1\nemail: recovery@mail.com',
+    },
+    {
+      categorySlug: 'agency-cabinets',
+      name: 'Агентський кабінет (Agency Ad Account)',
+      description:
+        'Агентський рекламний кабінет. Підвищені ліміти витрат, стабільний траст. Видається з доступом та інструкцією.',
+      price: '99.00000000',
+      stock: 5,
+      tags: ['agency', 'no-limit', 'premium'],
+      data: 'account_id: act_1234567890\naccess: shared\nlimit: unlimited',
+    },
+    {
+      categorySlug: 'business-managers',
+      name: 'BM (Business Manager) — готовий',
+      description:
+        'Готовий Business Manager з вільними слотами під рекламні кабінети. Адмін-доступ, без обмежень по спенду.',
+      price: '35.00000000',
+      stock: 15,
+      tags: ['bm', 'verified', 'ready'],
+      data: 'bm_id: 900800700600\nadmin_login: bm_ready@example.com\nadmin_pass: BmReadyP@ss',
     },
   ];
 

@@ -7,7 +7,8 @@ async function seed() {
   console.log('[seed] starting...');
 
   // ---- Admin user (upsert by telegram_id) ----
-  const adminTelegramId = 123456789;
+  // Set ADMIN_TELEGRAM_ID to your own Telegram id to make yourself admin.
+  const adminTelegramId = Number(process.env.ADMIN_TELEGRAM_ID) || 123456789;
   const existingAdmin = await db
     .select()
     .from(users)

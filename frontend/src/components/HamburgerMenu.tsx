@@ -63,10 +63,10 @@ export default function HamburgerMenu({ isOpen, onClose }: HamburgerMenuProps) {
         <div className="absolute bottom-6 left-0 right-0 px-6">
           <div className="flex items-center gap-2 justify-center opacity-40">
             <div className="w-5 h-5 bg-pwa-yellow rounded flex items-center justify-center">
-              <span className="text-pwa-black font-black text-[10px]">P</span>
+              <span className="text-pwa-black font-black text-[10px]">B</span>
             </div>
             <span className="text-white text-xs font-semibold">
-              PWA-X Store
+              BLA AFF SHOP
             </span>
           </div>
         </div>

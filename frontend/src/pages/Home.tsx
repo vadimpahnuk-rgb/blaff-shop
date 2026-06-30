@@ -33,7 +33,7 @@ export default function Home() {
     <div className="px-4 py-5 animate-fade-in">
       {/* Hero section */}
       <div className="mb-6">
-        <h1 className="text-xl font-bold text-white mb-1">PWA-X Store</h1>
+        <h1 className="text-xl font-bold text-white mb-1">BLA AFF SHOP</h1>
         <p className="text-pwa-gray text-sm">
           Цифрові товари для медіабаєрів
         </p>

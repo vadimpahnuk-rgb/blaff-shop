@@ -2,7 +2,7 @@ export default function Partners() {
   return (
     <div className="px-4 py-5 animate-fade-in">
       <h1 className="text-xl font-bold text-white mb-1">Партнерська програма</h1>
-      <p className="text-pwa-gray text-sm mb-5">Заробляйте з PWA-X</p>
+      <p className="text-pwa-gray text-sm mb-5">Заробляйте з BLA AFF</p>
 
       <div className="space-y-4">
         <div className="bg-pwa-dark rounded-xl border border-pwa-border p-4">

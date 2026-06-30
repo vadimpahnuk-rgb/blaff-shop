@@ -1,8 +1,8 @@
-# PWA-X Store — Telegram Mini App
+# BLA AFF SHOP — Telegram Mini App
 
 ## Концепція
 Магазин цифрових товарів для медіабаєрів (акаунти FB, проксі, БМ) у Telegram Mini App.
-Бренд: PWA-X (чорний/жовтий, мінімалізм у стилі X.com).
+Бренд: BLA AFF (чорний/жовтий, мінімалізм у стилі X.com).
 
 ## Стек
 - **Frontend:** React + Vite + TypeScript + Tailwind CSS

@@ -33,10 +33,10 @@ export default function Header({ balance, onBalanceClick }: HeaderProps) {
             className="flex items-center gap-2 cursor-pointer"
           >
             <div className="w-7 h-7 bg-pwa-yellow rounded-lg flex items-center justify-center">
-              <span className="text-pwa-black font-black text-sm">P</span>
+              <span className="text-pwa-black font-black text-sm">B</span>
             </div>
             <span className="text-white font-bold text-lg tracking-tight">
-              PWA<span className="text-pwa-yellow">-X</span>
+              BLA<span className="text-pwa-yellow"> AFF</span>
             </span>
           </div>
 

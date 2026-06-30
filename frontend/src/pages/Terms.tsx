@@ -7,7 +7,7 @@ export default function Terms() {
         <section className="bg-pwa-dark rounded-xl border border-pwa-border p-4">
           <h2 className="text-white font-semibold mb-2">1. Загальні положення</h2>
           <p>
-            Використовуючи PWA-X Store, ви погоджуєтесь з даними умовами. 
+            Використовуючи BLA AFF SHOP, ви погоджуєтесь з даними умовами. 
             Якщо ви не згодні з якоюсь частиною умов, будь ласка, 
             не використовуйте наш сервіс.
           </p>
@@ -16,7 +16,7 @@ export default function Terms() {
         <section className="bg-pwa-dark rounded-xl border border-pwa-border p-4">
           <h2 className="text-white font-semibold mb-2">2. Опис послуг</h2>
           <p>
-            PWA-X Store надає цифрові товари, включаючи акаунти, проксі 
+            BLA AFF SHOP надає цифрові товари, включаючи акаунти, проксі 
             та інструменти для медіабаєрів. Всі товари продаються "як є".
           </p>
         </section>
@@ -43,7 +43,7 @@ export default function Terms() {
         <section className="bg-pwa-dark rounded-xl border border-pwa-border p-4">
           <h2 className="text-white font-semibold mb-2">5. Відповідальність</h2>
           <p>
-            PWA-X Store не несе відповідальності за використання 
+            BLA AFF SHOP не несе відповідальності за використання 
             придбаних товарів. Користувач самостійно відповідає за 
             дотримання законодавства своєї країни.
           </p>

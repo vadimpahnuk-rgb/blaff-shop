@@ -6,7 +6,6 @@ import type { Category } from '../types';
 import Loading from '../components/Loading';
 import {
   BlaLogo,
-  ChevronRightIcon,
   FacebookIcon,
   BusinessIcon,
   AgencyIcon,
@@ -25,7 +24,7 @@ const HOME_TILES: HomeTile[] = [
   { label: 'Facebook Accounts', Icon: FacebookIcon, slug: 'facebook-accounts' },
   { label: 'Business Manager', Icon: BusinessIcon, slug: 'business-managers' },
   { label: 'Агентські кабінети', Icon: AgencyIcon, slug: 'agency-cabinets' },
-  { label: 'Партнери', Icon: PartnersIcon, to: '/partners' },
+  { label: 'Партнери', Icon: PartnersIcon, slug: 'partners' },
 ];
 
 export default function Home() {
@@ -76,20 +75,14 @@ export default function Home() {
               <button
                 key={tile.label}
                 onClick={() => goTo(tile)}
-                className="group relative flex flex-col gap-3 rounded-2xl border border-pwa-border bg-gradient-to-b from-pwa-dark to-[#141414] p-4 text-left overflow-hidden transition-all duration-200 hover:border-pwa-yellow/40 hover:shadow-[0_0_24px_-6px_rgba(245,197,24,0.25)] active:scale-[0.97]"
+                className="group relative flex flex-col items-center gap-3 rounded-2xl border border-pwa-border bg-gradient-to-b from-pwa-dark to-[#141414] p-4 text-center overflow-hidden transition-all duration-200 hover:border-pwa-yellow/40 hover:shadow-[0_0_24px_-6px_rgba(245,197,24,0.25)] active:scale-[0.97]"
               >
                 <span className="flex items-center justify-center w-11 h-11 rounded-xl bg-pwa-yellow/10 text-pwa-yellow border border-pwa-yellow/15 group-hover:bg-pwa-yellow/20 transition-colors">
                   <Icon size={22} />
                 </span>
-                <div className="flex items-center justify-between">
-                  <span className="text-white text-sm font-semibold leading-tight">
-                    {tile.label}
-                  </span>
-                  <ChevronRightIcon
-                    size={16}
-                    className="text-pwa-border group-hover:text-pwa-yellow transition-colors shrink-0"
-                  />
-                </div>
+                <span className="text-white text-sm font-semibold leading-tight">
+                  {tile.label}
+                </span>
               </button>
             );
           })}

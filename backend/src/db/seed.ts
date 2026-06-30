@@ -36,6 +36,7 @@ async function seed() {
     { name: 'Other', slug: 'other', icon: '📦', sortOrder: 4 },
     { name: 'Фарм ФБ', slug: 'farm-fb', icon: '👤', sortOrder: 5 },
     { name: 'Агентські кабінети', slug: 'agency-cabinets', icon: '🏢', sortOrder: 6 },
+    { name: 'Партнери', slug: 'partners', icon: '🤝', sortOrder: 7 },
   ];
 
   const categoryIdBySlug: Record<string, number> = {};
@@ -137,6 +138,16 @@ async function seed() {
       stock: 15,
       tags: ['bm', 'verified', 'ready'],
       data: 'bm_id: 900800700600\nadmin_login: bm_ready@example.com\nadmin_pass: BmReadyP@ss',
+    },
+    {
+      categorySlug: 'partners',
+      name: 'Антидетект браузер (партнер)',
+      description:
+        'Партнерський сервіс — антидетект браузер для мультиакаунтингу. Знижка за нашим посиланням. Поле data містить партнерське посилання.',
+      price: '0.00000000',
+      stock: 999,
+      tags: ['partner', 'antidetect', 'referral'],
+      data: 'https://example-partner.com/?ref=blashop',
     },
   ];
 

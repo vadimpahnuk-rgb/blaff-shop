@@ -24,6 +24,19 @@ GitHub (vadimpahnuk-rgb/blaff-shop)
 
 **Do not point dev/preview at the production database** — purchases mutate balances and stock. Use local PG for day-to-day dev; if you need a shared dev DB, create a separate Supabase project and set its URL on the preview environment.
 
+## Current wiring status (verified 2026-06-30)
+Vercel team `vadym3`, owner `vadimpahnuk@gmail.com`.
+
+| Item | State |
+|------|-------|
+| `blaff-backend` ↔ GitHub | **Connected** (`vadimpahnuk-rgb/blaff-shop`, production branch `main`). Branch pushes build previews automatically. `dev` preview is live. |
+| `blaff-frontend` ↔ GitHub | **Not connected** (CLI-deployed). Branch pushes do **not** auto-deploy. Connect the repo in Vercel → Project → Settings → Git, or deploy previews via `vercel` CLI. |
+| Backend env vars | All scoped to **`production` only** (`DATABASE_URL`, `BOT_TOKEN`, `NOWPAYMENTS_*`, `APP_URL`, `PUBLIC_URL`, `CORS_ORIGIN`, `NODE_ENV`, `SUPPORT_HANDLE`). |
+| Preview backend | Boots and serves `/api/health`, but **DB/bot/payment routes are inert** — no preview-scoped env vars yet. |
+| Preview access | Behind Vercel **Deployment Protection** (preview URLs redirect to login). |
+
+To make the `dev` preview fully functional: add **Preview-scoped** env vars to `blaff-backend` — at minimum a `DATABASE_URL` pointing at a **separate** dev database (never prod), plus `NODE_ENV=development` and a `CORS_ORIGIN` for the dev frontend.
+
 ## Deploy flow
 1. Work on `dev` (or a feature branch off `dev`). Push → Vercel builds a **preview**.
 2. Open a PR `dev → main`. Verify the preview.

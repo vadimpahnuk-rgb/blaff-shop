@@ -97,14 +97,6 @@ body {
   animation: fadeUp 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
-@keyframes pulse-dot {
-  0%, 100% { opacity: 0.3; }
-  50% { opacity: 1; }
-}
-.animate-pulse-dot {
-  animation: pulse-dot 1.4s ease-in-out infinite;
-}
-
 @keyframes spin {
   to { transform: rotate(360deg); }
 }

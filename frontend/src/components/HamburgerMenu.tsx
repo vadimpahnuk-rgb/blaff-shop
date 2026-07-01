@@ -21,7 +21,6 @@ interface HamburgerMenuProps {
 
 const menuItems: { label: string; Icon: ComponentType<IconProps>; path: string }[] = [
   { label: 'Головна', Icon: HomeIcon, path: '/' },
-  { label: 'Каталог', Icon: CatalogIcon, path: '/catalog' },
   { label: 'Історія покупок', Icon: PurchasesIcon, path: '/purchases' },
   { label: 'Поповнити баланс', Icon: WalletIcon, path: '/deposit' },
   { label: 'Підтримка', Icon: SupportIcon, path: '/support' },

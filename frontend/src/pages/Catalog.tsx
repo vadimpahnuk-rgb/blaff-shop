@@ -60,31 +60,7 @@ export default function Catalog() {
   return (
     <div className="px-5 py-5 animate-fade-in">
       {/* Section title */}
-      <h1 className="text-lg font-semibold text-white mb-3">Каталог</h1>
-
-      {/* Search */}
-      <div className="relative mb-3">
-        <input
-          type="text"
-          placeholder="Пошук товарів..."
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          className="w-full bg-pwa-dark border border-pwa-border/50 rounded-xl pl-10 pr-10 py-3 text-white text-sm placeholder-pwa-gray outline-none focus:border-pwa-yellow/50 transition-colors"
-        />
-        <SearchIcon
-          size={18}
-          className="absolute left-3 top-1/2 -translate-y-1/2 text-pwa-gray pointer-events-none"
-        />
-        {searchQuery && (
-          <button
-            onClick={() => setSearchQuery('')}
-            className="absolute right-3 top-1/2 -translate-y-1/2 text-pwa-gray hover:text-white transition-colors"
-            aria-label="Очистити"
-          >
-            <CloseIcon size={16} />
-          </button>
-        )}
-      </div>
+      <h1 className="text-lg font-semibold text-white mb-4">Каталог</h1>
 
       {/* Products grid */}
       {filteredProducts.length > 0 ? (

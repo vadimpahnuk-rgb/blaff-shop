@@ -50,15 +50,15 @@ export default function Deposit() {
 
   if (deposit) {
     return (
-      <div className="px-5 py-5 animate-fade-in">
-        <div className="rounded-2xl border border-pwa-border/50 bg-pwa-dark p-5">
+      <div className="px-5 py-6 animate-fade-in">
+        <div className="rounded-2xl border border-pwa-border/50 bg-pwa-dark p-6">
           <h2 className="text-white text-lg font-extrabold mb-1 text-center">Оплата</h2>
           <p className="text-pwa-gray text-sm text-center mb-5">
             Відправте точну суму на вказану адресу
           </p>
 
           {/* Amount to send */}
-          <div className="bg-pwa-black rounded-xl p-5 mb-3 text-center">
+          <div className="bg-pwa-black rounded-xl p-4 mb-3 text-center">
             <p className="text-xs font-medium text-pwa-gray/70 mb-2">Відправте точно:</p>
             {deposit.pay_amount != null ? (
               <p className="text-white text-3xl font-extrabold break-all select-all">
@@ -71,13 +71,13 @@ export default function Deposit() {
           </div>
 
           {/* Payment ID */}
-          <div className="bg-pwa-black rounded-xl p-5 mb-3">
+          <div className="bg-pwa-black rounded-xl p-4 mb-3">
             <p className="text-xs font-medium text-pwa-gray/70 mb-2">ID платежу:</p>
             <p className="text-white text-sm font-mono break-all">{deposit.payment_id}</p>
           </div>
 
           {/* Address */}
-          <div className="bg-pwa-black rounded-xl p-5 mb-3">
+          <div className="bg-pwa-black rounded-xl p-4 mb-3">
             <p className="text-xs font-medium text-pwa-gray/70 mb-2">Адреса для оплати:</p>
             <p className="text-white text-xs font-mono break-all select-all">{deposit.address}</p>
           </div>
@@ -106,17 +106,17 @@ export default function Deposit() {
   }
 
   return (
-    <div className="px-5 py-5 animate-fade-in">
+    <div className="px-5 py-6 animate-fade-in">
       <h1 className="text-xl font-extrabold text-white mb-1">Поповнення балансу</h1>
       <p className="text-sm font-medium text-pwa-gray/70 mb-5">Виберіть суму для поповнення</p>
 
       {/* Preset amounts */}
-      <div className="grid grid-cols-3 gap-3 mb-5">
+      <div className="grid grid-cols-3 gap-4 mb-5">
         {depositAmounts.map((val) => (
           <button
             key={val}
             onClick={() => handleAmountSelect(val)}
-            className={`p-5 rounded-2xl text-sm font-bold border transition-all active:scale-[0.98] ${
+            className={`py-4 rounded-2xl text-sm font-bold border transition-all active:scale-[0.98] ${
               amount === val && !customAmount
                 ? 'bg-pwa-yellow text-pwa-black border-pwa-yellow'
                 : 'bg-pwa-dark text-white border-pwa-border/50 hover:border-pwa-yellow/30'

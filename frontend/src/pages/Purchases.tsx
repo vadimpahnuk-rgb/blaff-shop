@@ -41,7 +41,7 @@ export default function Purchases() {
   }
 
   return (
-    <div className="px-5 py-5 animate-fade-in">
+    <div className="px-5 py-6 animate-fade-in">
       <div className="flex items-center gap-3 mb-5">
         <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-pwa-yellow/10 text-pwa-yellow">
           <PurchasesIcon size={22} />
@@ -52,13 +52,13 @@ export default function Purchases() {
         </div>
       </div>
 
-      <div className="space-y-3 pb-4">
+      <div className="space-y-4 pb-4">
         {purchases.map((purchase) => {
           const isRevealed = !!revealedData[purchase.id];
           return (
             <div
               key={purchase.id}
-              className="rounded-2xl border border-pwa-border/50 bg-pwa-dark p-5 transition-all hover:border-pwa-yellow/20"
+              className="rounded-2xl border border-pwa-border/50 bg-pwa-dark p-6 transition-all hover:border-pwa-yellow/20"
             >
               {/* Purchase header */}
               <div className="flex items-start justify-between gap-3 mb-3">

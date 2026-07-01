@@ -38,8 +38,8 @@ export default function ProductDetail() {
 
   if (purchaseResult) {
     return (
-      <div className="px-5 py-5 animate-fade-in">
-        <div className="rounded-2xl border border-green-500/40 bg-gradient-to-b from-pwa-dark to-[#141414] p-5 text-center">
+      <div className="px-5 py-6 animate-fade-in">
+        <div className="rounded-2xl border border-green-500/40 bg-gradient-to-b from-pwa-dark to-[#141414] p-6 text-center">
           <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-green-500/10 border border-green-500/30 shadow-[0_0_24px_-4px_rgba(34,197,94,0.5)]">
             <svg
               width="32"
@@ -57,7 +57,7 @@ export default function ProductDetail() {
           </div>
           <h2 className="text-white text-xl font-bold mb-2">Покупка успішна!</h2>
           <p className="text-pwa-gray text-sm mb-4">ID покупки: #{purchaseResult.purchase_id}</p>
-          <div className="bg-pwa-black rounded-xl border border-pwa-border/50 p-5 mb-4 text-left">
+          <div className="bg-pwa-black rounded-xl border border-pwa-border/50 p-4 mb-4 text-left">
             <p className="text-xs font-medium text-pwa-gray/70 mb-2 uppercase tracking-wider">Дані товару:</p>
             <pre className="text-white text-sm whitespace-pre-wrap break-all font-mono">
               {purchaseResult.product_data}
@@ -75,24 +75,24 @@ export default function ProductDetail() {
   }
 
   return (
-    <div className="px-5 py-5 animate-fade-in">
+    <div className="px-5 py-6 animate-fade-in">
       {/* Name */}
       <h1 className="text-xl font-bold text-white mb-4">{product.name}</h1>
 
       {/* Description */}
       {product.description && (
-        <div className="bg-pwa-dark rounded-2xl border border-pwa-border/50 p-5 mb-3">
+        <div className="bg-pwa-dark rounded-2xl border border-pwa-border/50 p-6 mb-4">
           <p className="text-sm text-pwa-gray leading-relaxed">{product.description}</p>
         </div>
       )}
 
       {/* Info cards */}
-      <div className="grid grid-cols-2 gap-3 mb-6">
-        <div className="bg-pwa-dark rounded-2xl border border-pwa-border/50 p-5">
+      <div className="grid grid-cols-2 gap-4 mb-6">
+        <div className="bg-pwa-dark rounded-2xl border border-pwa-border/50 p-6">
           <p className="text-xs font-medium text-pwa-gray/70 mb-1">Ціна</p>
           <p className="text-white text-lg font-bold">${product.price.toFixed(2)}</p>
         </div>
-        <div className="bg-pwa-dark rounded-2xl border border-pwa-border/50 p-5">
+        <div className="bg-pwa-dark rounded-2xl border border-pwa-border/50 p-6">
           <p className="text-xs font-medium text-pwa-gray/70 mb-1">Наявність</p>
           <div className="flex items-center gap-2">
             <div

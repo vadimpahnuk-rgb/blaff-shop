@@ -58,13 +58,18 @@ export default function Catalog() {
   if (loading) return <Loading text="Завантаження товарів..." />;
 
   return (
-    <div className="px-5 py-5 animate-fade-in">
+    <div className="px-5 py-6 animate-fade-in">
       {/* Section title */}
-      <h1 className="text-lg font-semibold text-white mb-4">Каталог</h1>
+      <div className="flex items-baseline justify-between mb-4">
+        <h1 className="text-xl font-bold text-white">Каталог</h1>
+        <span className="text-xs font-medium text-pwa-gray/70 tabular-nums">
+          {filteredProducts.length} товарів
+        </span>
+      </div>
 
       {/* Products grid */}
       {filteredProducts.length > 0 ? (
-        <div className="grid grid-cols-1 gap-3 pb-4">
+        <div className="grid grid-cols-1 gap-4 pb-4">
           {filteredProducts.map((product) => (
             <ProductCard
               key={product.id}

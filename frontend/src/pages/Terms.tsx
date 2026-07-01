@@ -1,6 +1,6 @@
 export default function Terms() {
   return (
-    <div className="px-5 py-5 animate-fade-in">
+    <div className="px-5 py-6 animate-fade-in">
       <h1 className="text-xl font-bold text-white mb-4">Умови використання</h1>
 
       <div className="space-y-3">

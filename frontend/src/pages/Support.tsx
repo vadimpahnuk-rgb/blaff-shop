@@ -2,11 +2,11 @@ import { SupportIcon, ChevronRightIcon, TermsIcon } from '../icons';
 
 export default function Support() {
   return (
-    <div className="px-5 py-5 animate-fade-in">
+    <div className="px-5 py-6 animate-fade-in">
       <h1 className="text-xl font-bold text-white mb-4">Підтримка</h1>
 
-      <div className="space-y-3">
-        <div className="rounded-2xl border border-pwa-border/50 bg-pwa-dark p-5">
+      <div className="space-y-4">
+        <div className="rounded-2xl border border-pwa-border/50 bg-pwa-dark p-6">
           <h3 className="flex items-center gap-2 text-white text-sm font-semibold mb-3">
             <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-pwa-light text-pwa-yellow">
               <SupportIcon size={18} />
@@ -23,7 +23,7 @@ export default function Support() {
           href="https://t.me/BLA_TL"
           target="_blank"
           rel="noopener noreferrer"
-          className="group flex items-center gap-3 rounded-2xl border border-pwa-border/50 bg-pwa-dark p-5 transition-colors hover:border-pwa-yellow/40"
+          className="group flex items-center gap-3 rounded-2xl border border-pwa-border/50 bg-pwa-dark p-6 transition-colors hover:border-pwa-yellow/40"
         >
           <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-pwa-light text-pwa-yellow">
             <SupportIcon size={18} />
@@ -35,7 +35,7 @@ export default function Support() {
           <ChevronRightIcon size={18} />
         </a>
 
-        <div className="rounded-2xl border border-pwa-border/50 bg-pwa-dark p-5">
+        <div className="rounded-2xl border border-pwa-border/50 bg-pwa-dark p-6">
           <h3 className="flex items-center gap-2 text-white text-sm font-semibold mb-4">
             <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-pwa-light text-pwa-yellow">
               <TermsIcon size={18} />

@@ -111,3 +111,45 @@ body {
 .animate-spin {
   animation: spin 1s linear infinite;
 }
+
+/* Нові Tokens */
+:root {
+  --card: #1a1a1a;
+  --green: #22c55e;
+  --yellow-dim: rgba(245, 197, 24, 0.1);
+}
+
+/* Card primitives (reference) */
+.card-base {
+  border-radius: 1rem;                 /* rounded-2xl */
+  border: 1px solid rgba(51, 51, 51, 0.5); /* border-pwa-border/50 */
+  padding: 1.5rem;                     /* p-6 */
+}
+.card-flat { background: #1a1a1a; }
+.card-elevated { background: linear-gradient(to bottom, #1a1a1a, #141414); }
+
+/* prefers-reduced-motion guard */
+@media (prefers-reduced-motion: reduce) {
+  .animate-fade-in, .animate-fade-up, .animate-pulse-dot { animation: none !important; }
+}
+
+/* Плавна анімація для інтерактивних елементів */
+.card-hover {
+  transition: all 0.2s ease;
+}
+.card-hover:hover {
+  border-color: var(--color-pwa-yellow);
+  box-shadow: 0 0 30px -10px rgba(245, 197, 24, 0.15);
+}
+.card-hover:active {
+  transform: scale(0.98);
+}
+
+/* Сток — зелена точка */
+.stock-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #22c55e;
+  box-shadow: 0 0 8px rgba(34, 197, 94, 0.6);
+}

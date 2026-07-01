@@ -78,7 +78,7 @@ export default function Partners() {
   const hasReferrals = stats.invited_count > 0;
 
   return (
-    <div className="space-y-3 px-5 py-5 animate-fade-in">
+    <div className="space-y-4 px-5 py-6 animate-fade-in">
       {/* 1. Header */}
       <div className="pb-2">
         <div className="mb-3 flex items-center gap-3">
@@ -97,14 +97,14 @@ export default function Partners() {
       </div>
 
       {/* 2. Stats row */}
-      <div className="grid grid-cols-2 gap-3">
-        <div className="rounded-2xl border border-pwa-border/50 bg-pwa-dark p-5">
+      <div className="grid grid-cols-2 gap-4">
+        <div className="rounded-2xl border border-pwa-border/50 bg-pwa-dark p-6">
           <p className="mb-2 text-xs font-medium text-pwa-gray/70">Запрошено</p>
           <p className="text-3xl font-extrabold leading-none text-white">
             {stats.invited_count}
           </p>
         </div>
-        <div className="rounded-2xl border border-pwa-border/50 bg-pwa-dark p-5">
+        <div className="rounded-2xl border border-pwa-border/50 bg-pwa-dark p-6">
           <p className="mb-2 text-xs font-medium text-pwa-gray/70">Зароблено</p>
           <p className="text-3xl font-extrabold leading-none text-pwa-yellow">
             ${stats.total_earned.toFixed(2)}
@@ -113,7 +113,7 @@ export default function Partners() {
       </div>
 
       {/* 3. Referral balance card */}
-      <div className="rounded-2xl border border-pwa-border/50 bg-pwa-dark px-5 py-5">
+      <div className="rounded-2xl border border-pwa-border/50 bg-gradient-to-b from-pwa-dark to-[#141414] p-6">
         <div className="mb-3 flex items-center gap-2">
           <WalletIcon size={16} className="text-pwa-yellow/70" />
           <span className="text-[11px] font-semibold uppercase tracking-[0.08em] text-pwa-gray/60">
@@ -154,7 +154,7 @@ export default function Partners() {
       </div>
 
       {/* 4. How it works */}
-      <div className="rounded-2xl border border-pwa-border/50 bg-pwa-dark px-5 py-5">
+      <div className="rounded-2xl border border-pwa-border/50 bg-pwa-dark p-6">
         <h3 className="mb-4 flex items-center gap-2 text-sm font-semibold text-white">
           <span className="flex h-6 w-6 items-center justify-center rounded-lg bg-pwa-yellow/15 text-pwa-yellow">
             <ToolsIcon size={14} />
@@ -192,7 +192,7 @@ export default function Partners() {
       </div>
 
       {/* 5. Referral link */}
-      <div className="rounded-2xl border border-pwa-border/50 bg-pwa-dark px-5 py-5">
+      <div className="rounded-2xl border border-pwa-border/50 bg-pwa-dark p-6">
         <h3 className="mb-3 text-sm font-semibold text-white">
           Ваше реферальне посилання
         </h3>
@@ -217,11 +217,11 @@ export default function Partners() {
 
       {/* 6. Referred users */}
       {stats.referred_users.length > 0 && (
-        <div className="rounded-2xl border border-pwa-border/50 bg-pwa-dark px-5 py-5">
+        <div className="rounded-2xl border border-pwa-border/50 bg-pwa-dark p-6">
           <h3 className="mb-4 text-sm font-semibold text-white">
             Запрошені користувачі
           </h3>
-          <div className="space-y-2.5">
+          <div className="space-y-3">
             {stats.referred_users.map((u) => (
               <div
                 key={u.id}

@@ -13,33 +13,33 @@ export default function ProductCard({ product, onClick, onBuy }: ProductCardProp
   return (
     <div
       onClick={onClick}
-      className="group relative rounded-2xl border border-pwa-border/50 bg-gradient-to-b from-pwa-dark to-[#141414] p-5 cursor-pointer overflow-hidden transition-all duration-200 hover:border-pwa-yellow/40 hover:shadow-[0_0_24px_-6px_rgba(245,197,24,0.25)] active:scale-[0.98] animate-fade-in"
+      className="group relative rounded-2xl border border-pwa-border/50 bg-gradient-to-b from-pwa-dark to-[#141414] p-6 cursor-pointer overflow-hidden transition-all duration-200 hover:border-pwa-yellow/30 hover:shadow-[0_0_30px_-12px_rgba(245,197,24,0.12)] active:scale-[0.98] animate-fade-in"
     >
       {/* Name */}
-      <h3 className="text-white text-sm font-semibold leading-tight mb-2.5 line-clamp-2">
+      <h3 className="text-white text-[15px] font-semibold leading-snug mb-2.5 line-clamp-2">
         {product.name}
       </h3>
 
       {/* Description preview */}
       {product.description && (
-        <p className="text-pwa-gray text-xs mb-3 line-clamp-2">{product.description}</p>
+        <p className="text-pwa-gray/70 text-sm leading-relaxed mb-4 line-clamp-2">{product.description}</p>
       )}
 
       {/* Bottom row: stock + price */}
-      <div className="flex items-center justify-between mt-auto">
+      <div className="flex items-center justify-between">
         {/* Stock indicator */}
-        <div className="flex items-center gap-1.5">
-          <div className={`w-2 h-2 rounded-full shadow-[0_0_6px_rgba(34,197,94,0.7)] ${
-            inStock ? 'bg-green-500' : 'bg-red-500'
+        <div className="flex items-center gap-2">
+          <div className={`w-2 h-2 rounded-full ${
+            inStock ? 'bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.6)]' : 'bg-red-500'
           }`} />
-          <span className="text-pwa-gray text-xs">
+          <span className="text-pwa-gray/60 text-xs font-medium">
             {inStock ? `${product.stock} шт` : 'Немає'}
           </span>
         </div>
 
         {/* Price + Buy button */}
-        <div className="flex items-center gap-2.5">
-          <span className="text-white font-extrabold text-base tabular-nums">
+        <div className="flex items-center gap-3">
+          <span className="text-white font-extrabold text-[16px] tabular-nums tracking-tight">
             ${product.price.toFixed(2)}
           </span>
           {onBuy && inStock && (
@@ -48,7 +48,7 @@ export default function ProductCard({ product, onClick, onBuy }: ProductCardProp
                 e.stopPropagation();
                 onBuy();
               }}
-              className="flex items-center gap-1.5 pl-2.5 pr-3 py-1.5 bg-pwa-yellow text-pwa-black text-xs font-bold rounded-lg hover:brightness-110 hover:shadow-[0_0_16px_-2px_rgba(245,197,24,0.6)] active:scale-95 transition-all"
+              className="flex items-center gap-1.5 px-3.5 py-2 bg-pwa-yellow text-pwa-black text-xs font-bold rounded-xl hover:brightness-110 hover:shadow-[0_0_16px_-2px_rgba(245,197,24,0.6)] active:scale-95 transition-all"
             >
               <CartIcon size={14} />
               Купити

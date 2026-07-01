@@ -11,15 +11,21 @@ router.use(authMiddleware);
 
 /**
  * POST /api/purchase/:productId
- * Buy a product atomically: validates stock + balance, deducts balance,
- * decrements stock, records the purchase + transaction, and returns the
- * product data to the buyer.
+ * Buy `quantity` units of a product atomically: validates stock + balance,
+ * deducts the total price from the balance, decrements stock, records one
+ * purchase + one transaction, and returns the product data to the buyer.
  */
 router.post('/:productId', async (req, res, next) => {
   try {
     const productId = Number(req.params.productId);
     if (!Number.isInteger(productId)) {
       res.status(400).json({ error: 'Invalid product id' });
+      return;
+    }
+
+    const quantity = Number(req.body?.quantity ?? 1);
+    if (!Number.isInteger(quantity) || quantity < 1) {
+      res.status(400).json({ error: 'Invalid quantity' });
       return;
     }
 
@@ -39,7 +45,7 @@ router.post('/:productId', async (req, res, next) => {
       }
 
       // 2. Stock check.
-      if (product.stock <= 0) {
+      if (product.stock < quantity) {
         return { error: 'OUT_OF_STOCK' as const };
       }
 
@@ -59,22 +65,25 @@ router.post('/:productId', async (req, res, next) => {
         return { error: 'ACCOUNT_BANNED' as const };
       }
 
-      const price = Number(product.price);
+      // numeric(18,8) columns arrive as strings; keep money math on a
+      // fixed-scale string so the DB gets an exact value.
+      const totalPrice = Number(product.price) * quantity;
+      const totalPriceStr = totalPrice.toFixed(8);
       const balance = Number(user.balance);
-      if (balance < price) {
+      if (balance < totalPrice) {
         return { error: 'INSUFFICIENT_BALANCE' as const };
       }
 
       // 4. Deduct balance.
       await tx
         .update(users)
-        .set({ balance: sql`${users.balance} - ${product.price}` })
+        .set({ balance: sql`${users.balance} - ${totalPriceStr}` })
         .where(eq(users.id, userId));
 
       // 5. Decrement stock.
       await tx
         .update(products)
-        .set({ stock: sql`${products.stock} - 1` })
+        .set({ stock: sql`${products.stock} - ${quantity}` })
         .where(eq(products.id, productId));
 
       // 6. Create purchase record (copy product.data).
@@ -84,7 +93,8 @@ router.post('/:productId', async (req, res, next) => {
           userId,
           productId: product.id,
           productData: product.data,
-          price: product.price,
+          price: totalPriceStr,
+          quantity,
         })
         .returning();
 
@@ -92,7 +102,7 @@ router.post('/:productId', async (req, res, next) => {
       await tx.insert(transactions).values({
         userId,
         type: 'purchase',
-        amount: product.price,
+        amount: totalPriceStr,
         status: 'completed',
         productId: product.id,
       });
@@ -107,7 +117,7 @@ router.post('/:productId', async (req, res, next) => {
           res.status(404).json({ error: 'Product not found or inactive' });
           return;
         case 'OUT_OF_STOCK':
-          res.status(409).json({ error: 'Product is out of stock' });
+          res.status(409).json({ error: 'Not enough stock available' });
           return;
         case 'INSUFFICIENT_BALANCE':
           res.status(402).json({ error: 'Insufficient balance' });
@@ -129,6 +139,7 @@ router.post('/:productId', async (req, res, next) => {
         product_id: result.purchase.productId,
         product_name: result.productName,
         price: result.purchase.price,
+        quantity: result.purchase.quantity,
         data: result.purchase.productData,
         created_at: result.purchase.createdAt,
       },

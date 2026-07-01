@@ -88,6 +88,7 @@ export const purchases = pgTable('purchases', {
   }),
   productData: text('product_data'),
   price: numeric('price', { precision: 18, scale: 8 }).notNull(),
+  quantity: integer('quantity').notNull().default(1),
   createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
 });
 

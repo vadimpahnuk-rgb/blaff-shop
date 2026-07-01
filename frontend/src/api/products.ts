@@ -17,9 +17,18 @@ export async function getProduct(id: number): Promise<Product> {
   return { ...response.data, price: num(response.data.price) };
 }
 
-export async function purchaseProduct(productId: number): Promise<{ purchase_id: number; product_data: string }> {
-  const response = await client.post(`/purchase/${productId}`);
-  return response.data;
+export async function purchaseProduct(
+  productId: number,
+  quantity: number = 1
+): Promise<{ purchase_id: number; product_data: string; quantity: number }> {
+  const response = await client.post(`/purchase/${productId}`, { quantity });
+  // Backend responds { success, purchase: { id, data, quantity, ... } }.
+  const purchase = response.data?.purchase ?? {};
+  return {
+    purchase_id: purchase.id,
+    product_data: purchase.data ?? '',
+    quantity: purchase.quantity ?? quantity,
+  };
 }
 
 export async function getPurchaseData(id: number): Promise<{ product_data: string }> {

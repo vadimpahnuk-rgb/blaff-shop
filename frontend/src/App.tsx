@@ -84,14 +84,14 @@ function AppContent() {
 
   if (loading) {
     return (
-      <div className="h-full flex items-center justify-center bg-pwa-black">
+      <div className="app-shell h-full flex items-center justify-center bg-pwa-black">
         <Loading size="lg" text="BLA SHOP" />
       </div>
     );
   }
 
   return (
-    <div className="h-full flex flex-col bg-pwa-black text-white">
+    <div className="app-shell h-full flex flex-col bg-pwa-black text-white safe-area-left safe-area-right">
       <AuthContext.Provider value={{ user, isAdmin }}>
       {/* Header - hidden on admin routes */}
       {!isAdminRoute && (
@@ -102,7 +102,7 @@ function AppContent() {
       )}
 
       {/* Main content */}
-      <main className="flex-1 overflow-y-auto">
+      <main className={`flex-1 overflow-y-auto ${isAdminRoute ? '' : 'pb-nav'}`}>
         <Routes>
           {/* Admin routes — always rendered; authorization checked inside AdminLayout */}
           <Route path="admin" element={<AdminLayout />}>

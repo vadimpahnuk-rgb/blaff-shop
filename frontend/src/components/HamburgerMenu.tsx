@@ -44,7 +44,8 @@ export default function HamburgerMenu({ isOpen, onClose }: HamburgerMenuProps) {
       <div className="fixed inset-0 bg-black/70 backdrop-blur-[2px] z-50 animate-fade-in" onClick={onClose} />
 
       {/* Menu panel */}
-      <div className="fixed top-0 left-0 bottom-0 w-[78%] max-w-xs glass border-r border-white/10 z-50 animate-fade-in safe-area-top flex flex-col">
+      {/* Anchors to viewport edge on phones, to the centered 480px shell edge on desktop */}
+      <div className="fixed top-0 left-[max(0px,calc(50%-240px))] bottom-0 w-[78%] max-w-xs glass border-r border-white/10 z-50 animate-fade-in safe-area-top safe-area-left flex flex-col">
         <div className="flex items-center justify-between px-4 h-14">
           <div className="flex items-center gap-2">
             <BlaLogo size={26} className="rounded-lg" />
@@ -55,7 +56,7 @@ export default function HamburgerMenu({ isOpen, onClose }: HamburgerMenuProps) {
           </div>
           <button
             onClick={onClose}
-            className="text-pwa-gray hover:text-white active:scale-90 transition-all p-1"
+            className="text-pwa-gray hover:text-white active:scale-90 transition-all w-11 h-11 -mr-2 flex items-center justify-center"
             aria-label="Close menu"
           >
             <CloseIcon size={22} />

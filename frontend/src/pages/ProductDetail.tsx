@@ -9,7 +9,8 @@ export default function ProductDetail() {
   const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState(true);
   const [buying, setBuying] = useState(false);
-  const [purchaseResult, setPurchaseResult] = useState<{ purchase_id: number; product_data: string } | null>(null);
+  const [quantity, setQuantity] = useState(1);
+  const [purchaseResult, setPurchaseResult] = useState<{ purchase_id: number; product_data: string; quantity: number } | null>(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -24,7 +25,7 @@ export default function ProductDetail() {
     if (!product || buying) return;
     setBuying(true);
     try {
-      const result = await purchaseProduct(product.id);
+      const result = await purchaseProduct(product.id, quantity);
       setPurchaseResult(result);
     } catch (err: any) {
       alert(err?.response?.data?.error || 'Помилка покупки');
@@ -56,7 +57,10 @@ export default function ProductDetail() {
             </svg>
           </div>
           <h2 className="text-white text-xl font-bold mb-2">Покупка успішна!</h2>
-          <p className="text-pwa-gray text-sm mb-4">ID покупки: #{purchaseResult.purchase_id}</p>
+          <p className="text-pwa-gray text-sm mb-4">
+            ID покупки: #{purchaseResult.purchase_id}
+            {purchaseResult.quantity > 1 && ` • ${purchaseResult.quantity} шт`}
+          </p>
           <div className="bg-pwa-black rounded-xl border border-pwa-border/50 p-4 mb-4 text-left">
             <p className="text-xs font-medium text-pwa-gray/70 mb-2">Дані товару:</p>
             <pre className="text-white text-sm whitespace-pre-wrap break-all font-mono">
@@ -107,6 +111,41 @@ export default function ProductDetail() {
         </div>
       </div>
 
+      {/* Quantity selector */}
+      {product.stock > 0 && (
+        <div className="bg-pwa-dark rounded-xl p-4 mb-4">
+          <p className="text-xs font-medium text-pwa-gray/70 mb-3">Кількість:</p>
+          <div className="flex items-center">
+            <button
+              onClick={() => setQuantity((q) => Math.max(1, q - 1))}
+              disabled={quantity <= 1}
+              className="px-3 py-1.5 rounded-l-xl bg-pwa-dark border border-pwa-border/50 text-white text-sm font-semibold transition-all active:scale-[0.97] disabled:text-pwa-gray/40 disabled:active:scale-100"
+            >
+              −
+            </button>
+            <input
+              type="number"
+              inputMode="numeric"
+              min={1}
+              max={product.stock}
+              value={quantity}
+              onChange={(e) => {
+                const v = parseInt(e.target.value, 10);
+                setQuantity(Number.isNaN(v) ? 1 : Math.min(product.stock, Math.max(1, v)));
+              }}
+              className="w-16 py-1.5 bg-pwa-black border border-pwa-border/50 rounded-xl text-center text-white font-semibold text-sm tabular-nums focus:outline-none focus:border-pwa-yellow/50 [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+            />
+            <button
+              onClick={() => setQuantity((q) => Math.min(product.stock, q + 1))}
+              disabled={quantity >= product.stock}
+              className="px-3 py-1.5 rounded-r-xl bg-pwa-dark border border-pwa-border/50 text-white text-sm font-semibold transition-all active:scale-[0.97] disabled:text-pwa-gray/40 disabled:active:scale-100"
+            >
+              +
+            </button>
+          </div>
+        </div>
+      )}
+
       {/* Buy button */}
       <button
         onClick={handleBuy}
@@ -123,7 +162,7 @@ export default function ProductDetail() {
             Обробка...
           </span>
         ) : product.stock > 0 ? (
-          `Купити за $${product.price.toFixed(2)}`
+          `Купити ${quantity} шт за $${(product.price * quantity).toFixed(2)}`
         ) : (
           'Немає в наявності'
         )}

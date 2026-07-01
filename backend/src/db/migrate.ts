@@ -64,8 +64,12 @@ CREATE TABLE IF NOT EXISTS purchases (
   product_id    INTEGER REFERENCES products(id) ON DELETE SET NULL,
   product_data  TEXT,
   price         NUMERIC(18, 8) NOT NULL,
+  quantity      INTEGER NOT NULL DEFAULT 1,
   created_at    TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
+
+-- Ensure the quantity column exists on pre-existing databases.
+ALTER TABLE purchases ADD COLUMN IF NOT EXISTS quantity INTEGER NOT NULL DEFAULT 1;
 
 CREATE TABLE IF NOT EXISTS referrals (
   id            SERIAL PRIMARY KEY,

@@ -49,6 +49,7 @@ export interface Purchase {
   product_name?: string;
   product_data?: string;
   price: number;
+  quantity: number;
   created_at: string;
 }
 

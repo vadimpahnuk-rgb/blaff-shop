@@ -39,6 +39,7 @@ router.get('/purchases', async (req, res, next) => {
         product_id: purchases.productId,
         product_data: purchases.productData,
         price: purchases.price,
+        quantity: purchases.quantity,
         created_at: purchases.createdAt,
         product: {
           id: products.id,

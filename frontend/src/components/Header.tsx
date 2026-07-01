@@ -16,12 +16,12 @@ export default function Header({ balance, onBalanceClick }: HeaderProps) {
   return (
     <>
       <header className="sticky top-0 z-40 glass border-b border-white/5 safe-area-top">
-        <div className="flex items-center justify-between px-5 h-14">
+        <div className="mx-auto w-full max-w-[480px] flex items-center justify-between px-5 h-14">
           {/* Left: menu + brand */}
-          <div className="flex items-center gap-2.5">
+          <div className="flex items-center gap-1.5">
             <button
               onClick={() => setMenuOpen(true)}
-              className="text-pwa-gray hover:text-white active:scale-90 transition-all p-1 -ml-1"
+              className="text-pwa-gray hover:text-white active:scale-90 transition-all w-11 h-11 -ml-3 flex items-center justify-center shrink-0"
               aria-label="Menu"
             >
               <MenuIcon size={22} />

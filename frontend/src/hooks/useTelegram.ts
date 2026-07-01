@@ -81,6 +81,12 @@ export function useTelegram() {
     tg.ready();
     tg.expand();
 
+    try {
+      tg.setHeaderColor('#0a0a0a');
+    } catch {
+      // Older Telegram clients don't support setHeaderColor
+    }
+
     setColorScheme(tg.colorScheme || 'dark');
 
     const handleThemeChange = () => {

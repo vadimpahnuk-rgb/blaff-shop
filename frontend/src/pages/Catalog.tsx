@@ -60,7 +60,10 @@ export default function Catalog() {
   return (
     <div className="px-5 py-6 animate-fade-in">
       {/* Section title */}
-      <h1 className="text-xl font-bold text-white mb-4">Каталог</h1>
+      <div className="flex items-baseline justify-between mb-4">
+        <h1 className="text-xl font-bold text-white">Каталог</h1>
+        <span className="text-xs font-medium text-pwa-gray/70 tabular-nums">{filteredProducts.length} товарів</span>
+      </div>
 
       {/* Products grid */}
       {filteredProducts.length > 0 ? (

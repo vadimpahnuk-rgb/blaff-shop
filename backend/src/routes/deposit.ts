@@ -9,7 +9,7 @@ const router = Router();
 router.use(authMiddleware);
 
 // Deposit bounds (in account currency / USD-equivalent).
-const MIN_DEPOSIT = 1;
+const MIN_DEPOSIT = 20;
 const MAX_DEPOSIT = 10000;
 
 // Per-user rate limit: max 3 deposit creations per 5 minutes. In-memory only —

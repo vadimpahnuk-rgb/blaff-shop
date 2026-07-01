@@ -3,7 +3,7 @@ import { createDeposit } from '../api/user';
 import Loading from '../components/Loading';
 import type { DepositResponse } from '../types';
 
-const depositAmounts = [10, 25, 50, 100, 200, 500];
+const depositAmounts = [20, 50, 100, 200, 500, 1000];
 
 export default function Deposit() {
   const [amount, setAmount] = useState<number>(25);
@@ -21,17 +21,17 @@ export default function Deposit() {
   const handleCustomAmount = (val: string) => {
     setCustomAmount(val);
     const num = parseFloat(val);
-    if (!isNaN(num) && num >= 5) {
+    if (num >= 20) {
       setAmount(num);
       setError('');
     } else {
-      setError('Мінімальна сума: $5');
+      setError('Мінімальна сума: $20');
     }
   };
 
   const handleDeposit = async () => {
-    if (amount < 5) {
-      setError('Мінімальна сума поповнення: $5');
+    if (amount < 20) {
+      setError('Мінімальна сума поповнення: $20');
       return;
     }
     setLoading(true);
@@ -163,7 +163,7 @@ export default function Deposit() {
       </button>
 
       <p className="text-xs font-medium text-pwa-gray/70 text-center mt-4">
-        Мінімальна сума: $5 · Максимальна: $1000
+        Мінімальна сума: $20 · Максимальна: $1000
       </p>
     </div>
   );

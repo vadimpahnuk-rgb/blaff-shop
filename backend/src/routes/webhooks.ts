@@ -2,7 +2,7 @@ import { Router } from 'express';
 import crypto from 'crypto';
 import { eq, sql } from 'drizzle-orm';
 import { db } from '../db';
-import { transactions, users } from '../db/schema';
+import { transactions, users, referrals } from '../db/schema';
 import { bot, notifyDepositConfirmed } from '../bot';
 
 const router = Router();
@@ -153,6 +153,30 @@ router.post('/nowpayments', async (req, res) => {
           .set({ balance: sql`${users.balance} + ${txn.amount}` })
           .where(eq(users.id, txn.userId))
           .returning({ balance: users.balance, telegramId: users.telegramId });
+
+        // Referral cashback — if this depositor was invited by someone, credit
+        // the referrer 3% of the deposit amount to their referral balance.
+        const [referral] = await tx
+          .select({ referrerId: referrals.referrerId })
+          .from(referrals)
+          .where(eq(referrals.referredId, txn.userId))
+          .limit(1);
+
+        if (referral) {
+          const commission = (Number(txn.amount) * 0.03).toFixed(8);
+
+          await tx
+            .update(users)
+            .set({ referralBalance: sql`${users.referralBalance} + ${commission}` })
+            .where(eq(users.id, referral.referrerId));
+
+          await tx.insert(transactions).values({
+            userId: referral.referrerId,
+            type: 'referral_commission',
+            amount: commission,
+            status: 'completed',
+          });
+        }
 
         return {
           state: 'CREDITED' as const,

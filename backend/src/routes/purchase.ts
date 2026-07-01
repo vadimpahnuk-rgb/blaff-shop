@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { and, eq, sql } from 'drizzle-orm';
 import { db } from '../db';
-import { users, products, purchases, transactions, referrals } from '../db/schema';
+import { users, products, purchases, transactions } from '../db/schema';
 import { authMiddleware } from '../middleware/auth';
 
 const router = Router();
@@ -96,31 +96,6 @@ router.post('/:productId', async (req, res, next) => {
         status: 'completed',
         productId: product.id,
       });
-
-      // 8. Referral cashback — if this buyer was invited by someone, credit the
-      // referrer 3% of the purchase price to their referral balance.
-      const [referral] = await tx
-        .select({ referrerId: referrals.referrerId })
-        .from(referrals)
-        .where(eq(referrals.referredId, userId))
-        .limit(1);
-
-      if (referral) {
-        const commission = (price * 0.03).toFixed(8);
-
-        await tx
-          .update(users)
-          .set({ referralBalance: sql`${users.referralBalance} + ${commission}` })
-          .where(eq(users.id, referral.referrerId));
-
-        await tx.insert(transactions).values({
-          userId: referral.referrerId,
-          type: 'referral_commission',
-          amount: commission,
-          status: 'completed',
-          productId: product.id,
-        });
-      }
 
       return { purchase, productName: product.name };
     });

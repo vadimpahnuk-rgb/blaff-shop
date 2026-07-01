@@ -171,12 +171,6 @@ export default function AdminProducts() {
                 onChange={(e) => setForm({ ...form, category_id: e.target.value })}
                 className="w-full bg-pwa-black border border-pwa-border rounded-lg px-3 py-2 text-white text-sm outline-none focus:border-pwa-yellow/50"
               />
-              <input
-                placeholder="Теги (через кому)"
-                value={form.tags}
-                onChange={(e) => setForm({ ...form, tags: e.target.value })}
-                className="w-full bg-pwa-black border border-pwa-border rounded-lg px-3 py-2 text-white text-sm outline-none focus:border-pwa-yellow/50"
-              />
               <textarea
                 placeholder="Дані товару (логін:пароль або JSON)"
                 value={form.data}
@@ -212,11 +206,6 @@ export default function AdminProducts() {
                     <span className={`text-xs ${product.stock > 0 ? 'text-green-400' : 'text-red-400'}`}>
                       {product.stock} шт
                     </span>
-                    {product.tags?.length > 0 && (
-                      <span className="text-pwa-gray text-xs">
-                        {product.tags.join(', ')}
-                      </span>
-                    )}
                   </div>
                 </div>
                 <div className="flex gap-2">

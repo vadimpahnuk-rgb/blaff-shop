@@ -62,6 +62,21 @@ export interface DepositResponse {
   qr_code?: string;
 }
 
+export interface ReferredUser {
+  id: number;
+  first_name?: string | null;
+  username?: string | null;
+  created_at: string;
+}
+
+export interface ReferralStats {
+  invited_count: number;
+  referral_balance: number;
+  total_earned: number;
+  referral_link: string;
+  referred_users: ReferredUser[];
+}
+
 export interface AdminStats {
   total_users: number;
   total_products: number;

@@ -20,6 +20,9 @@ export const users = pgTable('users', {
   firstName: varchar('first_name', { length: 255 }),
   username: varchar('username', { length: 255 }),
   balance: numeric('balance', { precision: 18, scale: 8 }).notNull().default('0'),
+  referralBalance: numeric('referral_balance', { precision: 18, scale: 8 })
+    .notNull()
+    .default('0'),
   role: varchar('role', { length: 32 }).notNull().default('user'),
   createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
   isBanned: boolean('is_banned').notNull().default(false),
@@ -88,12 +91,29 @@ export const purchases = pgTable('purchases', {
   createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
 });
 
+/**
+ * referrals
+ *
+ * One row per referred user (UNIQUE on referred_id): records who invited whom.
+ */
+export const referrals = pgTable('referrals', {
+  id: serial('id').primaryKey(),
+  referrerId: integer('referrer_id')
+    .notNull()
+    .references(() => users.id, { onDelete: 'cascade' }),
+  referredId: integer('referred_id')
+    .notNull()
+    .references(() => users.id, { onDelete: 'cascade' }),
+  createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
+});
+
 // ---- Select types ----
 export type User = InferSelectModel<typeof users>;
 export type Category = InferSelectModel<typeof categories>;
 export type Product = InferSelectModel<typeof products>;
 export type Transaction = InferSelectModel<typeof transactions>;
 export type Purchase = InferSelectModel<typeof purchases>;
+export type Referral = InferSelectModel<typeof referrals>;
 
 // ---- Insert types ----
 export type NewUser = InferInsertModel<typeof users>;
@@ -101,3 +121,4 @@ export type NewCategory = InferInsertModel<typeof categories>;
 export type NewProduct = InferInsertModel<typeof products>;
 export type NewTransaction = InferInsertModel<typeof transactions>;
 export type NewPurchase = InferInsertModel<typeof purchases>;
+export type NewReferral = InferInsertModel<typeof referrals>;

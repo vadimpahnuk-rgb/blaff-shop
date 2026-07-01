@@ -63,6 +63,12 @@ function AppContent() {
     return () => clearInterval(interval);
   }, [refreshBalance]);
 
+  // Refresh balance on demand (e.g. after a referral withdrawal).
+  useEffect(() => {
+    window.addEventListener('balance-updated', refreshBalance);
+    return () => window.removeEventListener('balance-updated', refreshBalance);
+  }, [refreshBalance]);
+
   // Apply theme params
   useEffect(() => {
     const root = document.documentElement;

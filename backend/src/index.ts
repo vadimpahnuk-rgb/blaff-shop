@@ -6,6 +6,7 @@ import authRouter from './routes/auth';
 import categoriesRouter from './routes/categories';
 import productsRouter from './routes/products';
 import userRouter from './routes/user';
+import referralsRouter from './routes/referrals';
 import purchaseRouter from './routes/purchase';
 import depositRouter from './routes/deposit';
 import webhooksRouter from './routes/webhooks';
@@ -44,6 +45,7 @@ app.get('/api/health', (_req: Request, res: Response) => {
 app.use('/api/auth', authRouter);
 app.use('/api/categories', categoriesRouter);
 app.use('/api/products', productsRouter);
+app.use('/api/user/referrals', referralsRouter);
 app.use('/api/user', userRouter);
 app.use('/api/purchase', purchaseRouter);
 app.use('/api/deposit', depositRouter);

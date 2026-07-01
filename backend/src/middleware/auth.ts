@@ -2,7 +2,7 @@ import type { Request, Response, NextFunction } from 'express';
 import crypto from 'crypto';
 import { eq } from 'drizzle-orm';
 import { db } from '../db';
-import { users } from '../db/schema';
+import { users, referrals } from '../db/schema';
 import type { AuthUser, TelegramWebAppUser } from '../types';
 
 const BOT_TOKEN = process.env.BOT_TOKEN || '';
@@ -67,9 +67,51 @@ export function validateInitData(
 }
 
 /**
- * Find an existing user by telegram_id or create one.
+ * Record a referral for a freshly-created user based on the Telegram
+ * `start_param` (`ref_<referrerUserId>`). Best-effort: any malformed value,
+ * self-referral, or missing referrer is silently ignored.
  */
-async function findOrCreateUser(tgUser: TelegramWebAppUser): Promise<AuthUser> {
+async function trackReferral(
+  newUserId: number,
+  parsed?: Record<string, string>,
+): Promise<void> {
+  const startParam = parsed?.['start_param'];
+  if (!startParam || !startParam.startsWith('ref_')) return;
+
+  const referrerId = Number(startParam.slice(4));
+  if (!Number.isInteger(referrerId) || referrerId <= 0) return;
+
+  // No self-referral.
+  if (referrerId === newUserId) return;
+
+  try {
+    // Referrer must exist.
+    const [referrer] = await db
+      .select({ id: users.id })
+      .from(users)
+      .where(eq(users.id, referrerId))
+      .limit(1);
+    if (!referrer) return;
+
+    // UNIQUE(referred_id) also guards against duplicates at the DB level.
+    await db
+      .insert(referrals)
+      .values({ referrerId, referredId: newUserId })
+      .onConflictDoNothing();
+  } catch {
+    // Silently skip — a broken referral must never block auth.
+  }
+}
+
+/**
+ * Find an existing user by telegram_id or create one. When a new user is
+ * created, the validated initData map (if provided) is inspected for a
+ * `start_param` referral tag.
+ */
+async function findOrCreateUser(
+  tgUser: TelegramWebAppUser,
+  parsed?: Record<string, string>,
+): Promise<AuthUser> {
   const existing = await db
     .select()
     .from(users)
@@ -88,6 +130,8 @@ async function findOrCreateUser(tgUser: TelegramWebAppUser): Promise<AuthUser> {
       })
       .returning();
     row = inserted;
+
+    await trackReferral(row.id, parsed);
   }
 
   return {
@@ -172,7 +216,7 @@ export async function authMiddleware(
       return;
     }
 
-    const user = await findOrCreateUser(tgUser);
+    const user = await findOrCreateUser(tgUser, parsed);
 
     if (user.is_banned) {
       res.status(403).json({ error: 'User is banned' });

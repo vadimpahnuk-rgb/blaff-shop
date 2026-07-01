@@ -16,10 +16,15 @@ CREATE TABLE IF NOT EXISTS users (
   first_name    VARCHAR(255),
   username      VARCHAR(255),
   balance       NUMERIC(18, 8) NOT NULL DEFAULT 0,
+  referral_balance NUMERIC(18, 8) NOT NULL DEFAULT 0,
   role          VARCHAR(32) NOT NULL DEFAULT 'user',
   created_at    TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   is_banned     BOOLEAN NOT NULL DEFAULT FALSE
 );
+
+-- Ensure the referral_balance column exists on pre-existing databases
+-- (CREATE TABLE IF NOT EXISTS above is a no-op once the table exists).
+ALTER TABLE users ADD COLUMN IF NOT EXISTS referral_balance NUMERIC(18, 8) NOT NULL DEFAULT 0;
 
 CREATE TABLE IF NOT EXISTS categories (
   id            SERIAL PRIMARY KEY,
@@ -62,11 +67,20 @@ CREATE TABLE IF NOT EXISTS purchases (
   created_at    TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
+CREATE TABLE IF NOT EXISTS referrals (
+  id            SERIAL PRIMARY KEY,
+  referrer_id   INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  referred_id   INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  created_at    TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  UNIQUE(referred_id)
+);
+
 CREATE INDEX IF NOT EXISTS idx_products_category   ON products(category_id);
 CREATE INDEX IF NOT EXISTS idx_products_active      ON products(is_active);
 CREATE INDEX IF NOT EXISTS idx_transactions_user    ON transactions(user_id);
 CREATE INDEX IF NOT EXISTS idx_transactions_payment ON transactions(payment_id);
 CREATE INDEX IF NOT EXISTS idx_purchases_user       ON purchases(user_id);
+CREATE INDEX IF NOT EXISTS idx_referrals_referrer   ON referrals(referrer_id);
 `;
 
 async function main() {

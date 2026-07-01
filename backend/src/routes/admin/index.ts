@@ -491,13 +491,17 @@ router.get('/stats', async (_req, res, next) => {
     ]);
 
     res.json({
-      total_users: totalUsers[0]?.count ?? 0,
-      total_products: totalProducts[0]?.count ?? 0,
-      total_purchases: totalPurchases[0]?.count ?? 0,
-      revenue_today: revenueToday[0]?.total ?? '0',
-      revenue_week: revenueWeek[0]?.total ?? '0',
-      revenue_month: revenueMonth[0]?.total ?? '0',
-      top_products: topProducts,
+      total_users: Number(totalUsers[0]?.count ?? 0),
+      total_products: Number(totalProducts[0]?.count ?? 0),
+      total_transactions: Number(totalPurchases[0]?.count ?? 0),
+      sales_today: Number(revenueToday[0]?.total ?? 0),
+      sales_week: Number(revenueWeek[0]?.total ?? 0),
+      sales_month: Number(revenueMonth[0]?.total ?? 0),
+      top_products: topProducts.map((p) => ({
+        id: p.product_id,
+        name: p.name,
+        sales: Number(p.units_sold),
+      })),
     });
   } catch (err) {
     next(err);

@@ -17,12 +17,12 @@ export default function AdminDashboard() {
   }
 
   const statCards = [
-    { label: 'Продажів сьогодні', value: `$${stats.sales_today.toFixed(2)}`, icon: '📈' },
-    { label: 'За тиждень', value: `$${stats.sales_week.toFixed(2)}`, icon: '📊' },
-    { label: 'За місяць', value: `$${stats.sales_month.toFixed(2)}`, icon: '📅' },
-    { label: 'Користувачів', value: stats.total_users.toString(), icon: '👥' },
-    { label: 'Товарів', value: stats.total_products.toString(), icon: '📦' },
-    { label: 'Транзакцій', value: stats.total_transactions.toString(), icon: '💳' },
+    { label: 'Продажів сьогодні', value: `$${Number(stats.sales_today ?? 0).toFixed(2)}`, icon: '📈' },
+    { label: 'За тиждень', value: `$${Number(stats.sales_week ?? 0).toFixed(2)}`, icon: '📊' },
+    { label: 'За місяць', value: `$${Number(stats.sales_month ?? 0).toFixed(2)}`, icon: '📅' },
+    { label: 'Користувачів', value: String(stats.total_users ?? 0), icon: '👥' },
+    { label: 'Товарів', value: String(stats.total_products ?? 0), icon: '📦' },
+    { label: 'Транзакцій', value: String(stats.total_transactions ?? 0), icon: '💳' },
   ];
 
   return (

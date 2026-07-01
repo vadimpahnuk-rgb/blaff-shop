@@ -90,7 +90,7 @@ export default function Partners() {
               Партнерська програма
             </h1>
             <p className="text-xs leading-relaxed text-pwa-gray/70">
-              Запрошуйте друзів і заробляйте з кожної їх покупки
+              Запрошуйте друзів і заробляйте з кожного їх поповнення
             </p>
           </div>
         </div>

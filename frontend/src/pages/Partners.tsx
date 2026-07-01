@@ -175,7 +175,7 @@ export default function Partners() {
               2
             </span>
             <p className="text-sm leading-relaxed text-pwa-gray">
-              Користувач реєструється та робить покупку
+              Користувач реєструється та поповнює баланс
             </p>
           </div>
           <div className="flex gap-3">
@@ -185,7 +185,7 @@ export default function Partners() {
             <p className="text-sm leading-relaxed text-pwa-gray">
               Ви отримуєте{' '}
               <span className="font-semibold text-pwa-yellow">3% кешбек</span>{' '}
-              на реферальний баланс — миттєво після покупки
+              на реферальний баланс — миттєво після поповнення балансу
             </p>
           </div>
         </div>

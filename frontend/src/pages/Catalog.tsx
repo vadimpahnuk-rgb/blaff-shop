@@ -14,7 +14,6 @@ export default function Catalog() {
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
-  const [selectedTag, setSelectedTag] = useState<string | null>(null);
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
 
@@ -41,18 +40,16 @@ export default function Catalog() {
       .finally(() => setLoading(false));
   }, []);
 
-  // Extract unique tags from products
-  const allTags = useMemo(() => {
-    const tagSet = new Set<string>();
-    products.forEach((p) => p.tags?.forEach((t) => tagSet.add(t)));
-    return Array.from(tagSet);
-  }, [products]);
+  // Categories shown in filter pills (exclude Proxies)
+  const visibleCategories = useMemo(
+    () => categories.filter((cat) => cat.id !== 2 && cat.name !== 'Proxies'),
+    [categories]
+  );
 
   // Filter products
   const filteredProducts = useMemo(() => {
     return products.filter((product) => {
       if (selectedCategory && product.category_id !== selectedCategory) return false;
-      if (selectedTag && !product.tags?.includes(selectedTag)) return false;
       if (searchQuery) {
         const q = searchQuery.toLowerCase();
         const matchesName = product.name.toLowerCase().includes(q);
@@ -62,20 +59,23 @@ export default function Catalog() {
       }
       return product.is_active;
     });
-  }, [products, selectedCategory, selectedTag, searchQuery]);
+  }, [products, selectedCategory, searchQuery]);
 
   if (loading) return <Loading text="Завантаження товарів..." />;
 
   return (
     <div className="px-5 py-5 animate-fade-in">
+      {/* Section title */}
+      <h1 className="text-lg font-semibold text-white mb-3">Каталог</h1>
+
       {/* Search */}
-      <div className="relative mb-4">
+      <div className="relative mb-3">
         <input
           type="text"
           placeholder="Пошук товарів..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          className="w-full bg-pwa-dark border border-pwa-border/50 rounded-xl pl-10 pr-10 py-3.5 text-white text-sm placeholder-pwa-gray outline-none focus:border-pwa-yellow/50 transition-colors"
+          className="w-full bg-pwa-dark border border-pwa-border/50 rounded-xl pl-10 pr-10 py-3 text-white text-sm placeholder-pwa-gray outline-none focus:border-pwa-yellow/50 transition-colors"
         />
         <SearchIcon
           size={18}
@@ -93,7 +93,7 @@ export default function Catalog() {
       </div>
 
       {/* Category filters */}
-      {categories.length > 0 && (
+      {visibleCategories.length > 0 && (
         <div className="flex gap-2 overflow-x-auto pb-3 mb-3 scrollbar-none">
           <button
             onClick={() => setSelectedCategory(null)}
@@ -105,7 +105,7 @@ export default function Catalog() {
           >
             Всі
           </button>
-          {categories.map((cat) => (
+          {visibleCategories.map((cat) => (
             <button
               key={cat.id}
               onClick={() => setSelectedCategory(cat.id === selectedCategory ? null : cat.id)}
@@ -120,30 +120,6 @@ export default function Catalog() {
           ))}
         </div>
       )}
-
-      {/* Tag filters */}
-      {allTags.length > 0 && (
-        <div className="flex gap-2 overflow-x-auto pb-3 mb-3 scrollbar-none">
-          {allTags.map((tag) => (
-            <button
-              key={tag}
-              onClick={() => setSelectedTag(selectedTag === tag ? null : tag)}
-              className={`px-3 py-1.5 rounded-lg text-[11px] font-medium whitespace-nowrap transition-colors ${
-                selectedTag === tag
-                  ? 'bg-pwa-yellow/20 text-pwa-yellow border border-pwa-yellow/30'
-                  : 'bg-pwa-dark text-pwa-gray border border-pwa-border/50'
-              }`}
-            >
-              #{tag}
-            </button>
-          ))}
-        </div>
-      )}
-
-      {/* Products count */}
-      <p className="text-xs text-pwa-gray/70 mb-3">
-        Знайдено: {filteredProducts.length} товарів
-      </p>
 
       {/* Products grid */}
       {filteredProducts.length > 0 ? (
@@ -162,7 +138,7 @@ export default function Catalog() {
           icon={<SearchIcon size={28} />}
           title="Товарів не знайдено"
           description="Спробуйте змінити параметри пошуку або фільтри"
-          action={{ label: 'Скинути фільтри', onClick: () => { setSearchQuery(''); setSelectedCategory(null); setSelectedTag(null); } }}
+          action={{ label: 'Скинути фільтри', onClick: () => { setSearchQuery(''); setSelectedCategory(null); } }}
         />
       )}
     </div>

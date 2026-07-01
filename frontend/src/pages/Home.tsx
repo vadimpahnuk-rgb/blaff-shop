@@ -48,9 +48,9 @@ export default function Home() {
   };
 
   return (
-    <div className="px-5 py-6 animate-fade-in">
+    <div className="px-6 py-8 animate-fade-in">
       {/* Hero */}
-      <div className="flex flex-col items-center text-center mb-8 animate-fade-up">
+      <div className="flex flex-col items-center text-center mb-10 animate-fade-up">
         <div className="hero-glow mb-4">
           <BlaLogo size={76} className="relative z-10 rounded-3xl shadow-2xl" />
         </div>
@@ -68,14 +68,14 @@ export default function Home() {
         <h2 className="text-xs font-semibold text-pwa-gray uppercase tracking-[0.18em] mb-3 px-1">
           Категорії
         </h2>
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-2 gap-6">
           {HOME_TILES.map((tile) => {
             const { Icon } = tile;
             return (
               <button
                 key={tile.label}
                 onClick={() => goTo(tile)}
-                className="group relative flex flex-col items-center gap-3 rounded-2xl border border-pwa-border/50 bg-gradient-to-b from-pwa-dark to-[#141414] p-6 text-center overflow-hidden transition-all duration-200 hover:border-pwa-yellow/40 hover:shadow-[0_0_24px_-6px_rgba(245,197,24,0.25)] active:scale-[0.97]"
+                className="group relative flex flex-col items-center gap-3 rounded-2xl border border-pwa-border/50 bg-gradient-to-b from-pwa-dark to-[#141414] p-8 text-center overflow-hidden transition-all duration-200 hover:border-pwa-yellow/40 hover:shadow-[0_0_24px_-6px_rgba(245,197,24,0.25)] active:scale-[0.97]"
               >
                 <span className="flex items-center justify-center w-12 h-12 rounded-xl bg-pwa-yellow/10 text-pwa-yellow border border-pwa-yellow/15 group-hover:bg-pwa-yellow/20 transition-colors">
                   <Icon size={22} />

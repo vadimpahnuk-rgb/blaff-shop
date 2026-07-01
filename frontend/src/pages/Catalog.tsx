@@ -40,12 +40,6 @@ export default function Catalog() {
       .finally(() => setLoading(false));
   }, []);
 
-  // Categories shown in filter pills (exclude Proxies)
-  const visibleCategories = useMemo(
-    () => categories.filter((cat) => cat.id !== 2 && cat.name !== 'Proxies'),
-    [categories]
-  );
-
   // Filter products
   const filteredProducts = useMemo(() => {
     return products.filter((product) => {
@@ -91,35 +85,6 @@ export default function Catalog() {
           </button>
         )}
       </div>
-
-      {/* Category filters */}
-      {visibleCategories.length > 0 && (
-        <div className="flex gap-2 overflow-x-auto pb-3 mb-3 scrollbar-none">
-          <button
-            onClick={() => setSelectedCategory(null)}
-            className={`px-4 py-2 rounded-xl text-xs font-medium whitespace-nowrap transition-colors ${
-              selectedCategory === null
-                ? 'bg-pwa-yellow text-pwa-black'
-                : 'bg-pwa-dark text-pwa-gray border border-pwa-border/50'
-            }`}
-          >
-            Всі
-          </button>
-          {visibleCategories.map((cat) => (
-            <button
-              key={cat.id}
-              onClick={() => setSelectedCategory(cat.id === selectedCategory ? null : cat.id)}
-              className={`px-4 py-2 rounded-xl text-xs font-medium whitespace-nowrap transition-colors ${
-                selectedCategory === cat.id
-                  ? 'bg-pwa-yellow text-pwa-black'
-                  : 'bg-pwa-dark text-pwa-gray border border-pwa-border/50'
-              }`}
-            >
-              {cat.icon} {cat.name}
-            </button>
-          ))}
-        </div>
-      )}
 
       {/* Products grid */}
       {filteredProducts.length > 0 ? (

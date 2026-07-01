@@ -76,20 +76,6 @@ export default function ProductDetail() {
 
   return (
     <div className="px-5 py-5 animate-fade-in">
-      {/* Tags */}
-      {product.tags && product.tags.length > 0 && (
-        <div className="flex flex-wrap gap-1.5 mb-3">
-          {product.tags.map((tag, idx) => (
-            <span
-              key={idx}
-              className="text-xs px-3 py-1.5 rounded-full bg-pwa-light text-pwa-yellow font-medium"
-            >
-              #{tag}
-            </span>
-          ))}
-        </div>
-      )}
-
       {/* Name */}
       <h1 className="text-xl font-bold text-white mb-4">{product.name}</h1>
 

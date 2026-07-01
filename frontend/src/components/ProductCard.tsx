@@ -15,20 +15,6 @@ export default function ProductCard({ product, onClick, onBuy }: ProductCardProp
       onClick={onClick}
       className="group relative rounded-2xl border border-pwa-border/50 bg-gradient-to-b from-pwa-dark to-[#141414] p-5 cursor-pointer overflow-hidden transition-all duration-200 hover:border-pwa-yellow/40 hover:shadow-[0_0_24px_-6px_rgba(245,197,24,0.25)] active:scale-[0.98] animate-fade-in"
     >
-      {/* Tags */}
-      {product.tags && product.tags.length > 0 && (
-        <div className="flex flex-wrap gap-1.5 mb-3">
-          {product.tags.map((tag, idx) => (
-            <span
-              key={idx}
-              className="text-[11px] px-2 py-0.5 rounded-full bg-pwa-yellow/10 text-pwa-yellow font-medium border border-pwa-yellow/15"
-            >
-              {tag}
-            </span>
-          ))}
-        </div>
-      )}
-
       {/* Name */}
       <h3 className="text-white text-sm font-semibold leading-tight mb-2.5 line-clamp-2">
         {product.name}

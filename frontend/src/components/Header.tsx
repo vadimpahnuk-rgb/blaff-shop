@@ -15,7 +15,7 @@ export default function Header({ balance, onBalanceClick }: HeaderProps) {
 
   return (
     <>
-      <header className="sticky top-0 z-40 glass safe-area-top">
+      <header className="sticky top-0 z-40 glass border-b border-white/5 safe-area-top">
         <div className="flex items-center justify-between px-5 h-14">
           {/* Left: menu + brand */}
           <div className="flex items-center gap-2.5">

@@ -41,8 +41,16 @@ export default function Purchases() {
   }
 
   return (
-    <div className="px-6 py-5 animate-fade-in">
-      <h1 className="text-xl font-bold text-white mb-4">Історія покупок</h1>
+    <div className="px-5 py-5 animate-fade-in">
+      <div className="flex items-center gap-3 mb-5">
+        <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-pwa-yellow/10 text-pwa-yellow">
+          <PurchasesIcon size={22} />
+        </div>
+        <div>
+          <h1 className="text-xl font-extrabold text-white leading-tight">Історія покупок</h1>
+          <p className="text-xs font-medium text-pwa-gray/70">Ваші придбані товари</p>
+        </div>
+      </div>
 
       <div className="space-y-3 pb-4">
         {purchases.map((purchase) => {
@@ -50,25 +58,23 @@ export default function Purchases() {
           return (
             <div
               key={purchase.id}
-              className="bg-pwa-dark rounded-xl border border-pwa-border p-4"
+              className="rounded-2xl border border-pwa-border/50 bg-pwa-dark p-5 transition-all hover:border-pwa-yellow/20"
             >
               {/* Purchase header */}
-              <div className="flex items-center justify-between mb-2">
-                <h3 className="text-white text-sm font-semibold">
+              <div className="flex items-start justify-between gap-3 mb-3">
+                <h3 className="text-white text-sm font-bold leading-snug">
                   {purchase.product_name || `Товар #${purchase.product_id}`}
                 </h3>
-                <div className="text-right">
-                  <p className="text-pwa-yellow text-sm font-bold">
-                    -${purchase.price.toFixed(2)}
-                  </p>
-                </div>
+                <p className="shrink-0 text-pwa-yellow text-base font-extrabold">
+                  -${purchase.price.toFixed(2)}
+                </p>
               </div>
 
-              <div className="flex items-center justify-between mb-3">
-                <span className="text-pwa-gray text-xs">
+              <div className="flex items-center justify-between gap-3 mb-3">
+                <span className="text-xs font-medium text-pwa-gray/70">
                   ID: #{purchase.id}
                 </span>
-                <span className="text-pwa-gray text-xs">
+                <span className="text-xs font-medium text-pwa-gray/70">
                   {new Date(purchase.created_at).toLocaleDateString('uk-UA', {
                     day: 'numeric',
                     month: 'short',
@@ -84,16 +90,16 @@ export default function Purchases() {
                 <button
                   onClick={() => handleReveal(purchase)}
                   disabled={revealingId === purchase.id}
-                  className="w-full py-2.5 bg-pwa-yellow text-pwa-black text-sm font-bold rounded-lg hover:brightness-110 active:scale-[0.98] transition-all"
+                  className="w-full py-3 bg-pwa-yellow text-pwa-black text-sm font-bold rounded-xl hover:brightness-110 active:scale-[0.98] transition-all"
                 >
                   {revealingId === purchase.id ? 'Завантаження...' : 'Отримати дані'}
                 </button>
               )}
 
               {isRevealed && (
-                <div className="bg-pwa-black rounded-lg p-3 mt-2">
-                  <p className="text-pwa-gray text-xs mb-1 uppercase tracking-wider">Дані товару:</p>
-                  <pre className="text-white text-xs whitespace-pre-wrap break-all font-mono">
+                <div className="bg-pwa-black rounded-xl p-4">
+                  <p className="text-xs font-medium text-pwa-gray/70 mb-2 uppercase tracking-wider">Дані товару:</p>
+                  <pre className="text-white text-xs whitespace-pre-wrap break-all font-mono leading-relaxed">
                     {revealedData[purchase.id]}
                   </pre>
                 </div>

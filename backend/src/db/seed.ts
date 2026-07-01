@@ -149,6 +149,79 @@ async function seed() {
       tags: ['partner', 'antidetect', 'referral'],
       data: 'https://example-partner.com/?ref=blashop',
     },
+    // ---- Facebook Accounts ----
+    {
+      categorySlug: 'facebook-accounts',
+      name: 'Facebook Account (2016) — 8+ years old',
+      description:
+        'Aged Facebook account created in 2016 (8+ years old). Strong trust score, real activity history. Delivered with login + email access.',
+      price: '25.00000000',
+      stock: 10,
+      tags: ['aged', 'high-quality'],
+      data: 'login: fb_2016@example.com\npassword: Aged2016P@ss\nemail: recovery_2016@mail.com',
+    },
+    {
+      categorySlug: 'facebook-accounts',
+      name: 'Facebook Account (2020) — 5+ years old',
+      description:
+        'Aged Facebook account created in 2020 (5+ years old). Trusted profile, email verified. Delivered with login + email access.',
+      price: '15.00000000',
+      stock: 20,
+      tags: ['aged', 'trusted'],
+      data: 'login: fb_2020@example.com\npassword: Aged2020P@ss\nemail: recovery_2020@mail.com',
+    },
+    {
+      categorySlug: 'facebook-accounts',
+      name: 'Facebook BM Invite Ready Account',
+      description:
+        'Facebook account prepared and ready to accept a Business Manager invite. Delivered with login + email access.',
+      price: '10.00000000',
+      stock: 30,
+      tags: ['bm-ready'],
+      data: 'login: fb_bm_ready@example.com\npassword: BmReadyP@ss\nemail: recovery_bmready@mail.com',
+    },
+    // ---- Business Manager ----
+    {
+      categorySlug: 'business-managers',
+      name: 'BM 250 (2 ad accounts)',
+      description:
+        'Business Manager with a $250 daily limit and 2 ad accounts ready to use. Admin access included.',
+      price: '30.00000000',
+      stock: 8,
+      tags: ['bm', 'ready', '250'],
+      data: 'bm_id: 250250250250\nadmin_login: bm250@example.com\nadmin_pass: Bm250P@ss\nad_accounts: 2\nlimit: 250',
+    },
+    {
+      categorySlug: 'business-managers',
+      name: 'BM 2500 (high limit)',
+      description:
+        'High-limit Business Manager with a $2500 daily limit. Trusted, ready for scaling. Admin access included.',
+      price: '120.00000000',
+      stock: 5,
+      tags: ['bm', 'high-limit', '2500'],
+      data: 'bm_id: 250025002500\nadmin_login: bm2500@example.com\nadmin_pass: Bm2500P@ss\nlimit: 2500',
+    },
+    // ---- Agency ----
+    {
+      categorySlug: 'agency-cabinets',
+      name: 'Agency Ad Account (no spend limit)',
+      description:
+        'Agency ad account with no spend limit. Premium trust, stable. Delivered with access and instructions.',
+      price: '100.00000000',
+      stock: 3,
+      tags: ['agency', 'no-limit'],
+      data: 'account_id: act_9000000001\naccess: shared\nlimit: unlimited',
+    },
+    {
+      categorySlug: 'agency-cabinets',
+      name: 'Agency Ad Account (spent 10k+)',
+      description:
+        'Aged agency ad account with 10k+ USD spend history. Maximum trust for aggressive scaling. Delivered with access and instructions.',
+      price: '150.00000000',
+      stock: 2,
+      tags: ['agency', 'spent'],
+      data: 'account_id: act_9000000002\naccess: shared\nspent: 10000+\nlimit: unlimited',
+    },
   ];
 
   for (const p of productSeed) {

@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { NavLink, Outlet, useNavigate } from 'react-router-dom';
 import { getAdminStats } from '../api/admin';
+import { useAuth } from '../api/auth-context';
 import type { AdminStats } from '../types';
 import Loading from '../components/Loading';
 
@@ -12,9 +13,28 @@ const adminTabs = [
 ];
 
 export default function AdminLayout() {
+  const { user, isAdmin } = useAuth();
   const [stats, setStats] = useState<AdminStats | null>(null);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+
+  // If auth loaded and user is not admin — redirect
+  useEffect(() => {
+    if (user !== null && !isAdmin) {
+      navigate('/', { replace: true });
+    }
+  }, [user, isAdmin, navigate]);
+
+  // Don't render anything until auth state is known
+  if (user === null) {
+    return (
+      <div className="min-h-screen bg-pwa-black flex items-center justify-center">
+        <Loading text="Завантаження..." />
+      </div>
+    );
+  }
+
+  if (!isAdmin) return null;
 
   useEffect(() => {
     getAdminStats()

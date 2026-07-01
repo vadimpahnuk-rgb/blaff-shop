@@ -9,12 +9,11 @@ const router = Router();
 // All referral routes require authentication.
 router.use(authMiddleware);
 
-// Telegram deep-link building blocks. Bot: @BLA_TL, Mini App short name "app".
-const BOT_USERNAME = process.env.BOT_USERNAME || 'BLA_TL';
-const APP_NAME = process.env.TG_APP_NAME || 'app';
+// Telegram deep-link building blocks. Bot: @BLA_TL.
+const BOT_USERNAME = process.env.BOT_USERNAME || 'bla_fbshop_bot';
 
 function referralLink(userId: number): string {
-  return `https://t.me/${BOT_USERNAME}/${APP_NAME}?startapp=ref_${userId}`;
+  return `https://t.me/${BOT_USERNAME}?start=ref_${userId}`;
 }
 
 /**

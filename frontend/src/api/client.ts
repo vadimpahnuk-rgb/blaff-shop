@@ -3,6 +3,15 @@ import type { AxiosInstance, InternalAxiosRequestConfig } from 'axios';
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001/api';
 
+/**
+ * Coerce a value to a number. Postgres `numeric` columns are serialized as
+ * strings in JSON (e.g. "25.00000000"), so money/amount fields arrive as
+ * strings even though our types declare `number`. Calling `.toFixed()` on
+ * them throws — always run API numerics through this at the boundary.
+ */
+export const num = (v: unknown): number =>
+  typeof v === 'number' ? v : Number(v) || 0;
+
 const client: AxiosInstance = axios.create({
   baseURL: API_BASE_URL,
   headers: {

@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { getReferralStats, withdrawReferralBalance } from '../api/referrals';
 import type { ReferralStats } from '../types';
 import Loading from '../components/Loading';
-import { PartnersIcon, WalletIcon, ProfileIcon } from '../icons';
+import { PartnersIcon, WalletIcon, ProfileIcon, ToolsIcon } from '../icons';
 
 export default function Partners() {
   const [stats, setStats] = useState<ReferralStats | null>(null);
@@ -25,7 +25,6 @@ export default function Partners() {
     try {
       await navigator.clipboard.writeText(stats.referral_link);
     } catch {
-      // Fallback for environments without the async clipboard API.
       const el = document.createElement('textarea');
       el.value = stats.referral_link;
       document.body.appendChild(el);
@@ -46,7 +45,6 @@ export default function Partners() {
       setStats((prev) =>
         prev ? { ...prev, referral_balance } : prev,
       );
-      // Let the Header (and anything else) re-read the main balance.
       window.dispatchEvent(new Event('balance-updated'));
       setWithdrawMsg('Кошти переведено на основний баланс');
     } catch {
@@ -60,17 +58,16 @@ export default function Partners() {
 
   if (error || !stats) {
     return (
-      <div className="px-6 py-10 animate-fade-in">
-        <div className="bg-pwa-dark rounded-2xl border border-pwa-border p-6 text-center">
-          <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-pwa-light/60 border border-pwa-border text-pwa-gray">
-            <PartnersIcon size={26} />
+      <div className="flex h-full items-center justify-center px-6">
+        <div className="w-full max-w-sm rounded-2xl border border-pwa-border/50 bg-pwa-dark p-8 text-center">
+          <div className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-2xl bg-pwa-yellow/10">
+            <PartnersIcon size={30} className="text-pwa-yellow/60" />
           </div>
-          <h3 className="text-white text-base font-semibold mb-2">
+          <h3 className="mb-2 text-base font-semibold text-white">
             Не вдалося завантажити
           </h3>
-          <p className="text-pwa-gray text-sm leading-relaxed">
-            Відкрийте партнерську програму через застосунок, щоб побачити свою
-            статистику.
+          <p className="text-sm leading-relaxed text-pwa-gray">
+            Відкрийте сторінку через Telegram, щоб побачити свою статистику.
           </p>
         </div>
       </div>
@@ -78,124 +75,173 @@ export default function Partners() {
   }
 
   const canWithdraw = stats.referral_balance > 0 && !withdrawing;
+  const hasReferrals = stats.invited_count > 0;
 
   return (
-    <div className="px-6 py-6 pb-10 animate-fade-in">
+    <div className="space-y-3 px-5 py-5 animate-fade-in">
       {/* 1. Header */}
-      <div className="mb-6">
-        <div className="flex items-center gap-2.5 mb-2">
-          <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-pwa-yellow/15 text-pwa-yellow">
-            <PartnersIcon size={20} />
+      <div className="pb-2">
+        <div className="mb-3 flex items-center gap-3">
+          <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-pwa-yellow/15 text-pwa-yellow">
+            <PartnersIcon size={22} />
           </span>
-          <h1 className="text-xl font-bold text-white leading-tight">
-            Партнерська програма
-          </h1>
+          <div>
+            <h1 className="text-lg font-bold leading-tight text-white">
+              Партнерська програма
+            </h1>
+            <p className="text-xs leading-relaxed text-pwa-gray/70">
+              Запрошуйте друзів і заробляйте з кожної їх покупки
+            </p>
+          </div>
         </div>
-        <p className="text-pwa-gray text-sm leading-relaxed">
-          Запрошуйте друзів і заробляйте з кожної їх покупки.
-        </p>
       </div>
 
       {/* 2. Stats row */}
-      <div className="grid grid-cols-2 gap-3 mb-4">
-        <div className="bg-pwa-dark rounded-2xl border border-pwa-border p-4">
-          <p className="text-pwa-gray text-xs mb-1.5">Запрошено</p>
-          <p className="text-white text-2xl font-bold leading-none">
+      <div className="grid grid-cols-2 gap-3">
+        <div className="rounded-2xl border border-pwa-border/50 bg-pwa-dark p-5">
+          <p className="mb-2 text-xs font-medium text-pwa-gray/70">Запрошено</p>
+          <p className="text-3xl font-extrabold leading-none text-white">
             {stats.invited_count}
           </p>
         </div>
-        <div className="bg-pwa-dark rounded-2xl border border-pwa-border p-4">
-          <p className="text-pwa-gray text-xs mb-1.5">Зароблено</p>
-          <p className="text-pwa-yellow text-2xl font-bold leading-none">
+        <div className="rounded-2xl border border-pwa-border/50 bg-pwa-dark p-5">
+          <p className="mb-2 text-xs font-medium text-pwa-gray/70">Зароблено</p>
+          <p className="text-3xl font-extrabold leading-none text-pwa-yellow">
             ${stats.total_earned.toFixed(2)}
           </p>
         </div>
       </div>
 
       {/* 3. Referral balance card */}
-      <div className="bg-pwa-dark rounded-2xl border border-pwa-border p-5 mb-4">
-        <div className="flex items-center gap-2 mb-3">
-          <WalletIcon size={16} className="text-pwa-gray" />
-          <p className="text-pwa-gray text-xs uppercase tracking-wider">
+      <div className="rounded-2xl border border-pwa-border/50 bg-pwa-dark px-5 py-5">
+        <div className="mb-3 flex items-center gap-2">
+          <WalletIcon size={16} className="text-pwa-yellow/70" />
+          <span className="text-[11px] font-semibold uppercase tracking-[0.08em] text-pwa-gray/60">
             Реферальний баланс
-          </p>
+          </span>
         </div>
-        <p className="text-white text-3xl font-bold leading-none mb-4">
+        <p className="mb-5 text-4xl font-extrabold leading-none tracking-tight text-white">
           ${stats.referral_balance.toFixed(2)}
         </p>
         <button
           onClick={handleWithdraw}
           disabled={!canWithdraw}
-          className="w-full py-3 rounded-xl text-sm font-bold transition-all
-            enabled:bg-pwa-yellow enabled:text-pwa-black enabled:hover:brightness-110
-            enabled:active:scale-[0.98]
-            disabled:bg-pwa-light/50 disabled:text-pwa-gray disabled:cursor-not-allowed"
+          className={`w-full rounded-xl py-3.5 text-sm font-bold transition-all duration-200
+            ${
+              canWithdraw
+                ? 'bg-pwa-yellow text-pwa-black hover:brightness-110 active:scale-[0.98]'
+                : 'cursor-not-allowed bg-pwa-light/40 text-pwa-gray/50'
+            }`}
         >
-          {withdrawing ? 'Виведення...' : 'Вивести на баланс'}
+          {withdrawing ? 'Виведення…' : 'Вивести на баланс'}
         </button>
         {withdrawMsg && (
-          <p className="text-pwa-gray text-xs mt-3 text-center">{withdrawMsg}</p>
+          <p
+            className={`mt-3 text-center text-xs ${
+              withdrawMsg.includes('Не')
+                ? 'text-red-400'
+                : 'text-pwa-yellow/80'
+            }`}
+          >
+            {withdrawMsg}
+          </p>
+        )}
+        {!hasReferrals && stats.referral_balance === 0 && (
+          <p className="mt-3 text-center text-xs text-pwa-gray/50">
+            Запросіть першого друга, щоб активувати
+          </p>
         )}
       </div>
 
       {/* 4. How it works */}
-      <div className="bg-pwa-dark rounded-2xl border border-pwa-border p-5 mb-4">
-        <h3 className="text-white text-sm font-semibold mb-2">Як це працює</h3>
-        <p className="text-pwa-gray text-sm leading-relaxed">
-          Поділіться своїм посиланням. Коли запрошений користувач робить покупку,
-          ви миттєво отримуєте{' '}
-          <span className="text-pwa-yellow font-semibold">3% кешбек</span> від її
-          суми на реферальний баланс. Виводьте кошти на основний баланс у будь-який
-          момент.
-        </p>
+      <div className="rounded-2xl border border-pwa-border/50 bg-pwa-dark px-5 py-5">
+        <h3 className="mb-4 flex items-center gap-2 text-sm font-semibold text-white">
+          <span className="flex h-6 w-6 items-center justify-center rounded-lg bg-pwa-yellow/15 text-pwa-yellow">
+            <ToolsIcon size={14} />
+          </span>
+          Як це працює
+        </h3>
+        <div className="space-y-3">
+          <div className="flex gap-3">
+            <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-pwa-yellow/15 text-[11px] font-bold text-pwa-yellow">
+              1
+            </span>
+            <p className="text-sm leading-relaxed text-pwa-gray">
+              Скопіюйте своє реферальне посилання та поділіться ним
+            </p>
+          </div>
+          <div className="flex gap-3">
+            <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-pwa-yellow/15 text-[11px] font-bold text-pwa-yellow">
+              2
+            </span>
+            <p className="text-sm leading-relaxed text-pwa-gray">
+              Користувач реєструється та робить покупку
+            </p>
+          </div>
+          <div className="flex gap-3">
+            <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-pwa-yellow/15 text-[11px] font-bold text-pwa-yellow">
+              3
+            </span>
+            <p className="text-sm leading-relaxed text-pwa-gray">
+              Ви отримуєте{' '}
+              <span className="font-semibold text-pwa-yellow">3% кешбек</span>{' '}
+              на реферальний баланс — миттєво після покупки
+            </p>
+          </div>
+        </div>
       </div>
 
       {/* 5. Referral link */}
-      <div className="bg-pwa-dark rounded-2xl border border-pwa-border p-5 mb-4">
-        <h3 className="text-white text-sm font-semibold mb-3">
+      <div className="rounded-2xl border border-pwa-border/50 bg-pwa-dark px-5 py-5">
+        <h3 className="mb-3 text-sm font-semibold text-white">
           Ваше реферальне посилання
         </h3>
-        <div className="bg-pwa-black rounded-xl border border-pwa-border p-3 flex items-center gap-3">
-          <p className="text-pwa-gray text-xs flex-1 break-all leading-relaxed">
+        <div className="mb-3 flex items-center gap-3 rounded-xl border border-pwa-border/50 bg-pwa-black px-4 py-3.5">
+          <PartnersIcon size={16} className="shrink-0 text-pwa-gray/50" />
+          <p className="min-w-0 flex-1 truncate font-mono text-xs text-pwa-gray/80">
             {stats.referral_link}
           </p>
-          <button
-            onClick={handleCopy}
-            className={`shrink-0 px-3.5 py-2 text-xs font-semibold rounded-lg transition-all active:scale-95 ${
+        </div>
+        <button
+          onClick={handleCopy}
+          className={`w-full rounded-xl py-3 text-sm font-semibold transition-all duration-200 active:scale-[0.98]
+            ${
               copied
                 ? 'bg-pwa-yellow text-pwa-black'
-                : 'bg-pwa-yellow/20 text-pwa-yellow hover:bg-pwa-yellow/30'
+                : 'border border-pwa-border/50 bg-pwa-yellow/10 text-pwa-yellow hover:bg-pwa-yellow/20'
             }`}
-          >
-            {copied ? 'Скопійовано' : 'Копіювати'}
-          </button>
-        </div>
+        >
+          {copied ? '✓ Скопійовано' : 'Копіювати посилання'}
+        </button>
       </div>
 
       {/* 6. Referred users */}
       {stats.referred_users.length > 0 && (
-        <div className="bg-pwa-dark rounded-2xl border border-pwa-border p-5">
-          <h3 className="text-white text-sm font-semibold mb-3">
+        <div className="rounded-2xl border border-pwa-border/50 bg-pwa-dark px-5 py-5">
+          <h3 className="mb-4 text-sm font-semibold text-white">
             Запрошені користувачі
           </h3>
           <div className="space-y-2.5">
             {stats.referred_users.map((u) => (
               <div
                 key={u.id}
-                className="flex items-center gap-3 bg-pwa-black rounded-xl border border-pwa-border p-3"
+                className="flex items-center gap-3.5 rounded-xl border border-pwa-border/30 bg-pwa-black/60 px-4 py-3.5"
               >
-                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-pwa-light/60 text-pwa-gray">
+                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-pwa-light/40 text-pwa-gray/60">
                   <ProfileIcon size={16} />
                 </span>
                 <div className="min-w-0 flex-1">
-                  <p className="text-white text-sm font-medium truncate">
-                    {u.first_name || (u.username ? `@${u.username}` : `Користувач #${u.id}`)}
+                  <p className="truncate text-sm font-medium text-white">
+                    {u.first_name ||
+                      (u.username ? `@${u.username}` : `Користувач #${u.id}`)}
                   </p>
                   {u.username && u.first_name && (
-                    <p className="text-pwa-gray text-xs truncate">@{u.username}</p>
+                    <p className="truncate text-xs text-pwa-gray/60">
+                      @{u.username}
+                    </p>
                   )}
                 </div>
-                <span className="text-pwa-gray text-xs shrink-0">
+                <span className="shrink-0 text-xs text-pwa-gray/50">
                   {new Date(u.created_at).toLocaleDateString('uk-UA', {
                     day: 'numeric',
                     month: 'short',

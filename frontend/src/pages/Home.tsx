@@ -48,7 +48,7 @@ export default function Home() {
   };
 
   return (
-    <div className="px-6 pt-6 pb-6">
+    <div className="px-5 py-5 animate-fade-in">
       {/* Hero */}
       <div className="flex flex-col items-center text-center mb-8 animate-fade-up">
         <div className="hero-glow mb-4">
@@ -58,7 +58,7 @@ export default function Home() {
           <span className="text-white">BLA</span>
           <span className="text-pwa-yellow"> SHOP</span>
         </h1>
-        <p className="text-pwa-gray text-sm mt-2 max-w-[15rem]">
+        <p className="text-pwa-gray text-sm mt-2 max-w-xs">
           Цифрові товари для медіабаєрів — швидко, надійно, цілодобово
         </p>
       </div>
@@ -75,9 +75,9 @@ export default function Home() {
               <button
                 key={tile.label}
                 onClick={() => goTo(tile)}
-                className="group relative flex flex-col items-center gap-3 rounded-2xl border border-pwa-border bg-gradient-to-b from-pwa-dark to-[#141414] p-4 text-center overflow-hidden transition-all duration-200 hover:border-pwa-yellow/40 hover:shadow-[0_0_24px_-6px_rgba(245,197,24,0.25)] active:scale-[0.97]"
+                className="group relative flex flex-col items-center gap-3 rounded-2xl border border-pwa-border/50 bg-gradient-to-b from-pwa-dark to-[#141414] p-5 text-center overflow-hidden transition-all duration-200 hover:border-pwa-yellow/40 hover:shadow-[0_0_24px_-6px_rgba(245,197,24,0.25)] active:scale-[0.97]"
               >
-                <span className="flex items-center justify-center w-11 h-11 rounded-xl bg-pwa-yellow/10 text-pwa-yellow border border-pwa-yellow/15 group-hover:bg-pwa-yellow/20 transition-colors">
+                <span className="flex items-center justify-center w-12 h-12 rounded-xl bg-pwa-yellow/10 text-pwa-yellow border border-pwa-yellow/15 group-hover:bg-pwa-yellow/20 transition-colors">
                   <Icon size={22} />
                 </span>
                 <span className="text-white text-sm font-semibold leading-tight">

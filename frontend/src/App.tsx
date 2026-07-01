@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route, useLocation, useNavigate } from 'react-ro
 import { initAuth } from './api/auth';
 import { getBalance } from './api/user';
 import { useTelegram } from './hooks/useTelegram';
+import { AuthContext } from './api/auth-context';
 import type { User } from './types';
 import Header from './components/Header';
 import Navigation from './components/Navigation';
@@ -91,6 +92,7 @@ function AppContent() {
 
   return (
     <div className="h-full flex flex-col bg-pwa-black text-white">
+      <AuthContext.Provider value={{ user, isAdmin }}>
       {/* Header - hidden on admin routes */}
       {!isAdminRoute && (
         <Header
@@ -101,19 +103,16 @@ function AppContent() {
 
       {/* Main content */}
       <main className="flex-1 overflow-y-auto">
-        {isAdmin && isAdminRoute && (
-          <Routes>
-            <Route path="admin" element={<AdminLayout />}>
-              <Route index element={<AdminDashboard />} />
-              <Route path="products" element={<AdminProducts />} />
-              <Route path="users" element={<AdminUsers />} />
-              <Route path="transactions" element={<AdminTransactions />} />
-            </Route>
-          </Routes>
-        )}
-
-        {/* User routes */}
         <Routes>
+          {/* Admin routes — always rendered; authorization checked inside AdminLayout */}
+          <Route path="admin" element={<AdminLayout />}>
+            <Route index element={<AdminDashboard />} />
+            <Route path="products" element={<AdminProducts />} />
+            <Route path="users" element={<AdminUsers />} />
+            <Route path="transactions" element={<AdminTransactions />} />
+          </Route>
+
+          {/* User routes */}
           <Route path="/" element={<Home />} />
           <Route path="/catalog" element={<Catalog />} />
           <Route path="/product/:id" element={<ProductDetail />} />
@@ -128,6 +127,7 @@ function AppContent() {
 
       {/* Bottom navigation - hidden on admin routes */}
       {!isAdminRoute && <Navigation />}
+      </AuthContext.Provider>
     </div>
   );
 }

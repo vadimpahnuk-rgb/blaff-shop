@@ -13,11 +13,11 @@ export default function ProductCard({ product, onClick, onBuy }: ProductCardProp
   return (
     <div
       onClick={onClick}
-      className="group relative rounded-2xl border border-pwa-border bg-gradient-to-b from-pwa-dark to-[#141414] p-4 cursor-pointer overflow-hidden transition-all duration-200 hover:border-pwa-yellow/40 hover:shadow-[0_0_24px_-6px_rgba(245,197,24,0.25)] active:scale-[0.98] animate-fade-in"
+      className="group relative rounded-2xl border border-pwa-border/50 bg-gradient-to-b from-pwa-dark to-[#141414] p-5 cursor-pointer overflow-hidden transition-all duration-200 hover:border-pwa-yellow/40 hover:shadow-[0_0_24px_-6px_rgba(245,197,24,0.25)] active:scale-[0.98] animate-fade-in"
     >
       {/* Tags */}
       {product.tags && product.tags.length > 0 && (
-        <div className="flex flex-wrap gap-1.5 mb-2.5">
+        <div className="flex flex-wrap gap-1.5 mb-3">
           {product.tags.map((tag, idx) => (
             <span
               key={idx}
@@ -30,7 +30,7 @@ export default function ProductCard({ product, onClick, onBuy }: ProductCardProp
       )}
 
       {/* Name */}
-      <h3 className="text-white text-sm font-semibold leading-tight mb-2 line-clamp-2">
+      <h3 className="text-white text-sm font-semibold leading-tight mb-2.5 line-clamp-2">
         {product.name}
       </h3>
 
@@ -44,7 +44,7 @@ export default function ProductCard({ product, onClick, onBuy }: ProductCardProp
         {/* Stock indicator */}
         <div className="flex items-center gap-1.5">
           <div
-            className={`w-1.5 h-1.5 rounded-full ${
+            className={`w-2 h-2 rounded-full ${
               product.stock > 10
                 ? 'bg-green-500 shadow-[0_0_6px_rgba(34,197,94,0.7)]'
                 : inStock

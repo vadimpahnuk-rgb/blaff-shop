@@ -68,10 +68,10 @@ export default function HamburgerMenu({ isOpen, onClose }: HamburgerMenuProps) {
             <button
               key={path}
               onClick={() => handleNavigate(path)}
-              className="group flex items-center gap-3 w-full px-3 py-3 rounded-xl text-white hover:bg-white/5 active:bg-white/10 transition-colors text-left"
+              className="group flex items-center gap-3 w-full p-5 rounded-2xl text-white hover:bg-white/5 active:bg-white/10 transition-colors text-left"
             >
-              <span className="flex items-center justify-center w-9 h-9 rounded-lg bg-pwa-light/60 text-pwa-gray group-hover:text-pwa-yellow group-hover:bg-pwa-yellow/10 transition-colors">
-                <Icon size={19} />
+              <span className="flex items-center justify-center w-10 h-10 rounded-xl bg-pwa-light/60 text-pwa-gray group-hover:text-pwa-yellow group-hover:bg-pwa-yellow/10 transition-colors">
+                <Icon size={20} />
               </span>
               <span className="flex-1 text-sm font-medium">{label}</span>
               <ChevronRightIcon

@@ -1,4 +1,4 @@
-import client from './client';
+import client, { num } from './client';
 import type { Product } from '../types';
 
 export interface ProductsParams {
@@ -9,12 +9,12 @@ export interface ProductsParams {
 
 export async function getProducts(params?: ProductsParams): Promise<Product[]> {
   const response = await client.get<Product[]>('/products', { params });
-  return response.data;
+  return response.data.map((p) => ({ ...p, price: num(p.price) }));
 }
 
 export async function getProduct(id: number): Promise<Product> {
   const response = await client.get<Product>(`/products/${id}`);
-  return response.data;
+  return { ...response.data, price: num(response.data.price) };
 }
 
 export async function purchaseProduct(productId: number): Promise<{ purchase_id: number; product_data: string }> {

@@ -50,42 +50,42 @@ export default function Deposit() {
 
   if (deposit) {
     return (
-      <div className="px-6 py-5 animate-fade-in">
-        <div className="bg-pwa-dark rounded-xl border border-pwa-border p-5">
-          <h2 className="text-white text-lg font-bold mb-2 text-center">Оплата</h2>
-          <p className="text-pwa-gray text-sm text-center mb-4">
+      <div className="px-5 py-5 animate-fade-in">
+        <div className="rounded-2xl border border-pwa-border/50 bg-pwa-dark p-5">
+          <h2 className="text-white text-lg font-extrabold mb-1 text-center">Оплата</h2>
+          <p className="text-pwa-gray text-sm text-center mb-5">
             Відправте точну суму на вказану адресу
           </p>
 
           {/* Amount to send */}
-          <div className="bg-pwa-black rounded-lg p-3 mb-4 text-center">
-            <p className="text-pwa-gray text-xs mb-1">Відправте точно:</p>
+          <div className="bg-pwa-black rounded-xl p-5 mb-3 text-center">
+            <p className="text-xs font-medium text-pwa-gray/70 mb-2">Відправте точно:</p>
             {deposit.pay_amount != null ? (
-              <p className="text-white text-2xl font-bold break-all select-all">
+              <p className="text-white text-3xl font-extrabold break-all select-all">
                 {deposit.pay_amount} {deposit.currency}
               </p>
             ) : (
-              <p className="text-white text-2xl font-bold">{deposit.currency}</p>
+              <p className="text-white text-3xl font-extrabold">{deposit.currency}</p>
             )}
-            <p className="text-pwa-gray text-xs mt-1">≈ ${deposit.amount.toFixed(2)}</p>
+            <p className="text-xs font-medium text-pwa-gray/70 mt-2">≈ ${deposit.amount.toFixed(2)}</p>
           </div>
 
           {/* Payment ID */}
-          <div className="bg-pwa-black rounded-lg p-3 mb-4">
-            <p className="text-pwa-gray text-xs mb-1">ID платежу:</p>
+          <div className="bg-pwa-black rounded-xl p-5 mb-3">
+            <p className="text-xs font-medium text-pwa-gray/70 mb-2">ID платежу:</p>
             <p className="text-white text-sm font-mono break-all">{deposit.payment_id}</p>
           </div>
 
           {/* Address */}
-          <div className="bg-pwa-black rounded-lg p-3 mb-4">
-            <p className="text-pwa-gray text-xs mb-1">Адреса для оплати:</p>
+          <div className="bg-pwa-black rounded-xl p-5 mb-3">
+            <p className="text-xs font-medium text-pwa-gray/70 mb-2">Адреса для оплати:</p>
             <p className="text-white text-xs font-mono break-all select-all">{deposit.address}</p>
           </div>
 
           {/* QR placeholder */}
           <div className="flex justify-center mb-4">
-            <div className="w-48 h-48 bg-white rounded-xl flex items-center justify-center">
-              <div className="w-44 h-44 bg-pwa-black rounded-lg flex items-center justify-center">
+            <div className="w-48 h-48 bg-white rounded-2xl flex items-center justify-center">
+              <div className="w-44 h-44 bg-pwa-black rounded-xl flex items-center justify-center">
                 {deposit.qr_code ? (
                   <img src={deposit.qr_code} alt="QR Code" className="w-full h-full" />
                 ) : (
@@ -97,7 +97,7 @@ export default function Deposit() {
             </div>
           </div>
 
-          <p className="text-pwa-gray text-xs text-center">
+          <p className="text-xs font-medium text-pwa-gray/70 text-center">
             Після оплати баланс буде поповнено автоматично
           </p>
         </div>
@@ -106,20 +106,20 @@ export default function Deposit() {
   }
 
   return (
-    <div className="px-4 py-5 animate-fade-in">
-      <h1 className="text-xl font-bold text-white mb-1">Поповнення балансу</h1>
-      <p className="text-pwa-gray text-sm mb-5">Виберіть суму для поповнення</p>
+    <div className="px-5 py-5 animate-fade-in">
+      <h1 className="text-xl font-extrabold text-white mb-1">Поповнення балансу</h1>
+      <p className="text-sm font-medium text-pwa-gray/70 mb-5">Виберіть суму для поповнення</p>
 
       {/* Preset amounts */}
-      <div className="grid grid-cols-3 gap-3 mb-4">
+      <div className="grid grid-cols-3 gap-3 mb-5">
         {depositAmounts.map((val) => (
           <button
             key={val}
             onClick={() => handleAmountSelect(val)}
-            className={`py-3 rounded-xl text-sm font-bold border transition-all ${
+            className={`p-5 rounded-2xl text-sm font-bold border transition-all active:scale-[0.98] ${
               amount === val && !customAmount
                 ? 'bg-pwa-yellow text-pwa-black border-pwa-yellow'
-                : 'bg-pwa-dark text-white border-pwa-border hover:border-pwa-yellow/30'
+                : 'bg-pwa-dark text-white border-pwa-border/50 hover:border-pwa-yellow/30'
             }`}
           >
             ${val}
@@ -129,7 +129,7 @@ export default function Deposit() {
 
       {/* Custom amount */}
       <div className="mb-5">
-        <p className="text-pwa-gray text-xs mb-2">Або введіть свою суму:</p>
+        <p className="text-xs font-medium text-pwa-gray/70 mb-2">Або введіть свою суму:</p>
         <div className="relative">
           <span className="absolute left-4 top-1/2 -translate-y-1/2 text-pwa-gray font-medium">$</span>
           <input
@@ -139,7 +139,7 @@ export default function Deposit() {
             placeholder="5 - 1000"
             value={customAmount}
             onChange={(e) => handleCustomAmount(e.target.value)}
-            className="w-full bg-pwa-dark border border-pwa-border rounded-xl px-4 py-3 pl-8 text-white text-sm placeholder-pwa-gray outline-none focus:border-pwa-yellow/50 transition-colors"
+            className="w-full bg-pwa-dark border border-pwa-border/50 rounded-xl px-4 py-3.5 pl-8 text-white text-sm placeholder-pwa-gray outline-none focus:border-pwa-yellow/50 transition-colors"
           />
         </div>
       </div>
@@ -162,7 +162,7 @@ export default function Deposit() {
         Поповнити на ${amount.toFixed(2)}
       </button>
 
-      <p className="text-pwa-gray text-xs text-center mt-4">
+      <p className="text-xs font-medium text-pwa-gray/70 text-center mt-4">
         Мінімальна сума: $5 · Максимальна: $1000
       </p>
     </div>

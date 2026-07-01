@@ -1,6 +1,7 @@
-node_modules/
-dist/
-.env
-pgdata/
 *.log
+.env
+.hermes/
 backend/.env
+dist/
+node_modules/
+pgdata/

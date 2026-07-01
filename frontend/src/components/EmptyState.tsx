@@ -19,12 +19,12 @@ export default function EmptyState({ icon, title, description, action }: EmptySt
       </div>
       <h3 className="text-white text-lg font-semibold mb-2">{title}</h3>
       {description && (
-        <p className="text-pwa-gray text-sm text-center max-w-xs mb-4">{description}</p>
+        <p className="text-pwa-gray text-sm text-center max-w-xs mb-5">{description}</p>
       )}
       {action && (
         <button
           onClick={action.onClick}
-          className="px-6 py-2.5 bg-pwa-yellow text-pwa-black font-semibold rounded-xl text-sm hover:brightness-110 hover:shadow-[0_0_16px_-2px_rgba(245,197,24,0.6)] active:scale-95 transition-all"
+          className="px-6 py-3 bg-pwa-yellow text-pwa-black font-semibold rounded-xl text-sm hover:brightness-110 hover:shadow-[0_0_16px_-2px_rgba(245,197,24,0.6)] active:scale-95 transition-all"
         >
           {action.label}
         </button>

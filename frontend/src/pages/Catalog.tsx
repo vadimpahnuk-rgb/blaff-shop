@@ -67,7 +67,7 @@ export default function Catalog() {
   if (loading) return <Loading text="Завантаження товарів..." />;
 
   return (
-    <div className="px-6 py-5 animate-fade-in">
+    <div className="px-5 py-5 animate-fade-in">
       {/* Search */}
       <div className="relative mb-4">
         <input
@@ -75,7 +75,7 @@ export default function Catalog() {
           placeholder="Пошук товарів..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          className="w-full bg-pwa-dark border border-pwa-border rounded-xl px-4 py-3 pl-10 text-white text-sm placeholder-pwa-gray outline-none focus:border-pwa-yellow/50 transition-colors"
+          className="w-full bg-pwa-dark border border-pwa-border/50 rounded-xl pl-10 pr-10 py-3.5 text-white text-sm placeholder-pwa-gray outline-none focus:border-pwa-yellow/50 transition-colors"
         />
         <SearchIcon
           size={18}
@@ -97,10 +97,10 @@ export default function Catalog() {
         <div className="flex gap-2 overflow-x-auto pb-3 mb-3 scrollbar-none">
           <button
             onClick={() => setSelectedCategory(null)}
-            className={`px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-colors ${
+            className={`px-4 py-2 rounded-xl text-xs font-medium whitespace-nowrap transition-colors ${
               selectedCategory === null
                 ? 'bg-pwa-yellow text-pwa-black'
-                : 'bg-pwa-dark text-pwa-gray border border-pwa-border'
+                : 'bg-pwa-dark text-pwa-gray border border-pwa-border/50'
             }`}
           >
             Всі
@@ -109,10 +109,10 @@ export default function Catalog() {
             <button
               key={cat.id}
               onClick={() => setSelectedCategory(cat.id === selectedCategory ? null : cat.id)}
-              className={`px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-colors ${
+              className={`px-4 py-2 rounded-xl text-xs font-medium whitespace-nowrap transition-colors ${
                 selectedCategory === cat.id
                   ? 'bg-pwa-yellow text-pwa-black'
-                  : 'bg-pwa-dark text-pwa-gray border border-pwa-border'
+                  : 'bg-pwa-dark text-pwa-gray border border-pwa-border/50'
               }`}
             >
               {cat.icon} {cat.name}
@@ -128,10 +128,10 @@ export default function Catalog() {
             <button
               key={tag}
               onClick={() => setSelectedTag(selectedTag === tag ? null : tag)}
-              className={`px-2.5 py-1 rounded-lg text-[11px] font-medium whitespace-nowrap transition-colors ${
+              className={`px-3 py-1.5 rounded-lg text-[11px] font-medium whitespace-nowrap transition-colors ${
                 selectedTag === tag
-                  ? 'bg-pwa-yellow/20 text-pwa-yellow border border-pwa-yellow/40'
-                  : 'bg-pwa-dark text-pwa-gray border border-pwa-border'
+                  ? 'bg-pwa-yellow/20 text-pwa-yellow border border-pwa-yellow/30'
+                  : 'bg-pwa-dark text-pwa-gray border border-pwa-border/50'
               }`}
             >
               #{tag}
@@ -141,7 +141,7 @@ export default function Catalog() {
       )}
 
       {/* Products count */}
-      <p className="text-pwa-gray text-xs mb-3">
+      <p className="text-xs text-pwa-gray/70 mb-3">
         Знайдено: {filteredProducts.length} товарів
       </p>
 

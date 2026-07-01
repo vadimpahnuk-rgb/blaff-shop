@@ -24,10 +24,24 @@ export interface Product {
   name: string;
   description?: string;
   price: number;
+  /** Derived: count of unsold product items. */
   stock: number;
+  /** Admin only: total items ever added. */
+  items_total?: number;
+  /** Admin only: items already sold. */
+  items_sold?: number;
   tags: string[];
   data?: string;
   is_active: boolean;
+  created_at: string;
+}
+
+export interface ProductItem {
+  id: number;
+  product_id: number;
+  data: string;
+  is_sold: boolean;
+  purchase_id?: number | null;
   created_at: string;
 }
 

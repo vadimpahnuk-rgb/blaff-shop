@@ -71,6 +71,15 @@ CREATE TABLE IF NOT EXISTS purchases (
 -- Ensure the quantity column exists on pre-existing databases.
 ALTER TABLE purchases ADD COLUMN IF NOT EXISTS quantity INTEGER NOT NULL DEFAULT 1;
 
+CREATE TABLE IF NOT EXISTS product_items (
+  id            SERIAL PRIMARY KEY,
+  product_id    INTEGER NOT NULL REFERENCES products(id) ON DELETE CASCADE,
+  data          TEXT NOT NULL,
+  is_sold       BOOLEAN NOT NULL DEFAULT FALSE,
+  purchase_id   INTEGER REFERENCES purchases(id) ON DELETE SET NULL,
+  created_at    TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
 CREATE TABLE IF NOT EXISTS referrals (
   id            SERIAL PRIMARY KEY,
   referrer_id   INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
@@ -85,6 +94,19 @@ CREATE INDEX IF NOT EXISTS idx_transactions_user    ON transactions(user_id);
 CREATE INDEX IF NOT EXISTS idx_transactions_payment ON transactions(payment_id);
 CREATE INDEX IF NOT EXISTS idx_purchases_user       ON purchases(user_id);
 CREATE INDEX IF NOT EXISTS idx_referrals_referrer   ON referrals(referrer_id);
+CREATE INDEX IF NOT EXISTS idx_product_items_product ON product_items(product_id);
+CREATE INDEX IF NOT EXISTS idx_product_items_unsold  ON product_items(product_id) WHERE is_sold = FALSE;
+
+-- One-time seed: copy legacy product.data into product_items, one item per
+-- stock unit, for products that have data but no items yet. Idempotent via
+-- the NOT EXISTS guard.
+INSERT INTO product_items (product_id, data)
+SELECT p.id, p.data
+FROM products p
+CROSS JOIN generate_series(1, GREATEST(p.stock, 0))
+WHERE p.data IS NOT NULL
+  AND p.data <> ''
+  AND NOT EXISTS (SELECT 1 FROM product_items pi WHERE pi.product_id = p.id);
 `;
 
 async function main() {

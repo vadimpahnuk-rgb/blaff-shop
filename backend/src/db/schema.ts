@@ -93,6 +93,25 @@ export const purchases = pgTable('purchases', {
 });
 
 /**
+ * product_items
+ *
+ * One row per unique sellable unit (login/password, key, link, ...).
+ * Available stock for a product is derived: COUNT(*) WHERE is_sold = FALSE.
+ */
+export const productItems = pgTable('product_items', {
+  id: serial('id').primaryKey(),
+  productId: integer('product_id')
+    .notNull()
+    .references(() => products.id, { onDelete: 'cascade' }),
+  data: text('data').notNull(),
+  isSold: boolean('is_sold').notNull().default(false),
+  purchaseId: integer('purchase_id').references(() => purchases.id, {
+    onDelete: 'set null',
+  }),
+  createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
+});
+
+/**
  * referrals
  *
  * One row per referred user (UNIQUE on referred_id): records who invited whom.
@@ -114,6 +133,7 @@ export type Category = InferSelectModel<typeof categories>;
 export type Product = InferSelectModel<typeof products>;
 export type Transaction = InferSelectModel<typeof transactions>;
 export type Purchase = InferSelectModel<typeof purchases>;
+export type ProductItem = InferSelectModel<typeof productItems>;
 export type Referral = InferSelectModel<typeof referrals>;
 
 // ---- Insert types ----
@@ -122,4 +142,5 @@ export type NewCategory = InferInsertModel<typeof categories>;
 export type NewProduct = InferInsertModel<typeof products>;
 export type NewTransaction = InferInsertModel<typeof transactions>;
 export type NewPurchase = InferInsertModel<typeof purchases>;
+export type NewProductItem = InferInsertModel<typeof productItems>;
 export type NewReferral = InferInsertModel<typeof referrals>;

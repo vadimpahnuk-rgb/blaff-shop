@@ -7,6 +7,7 @@ import {
   products,
   transactions,
   purchases,
+  productItems,
 } from '../../db/schema';
 import { authMiddleware } from '../../middleware/auth';
 import { adminMiddleware } from '../../middleware/admin';
@@ -34,7 +35,20 @@ router.get('/products', async (_req, res, next) => {
         name: products.name,
         description: products.description,
         price: products.price,
-        stock: products.stock,
+        stock: sql<number>`(
+          select count(*)::int from ${productItems}
+          where ${productItems.productId} = ${products.id}
+            and ${productItems.isSold} = false
+        )`,
+        items_total: sql<number>`(
+          select count(*)::int from ${productItems}
+          where ${productItems.productId} = ${products.id}
+        )`,
+        items_sold: sql<number>`(
+          select count(*)::int from ${productItems}
+          where ${productItems.productId} = ${products.id}
+            and ${productItems.isSold} = true
+        )`,
         tags: products.tags,
         data: products.data,
         is_active: products.isActive,
@@ -209,6 +223,120 @@ router.post('/products/:id/restock', async (req, res, next) => {
   }
 });
 
+/* ------------------------------------------------------------------ */
+/*  Product items (unique sellable units)                             */
+/* ------------------------------------------------------------------ */
+
+/**
+ * POST /api/admin/products/:id/items
+ * Bulk add unique items to a product. Body: { items: string[] }.
+ */
+router.post('/products/:id/items', async (req, res, next) => {
+  try {
+    const productId = Number(req.params.id);
+    if (!Number.isInteger(productId)) {
+      res.status(400).json({ error: 'Invalid product id' });
+      return;
+    }
+
+    const raw = req.body?.items;
+    if (!Array.isArray(raw)) {
+      res.status(400).json({ error: 'items must be an array of strings' });
+      return;
+    }
+
+    const items = raw
+      .filter((i): i is string => typeof i === 'string')
+      .map((i) => i.trim())
+      .filter(Boolean);
+
+    if (items.length === 0) {
+      res.status(400).json({ error: 'items must contain at least one non-empty string' });
+      return;
+    }
+
+    const [product] = await db
+      .select({ id: products.id })
+      .from(products)
+      .where(eq(products.id, productId))
+      .limit(1);
+
+    if (!product) {
+      res.status(404).json({ error: 'Product not found' });
+      return;
+    }
+
+    const inserted = await db
+      .insert(productItems)
+      .values(items.map((data) => ({ productId, data })))
+      .returning({ id: productItems.id });
+
+    res.status(201).json({ added: inserted.length });
+  } catch (err) {
+    next(err);
+  }
+});
+
+/**
+ * GET /api/admin/products/:id/items
+ * List all items of a product with their sold status.
+ */
+router.get('/products/:id/items', async (req, res, next) => {
+  try {
+    const productId = Number(req.params.id);
+    if (!Number.isInteger(productId)) {
+      res.status(400).json({ error: 'Invalid product id' });
+      return;
+    }
+
+    const rows = await db
+      .select({
+        id: productItems.id,
+        product_id: productItems.productId,
+        data: productItems.data,
+        is_sold: productItems.isSold,
+        purchase_id: productItems.purchaseId,
+        created_at: productItems.createdAt,
+      })
+      .from(productItems)
+      .where(eq(productItems.productId, productId))
+      .orderBy(asc(productItems.isSold), desc(productItems.id));
+
+    res.json(rows);
+  } catch (err) {
+    next(err);
+  }
+});
+
+/**
+ * DELETE /api/admin/products/:id/items/:itemId
+ * Delete a single item.
+ */
+router.delete('/products/:id/items/:itemId', async (req, res, next) => {
+  try {
+    const productId = Number(req.params.id);
+    const itemId = Number(req.params.itemId);
+    if (!Number.isInteger(productId) || !Number.isInteger(itemId)) {
+      res.status(400).json({ error: 'Invalid id' });
+      return;
+    }
+
+    const [item] = await db
+      .delete(productItems)
+      .where(and(eq(productItems.id, itemId), eq(productItems.productId, productId)))
+      .returning({ id: productItems.id });
+
+    if (!item) {
+      res.status(404).json({ error: 'Item not found' });
+      return;
+    }
+
+    res.json({ deleted: true, id: item.id });
+  } catch (err) {
+    next(err);
+  }
+});
+
 /**
  * POST /api/admin/products/:id/give
  * Give a product to a user for free (creates purchase without charging).
@@ -251,24 +379,42 @@ router.post('/products/:id/give', async (req, res, next) => {
       return;
     }
 
-    // Create purchase (price = 0 for giveaways).
-    const [purchase] = await db
-      .insert(purchases)
-      .values({
-        userId,
-        productId: product.id,
-        productData: product.data,
-        price: '0',
-      })
-      .returning();
+    // Create purchase (price = 0 for giveaways), consuming one unique item
+    // when available; falls back to legacy product.data otherwise.
+    const purchase = await db.transaction(async (tx) => {
+      const [item] = await tx
+        .select()
+        .from(productItems)
+        .where(and(eq(productItems.productId, product.id), eq(productItems.isSold, false)))
+        .limit(1)
+        .for('update', { skipLocked: true });
 
-    // Record transaction.
-    await db.insert(transactions).values({
-      userId,
-      type: 'purchase',
-      amount: '0',
-      status: 'completed',
-      productId: product.id,
+      const [row] = await tx
+        .insert(purchases)
+        .values({
+          userId,
+          productId: product.id,
+          productData: item ? item.data : product.data,
+          price: '0',
+        })
+        .returning();
+
+      if (item) {
+        await tx
+          .update(productItems)
+          .set({ isSold: true, purchaseId: row.id })
+          .where(eq(productItems.id, item.id));
+      }
+
+      await tx.insert(transactions).values({
+        userId,
+        type: 'purchase',
+        amount: '0',
+        status: 'completed',
+        productId: product.id,
+      });
+
+      return row;
     });
 
     res.status(201).json({

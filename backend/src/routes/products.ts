@@ -1,9 +1,16 @@
 import { Router } from 'express';
 import { and, desc, eq, gte, ilike, lte, or, sql, type SQL } from 'drizzle-orm';
 import { db } from '../db';
-import { products, categories } from '../db/schema';
+import { products, categories, productItems } from '../db/schema';
 
 const router = Router();
+
+// Derived stock: number of unsold unique items for the product.
+const availableItemsCount = sql<number>`(
+  select count(*)::int from ${productItems}
+  where ${productItems.productId} = ${products.id}
+    and ${productItems.isSold} = false
+)`;
 
 /**
  * GET /api/products
@@ -50,7 +57,7 @@ router.get('/', async (req, res, next) => {
         name: products.name,
         description: products.description,
         price: products.price,
-        stock: products.stock,
+        stock: availableItemsCount,
         tags: products.tags,
         is_active: products.isActive,
         created_at: products.createdAt,
@@ -92,7 +99,7 @@ router.get('/:id', async (req, res, next) => {
         name: products.name,
         description: products.description,
         price: products.price,
-        stock: products.stock,
+        stock: availableItemsCount,
         tags: products.tags,
         is_active: products.isActive,
         created_at: products.createdAt,

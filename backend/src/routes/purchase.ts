@@ -1,7 +1,7 @@
 import { Router } from 'express';
-import { and, eq, sql } from 'drizzle-orm';
+import { and, eq, inArray, sql } from 'drizzle-orm';
 import { db } from '../db';
-import { users, products, purchases, transactions } from '../db/schema';
+import { users, products, purchases, transactions, productItems } from '../db/schema';
 import { authMiddleware } from '../middleware/auth';
 
 const router = Router();
@@ -11,9 +11,10 @@ router.use(authMiddleware);
 
 /**
  * POST /api/purchase/:productId
- * Buy `quantity` units of a product atomically: validates stock + balance,
- * deducts the total price from the balance, decrements stock, records one
- * purchase + one transaction, and returns the product data to the buyer.
+ * Buy `quantity` units of a product atomically: reserves `quantity` unsold
+ * product_items (FOR UPDATE SKIP LOCKED, so concurrent buyers never get the
+ * same unit), validates balance, deducts the total price, marks the items
+ * sold, records one purchase + one transaction, and returns the items' data.
  */
 router.post('/:productId', async (req, res, next) => {
   try {
@@ -32,20 +33,27 @@ router.post('/:productId', async (req, res, next) => {
     const userId = req.user!.id;
 
     const result = await db.transaction(async (tx) => {
-      // 1. Lock + load product.
+      // 1. Load product.
       const [product] = await tx
         .select()
         .from(products)
         .where(eq(products.id, productId))
-        .for('update')
         .limit(1);
 
       if (!product || !product.isActive) {
         return { error: 'PRODUCT_NOT_FOUND' as const };
       }
 
-      // 2. Stock check.
-      if (product.stock < quantity) {
+      // 2. Reserve `quantity` unsold items. SKIP LOCKED makes concurrent
+      // purchases grab disjoint rows instead of blocking on each other.
+      const items = await tx
+        .select()
+        .from(productItems)
+        .where(and(eq(productItems.productId, productId), eq(productItems.isSold, false)))
+        .limit(quantity)
+        .for('update', { skipLocked: true });
+
+      if (items.length < quantity) {
         return { error: 'OUT_OF_STOCK' as const };
       }
 
@@ -80,23 +88,23 @@ router.post('/:productId', async (req, res, next) => {
         .set({ balance: sql`${users.balance} - ${totalPriceStr}` })
         .where(eq(users.id, userId));
 
-      // 5. Decrement stock.
-      await tx
-        .update(products)
-        .set({ stock: sql`${products.stock} - ${quantity}` })
-        .where(eq(products.id, productId));
-
-      // 6. Create purchase record (copy product.data).
+      // 5. Create purchase record with the reserved items' data.
       const [purchase] = await tx
         .insert(purchases)
         .values({
           userId,
           productId: product.id,
-          productData: product.data,
+          productData: items.map((i) => i.data).join('\n'),
           price: totalPriceStr,
           quantity,
         })
         .returning();
+
+      // 6. Mark the reserved items as sold.
+      await tx
+        .update(productItems)
+        .set({ isSold: true, purchaseId: purchase.id })
+        .where(inArray(productItems.id, items.map((i) => i.id)));
 
       // 7. Create transaction record.
       await tx.insert(transactions).values({

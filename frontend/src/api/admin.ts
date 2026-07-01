@@ -1,5 +1,5 @@
 import client, { num } from './client';
-import type { Product, User, Transaction, AdminStats } from '../types';
+import type { Product, ProductItem, User, Transaction, AdminStats } from '../types';
 
 const normProduct = (p: Product): Product => ({ ...p, price: num(p.price) });
 const normUser = (u: User): User => ({ ...u, balance: num(u.balance) });
@@ -30,6 +30,20 @@ export async function restockProduct(id: number, quantity: number): Promise<Prod
 
 export async function giveProduct(productId: number, userId: number): Promise<void> {
   await client.post(`/admin/products/${productId}/give`, { user_id: userId });
+}
+
+export async function addProductItems(productId: number, items: string[]): Promise<{ added: number }> {
+  const response = await client.post<{ added: number }>(`/admin/products/${productId}/items`, { items });
+  return response.data;
+}
+
+export async function getProductItems(productId: number): Promise<ProductItem[]> {
+  const response = await client.get<ProductItem[]>(`/admin/products/${productId}/items`);
+  return response.data;
+}
+
+export async function deleteProductItem(productId: number, itemId: number): Promise<void> {
+  await client.delete(`/admin/products/${productId}/items/${itemId}`);
 }
 
 export async function getAdminUsers(): Promise<User[]> {

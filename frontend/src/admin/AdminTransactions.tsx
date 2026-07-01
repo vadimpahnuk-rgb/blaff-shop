@@ -44,11 +44,11 @@ export default function AdminTransactions() {
         Транзакції ({transactions.length})
       </h2>
 
-      <div className="space-y-2 pb-4">
+      <div className="space-y-4 pb-4">
         {transactions.map((tx) => (
           <div
             key={tx.id}
-            className="bg-pwa-dark rounded-xl border border-pwa-border p-3"
+            className="bg-pwa-dark rounded-2xl border border-pwa-border/50 p-6"
           >
             <div className="flex items-center justify-between mb-1">
               <span className="text-white text-xs font-semibold">

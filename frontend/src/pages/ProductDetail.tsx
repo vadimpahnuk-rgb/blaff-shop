@@ -58,7 +58,7 @@ export default function ProductDetail() {
           <h2 className="text-white text-xl font-bold mb-2">Покупка успішна!</h2>
           <p className="text-pwa-gray text-sm mb-4">ID покупки: #{purchaseResult.purchase_id}</p>
           <div className="bg-pwa-black rounded-xl border border-pwa-border/50 p-4 mb-4 text-left">
-            <p className="text-xs font-medium text-pwa-gray/70 mb-2 uppercase tracking-wider">Дані товару:</p>
+            <p className="text-xs font-medium text-pwa-gray/70 mb-2">Дані товару:</p>
             <pre className="text-white text-sm whitespace-pre-wrap break-all font-mono">
               {purchaseResult.product_data}
             </pre>
@@ -90,18 +90,18 @@ export default function ProductDetail() {
       <div className="grid grid-cols-2 gap-4 mb-6">
         <div className="bg-pwa-dark rounded-2xl border border-pwa-border/50 p-6">
           <p className="text-xs font-medium text-pwa-gray/70 mb-1">Ціна</p>
-          <p className="text-white text-lg font-bold">${product.price.toFixed(2)}</p>
+          <p className="text-white text-base font-extrabold tabular-nums tracking-tight">${product.price.toFixed(2)}</p>
         </div>
         <div className="bg-pwa-dark rounded-2xl border border-pwa-border/50 p-6">
           <p className="text-xs font-medium text-pwa-gray/70 mb-1">Наявність</p>
           <div className="flex items-center gap-2">
             <div
               className={`w-2 h-2 rounded-full ${
-                product.stock > 0 ? 'bg-green-500' : 'bg-red-500'
+                product.stock > 0 ? 'bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.6)]' : 'bg-red-500'
               }`}
             />
-            <p className={`text-sm font-medium ${product.stock > 0 ? 'text-green-400' : 'text-red-400'}`}>
-              {product.stock > 0 ? `${product.stock} шт` : 'Немає в наявності'}
+            <p className="text-sm font-medium text-pwa-gray/70">
+              {product.stock > 0 ? `${product.stock} шт` : 'Немає'}
             </p>
           </div>
         </div>

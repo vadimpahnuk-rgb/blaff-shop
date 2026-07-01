@@ -86,7 +86,7 @@ export default function Partners() {
             <PartnersIcon size={22} />
           </span>
           <div>
-            <h1 className="text-lg font-bold leading-tight text-white">
+            <h1 className="text-xl font-bold leading-tight text-white">
               Партнерська програма
             </h1>
             <p className="text-xs leading-relaxed text-pwa-gray/70">
@@ -116,7 +116,7 @@ export default function Partners() {
       <div className="rounded-2xl border border-pwa-border/50 bg-gradient-to-b from-pwa-dark to-[#141414] p-6">
         <div className="mb-3 flex items-center gap-2">
           <WalletIcon size={16} className="text-pwa-yellow/70" />
-          <span className="text-[11px] font-semibold uppercase tracking-[0.08em] text-pwa-gray/60">
+          <span className="text-xs font-semibold uppercase tracking-[0.18em] text-pwa-gray">
             Реферальний баланс
           </span>
         </div>
@@ -155,7 +155,7 @@ export default function Partners() {
 
       {/* 4. How it works */}
       <div className="rounded-2xl border border-pwa-border/50 bg-pwa-dark p-6">
-        <h3 className="mb-4 flex items-center gap-2 text-sm font-semibold text-white">
+        <h3 className="mb-4 flex items-center gap-2 text-[15px] font-semibold text-white">
           <span className="flex h-6 w-6 items-center justify-center rounded-lg bg-pwa-yellow/15 text-pwa-yellow">
             <ToolsIcon size={14} />
           </span>
@@ -193,7 +193,7 @@ export default function Partners() {
 
       {/* 5. Referral link */}
       <div className="rounded-2xl border border-pwa-border/50 bg-pwa-dark p-6">
-        <h3 className="mb-3 text-sm font-semibold text-white">
+        <h3 className="mb-3 text-[15px] font-semibold text-white">
           Ваше реферальне посилання
         </h3>
         <div className="mb-3 flex items-center gap-3 rounded-xl border border-pwa-border/50 bg-pwa-black px-4 py-3.5">
@@ -218,7 +218,7 @@ export default function Partners() {
       {/* 6. Referred users */}
       {stats.referred_users.length > 0 && (
         <div className="rounded-2xl border border-pwa-border/50 bg-pwa-dark p-6">
-          <h3 className="mb-4 text-sm font-semibold text-white">
+          <h3 className="mb-4 text-[15px] font-semibold text-white">
             Запрошені користувачі
           </h3>
           <div className="space-y-3">

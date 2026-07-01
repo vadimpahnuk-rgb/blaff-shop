@@ -7,7 +7,7 @@ export default function Support() {
 
       <div className="space-y-4">
         <div className="rounded-2xl border border-pwa-border/50 bg-pwa-dark p-6">
-          <h3 className="flex items-center gap-2 text-white text-sm font-semibold mb-3">
+          <h3 className="flex items-center gap-2 text-white text-[15px] font-semibold mb-3">
             <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-pwa-light text-pwa-yellow">
               <SupportIcon size={18} />
             </span>
@@ -36,7 +36,7 @@ export default function Support() {
         </a>
 
         <div className="rounded-2xl border border-pwa-border/50 bg-pwa-dark p-6">
-          <h3 className="flex items-center gap-2 text-white text-sm font-semibold mb-4">
+          <h3 className="flex items-center gap-2 text-white text-[15px] font-semibold mb-4">
             <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-pwa-light text-pwa-yellow">
               <TermsIcon size={18} />
             </span>

@@ -30,11 +30,11 @@ export default function AdminDashboard() {
       <h2 className="text-white text-lg font-bold mb-4">Дашборд</h2>
 
       {/* Stats grid */}
-      <div className="grid grid-cols-2 gap-3 mb-6">
+      <div className="grid grid-cols-2 gap-4 mb-6">
         {statCards.map((card) => (
           <div
             key={card.label}
-            className="bg-pwa-dark rounded-xl border border-pwa-border p-4"
+            className="bg-pwa-dark rounded-2xl border border-pwa-border/50 p-6"
           >
             <span className="text-2xl block mb-2">{card.icon}</span>
             <p className="text-pwa-gray text-xs mb-1">{card.label}</p>
@@ -45,8 +45,8 @@ export default function AdminDashboard() {
 
       {/* Top products */}
       {stats.top_products && stats.top_products.length > 0 && (
-        <div className="bg-pwa-dark rounded-xl border border-pwa-border p-4">
-          <h3 className="text-white text-sm font-semibold mb-3">🏆 Топ товари</h3>
+        <div className="bg-pwa-dark rounded-2xl border border-pwa-border/50 p-6">
+          <h3 className="text-white text-[15px] font-semibold mb-3">🏆 Топ товари</h3>
           <div className="space-y-2">
             {stats.top_products.map((product, idx) => (
               <div

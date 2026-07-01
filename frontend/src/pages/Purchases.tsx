@@ -42,12 +42,12 @@ export default function Purchases() {
 
   return (
     <div className="px-5 py-6 animate-fade-in">
-      <div className="flex items-center gap-3 mb-5">
+      <div className="flex items-center gap-3 mb-4">
         <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-pwa-yellow/10 text-pwa-yellow">
           <PurchasesIcon size={22} />
         </div>
         <div>
-          <h1 className="text-xl font-extrabold text-white leading-tight">Історія покупок</h1>
+          <h1 className="text-xl font-bold text-white leading-tight">Історія покупок</h1>
           <p className="text-xs font-medium text-pwa-gray/70">Ваші придбані товари</p>
         </div>
       </div>
@@ -62,10 +62,10 @@ export default function Purchases() {
             >
               {/* Purchase header */}
               <div className="flex items-start justify-between gap-3 mb-3">
-                <h3 className="text-white text-sm font-bold leading-snug">
+                <h3 className="text-white text-[15px] font-semibold leading-snug">
                   {purchase.product_name || `Товар #${purchase.product_id}`}
                 </h3>
-                <p className="shrink-0 text-pwa-yellow text-base font-extrabold">
+                <p className="shrink-0 text-pwa-yellow text-base font-extrabold tabular-nums tracking-tight">
                   -${purchase.price.toFixed(2)}
                 </p>
               </div>
@@ -98,7 +98,7 @@ export default function Purchases() {
 
               {isRevealed && (
                 <div className="bg-pwa-black rounded-xl p-4">
-                  <p className="text-xs font-medium text-pwa-gray/70 mb-2 uppercase tracking-wider">Дані товару:</p>
+                  <p className="text-xs font-medium text-pwa-gray/70 mb-2">Дані товару:</p>
                   <pre className="text-white text-xs whitespace-pre-wrap break-all font-mono leading-relaxed">
                     {revealedData[purchase.id]}
                   </pre>

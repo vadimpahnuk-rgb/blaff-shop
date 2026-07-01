@@ -126,7 +126,7 @@ export default function AdminProducts() {
       {/* Form modal */}
       {showForm && (
         <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4">
-          <div className="bg-pwa-dark rounded-xl border border-pwa-border p-5 w-full max-w-md max-h-[90vh] overflow-y-auto">
+          <div className="bg-pwa-dark rounded-2xl border border-pwa-border/50 p-6 w-full max-w-md max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-white text-sm font-bold">
                 {editingId ? 'Редагувати товар' : 'Новий товар'}
@@ -192,11 +192,11 @@ export default function AdminProducts() {
 
       {/* Products list */}
       {products.length > 0 ? (
-        <div className="space-y-3 pb-4">
+        <div className="space-y-4 pb-4">
           {products.map((product) => (
             <div
               key={product.id}
-              className="bg-pwa-dark rounded-xl border border-pwa-border p-4"
+              className="bg-pwa-dark rounded-2xl border border-pwa-border/50 p-6"
             >
               <div className="flex items-start justify-between mb-2">
                 <div className="flex-1">

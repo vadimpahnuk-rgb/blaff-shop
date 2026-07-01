@@ -59,11 +59,11 @@ export default function AdminUsers() {
         Користувачі ({users.length})
       </h2>
 
-      <div className="space-y-3 pb-4">
+      <div className="space-y-4 pb-4">
         {users.map((user) => (
           <div
             key={user.id}
-            className="bg-pwa-dark rounded-xl border border-pwa-border p-4"
+            className="bg-pwa-dark rounded-2xl border border-pwa-border/50 p-6"
           >
             <div className="flex items-start justify-between mb-2">
               <div>

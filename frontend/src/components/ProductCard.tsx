@@ -30,16 +30,16 @@ export default function ProductCard({ product, onClick, onBuy }: ProductCardProp
         {/* Stock indicator */}
         <div className="flex items-center gap-2">
           <div className={`w-2 h-2 rounded-full ${
-            inStock ? 'bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.6)] animate-pulse-dot' : 'bg-red-500'
+            inStock ? 'bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.6)]' : 'bg-red-500'
           }`} />
-          <span className="text-pwa-gray/60 text-xs font-medium">
+          <span className="text-pwa-gray/70 text-xs font-medium">
             {inStock ? `${product.stock} шт` : 'Немає'}
           </span>
         </div>
 
         {/* Price + Buy button */}
         <div className="flex items-center gap-3">
-          <span className="text-white font-extrabold text-[16px] tabular-nums tracking-tight">
+          <span className="text-white font-extrabold text-base tabular-nums tracking-tight">
             ${product.price.toFixed(2)}
           </span>
           {onBuy && inStock && (
@@ -48,7 +48,7 @@ export default function ProductCard({ product, onClick, onBuy }: ProductCardProp
                 e.stopPropagation();
                 onBuy();
               }}
-              className="flex items-center gap-1.5 px-3.5 py-2 bg-pwa-yellow text-pwa-black text-xs font-bold rounded-xl hover:brightness-110 hover:shadow-[0_0_20px_-2px_rgba(245,197,24,0.7)] active:scale-95 transition-all"
+              className="flex items-center gap-1.5 px-3.5 py-2 bg-pwa-yellow text-pwa-black text-xs font-bold rounded-xl hover:brightness-110 hover:shadow-[0_0_16px_-2px_rgba(245,197,24,0.6)] active:scale-95 transition-all"
             >
               <CartIcon size={14} />
               Купити

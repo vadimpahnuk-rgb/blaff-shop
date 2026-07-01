@@ -79,7 +79,7 @@ export default function AdminLayout() {
         </div>
       </header>
 
-      <div className="px-4 py-4">
+      <div className="px-5 py-6">
         <Outlet context={{ stats, loading }} />
       </div>
     </div>

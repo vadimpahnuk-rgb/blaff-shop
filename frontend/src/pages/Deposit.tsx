@@ -61,11 +61,11 @@ export default function Deposit() {
           <div className="bg-pwa-black rounded-xl p-4 mb-3 text-center">
             <p className="text-xs font-medium text-pwa-gray/70 mb-2">Відправте точно:</p>
             {deposit.pay_amount != null ? (
-              <p className="text-white text-3xl font-extrabold break-all select-all">
+              <p className="text-white text-3xl font-extrabold leading-none break-all select-all">
                 {deposit.pay_amount} {deposit.currency}
               </p>
             ) : (
-              <p className="text-white text-3xl font-extrabold">{deposit.currency}</p>
+              <p className="text-white text-3xl font-extrabold leading-none">{deposit.currency}</p>
             )}
             <p className="text-xs font-medium text-pwa-gray/70 mt-2">≈ ${deposit.amount.toFixed(2)}</p>
           </div>
@@ -107,11 +107,11 @@ export default function Deposit() {
 
   return (
     <div className="px-5 py-6 animate-fade-in">
-      <h1 className="text-xl font-extrabold text-white mb-1">Поповнення балансу</h1>
-      <p className="text-sm font-medium text-pwa-gray/70 mb-5">Виберіть суму для поповнення</p>
+      <h1 className="text-xl font-bold text-white mb-1">Поповнення балансу</h1>
+      <p className="text-sm font-medium text-pwa-gray/70 mb-4">Виберіть суму для поповнення</p>
 
       {/* Preset amounts */}
-      <div className="grid grid-cols-3 gap-4 mb-5">
+      <div className="grid grid-cols-3 gap-4 mb-4">
         {depositAmounts.map((val) => (
           <button
             key={val}
@@ -128,7 +128,7 @@ export default function Deposit() {
       </div>
 
       {/* Custom amount */}
-      <div className="mb-5">
+      <div className="mb-4">
         <p className="text-xs font-medium text-pwa-gray/70 mb-2">Або введіть свою суму:</p>
         <div className="relative">
           <span className="absolute left-4 top-1/2 -translate-y-1/2 text-pwa-gray font-medium">$</span>

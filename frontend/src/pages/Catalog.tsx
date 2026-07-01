@@ -58,13 +58,13 @@ export default function Catalog() {
   if (loading) return <Loading text="Завантаження товарів..." />;
 
   return (
-    <div className="px-6 py-8 animate-fade-in">
+    <div className="px-5 py-6 animate-fade-in">
       {/* Section title */}
-      <h1 className="text-xl font-bold text-white mb-6">Каталог</h1>
+      <h1 className="text-xl font-bold text-white mb-4">Каталог</h1>
 
       {/* Products grid */}
       {filteredProducts.length > 0 ? (
-        <div className="grid grid-cols-1 gap-6 pb-4">
+        <div className="grid grid-cols-1 gap-4 pb-4">
           {filteredProducts.map((product) => (
             <ProductCard
               key={product.id}

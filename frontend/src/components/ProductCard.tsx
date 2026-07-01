@@ -13,16 +13,16 @@ export default function ProductCard({ product, onClick, onBuy }: ProductCardProp
   return (
     <div
       onClick={onClick}
-      className="group relative rounded-2xl border border-pwa-border/50 bg-gradient-to-b from-pwa-dark to-[#141414] p-8 cursor-pointer overflow-hidden transition-all duration-200 hover:border-pwa-yellow/30 hover:shadow-[0_0_30px_-12px_rgba(245,197,24,0.12)] active:scale-[0.98] animate-fade-in"
+      className="group relative rounded-2xl border border-pwa-border/50 bg-gradient-to-b from-pwa-dark to-[#141414] p-6 cursor-pointer overflow-hidden transition-all duration-200 hover:border-pwa-yellow/30 hover:shadow-[0_0_30px_-12px_rgba(245,197,24,0.12)] active:scale-[0.98] animate-fade-in"
     >
       {/* Name */}
-      <h3 className="text-white text-[15px] font-semibold leading-snug mb-3">
+      <h3 className="text-white text-[15px] font-semibold leading-snug mb-2.5">
         {product.name}
       </h3>
 
       {/* Description preview */}
       {product.description && (
-        <p className="text-pwa-gray/70 text-sm leading-relaxed mb-5">{product.description}</p>
+        <p className="text-pwa-gray/70 text-sm leading-relaxed mb-4 line-clamp-2">{product.description}</p>
       )}
 
       {/* Bottom row: stock + price */}

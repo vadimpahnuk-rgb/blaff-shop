@@ -25,7 +25,7 @@ const menuItems: { label: string; Icon: ComponentType<IconProps>; path: string }
   { label: 'Поповнити баланс', Icon: WalletIcon, path: '/deposit' },
   { label: 'Підтримка', Icon: SupportIcon, path: '/support' },
   { label: 'Умови використання', Icon: TermsIcon, path: '/terms' },
-  { label: 'Партнерська програма', Icon: PartnersIcon, path: '/partners' },
+  { label: 'Реферальна програма', Icon: PartnersIcon, path: '/referral' },
 ];
 
 export default function HamburgerMenu({ isOpen, onClose }: HamburgerMenuProps) {

@@ -15,6 +15,7 @@ import Deposit from './pages/Deposit';
 import Purchases from './pages/Purchases';
 import Support from './pages/Support';
 import Terms from './pages/Terms';
+import Partners from './pages/Partners';
 import PartnersCatalog from './pages/PartnersCatalog';
 import AdminLayout from './admin/AdminLayout';
 import AdminDashboard from './admin/AdminDashboard';
@@ -23,7 +24,7 @@ import AdminUsers from './admin/AdminUsers';
 import AdminTransactions from './admin/AdminTransactions';
 import Loading from './components/Loading';
 
-const PUBLIC_PATHS = ['/support', '/terms', '/partners'];
+const PUBLIC_PATHS = ['/support', '/terms', '/partners', '/referral'];
 
 function AppContent() {
   const [user, setUser] = useState<User | null>(null);
@@ -147,6 +148,7 @@ function AppContent() {
           <Route path="/support" element={<Support />} />
           <Route path="/terms" element={<Terms />} />
           <Route path="/partners" element={<PartnersCatalog />} />
+          <Route path="/referral" element={<Partners />} />
           <Route path="/profile" element={<Home />} />
         </Routes>
       </main>

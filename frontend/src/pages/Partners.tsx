@@ -81,9 +81,9 @@ export default function Partners() {
   return (
     <div className="space-y-4 px-5 py-6 animate-fade-in">
       <SEO
-        title="Партнерська програма"
-        description="Партнерська програма BLA SHOP — запрошуйте друзів та отримуйте 3% кешбек з кожного поповнення балансу."
-        path="/partners"
+        title="Реферальна програма"
+        description="Реферальна програма BLA SHOP — запрошуйте друзів та отримуйте 3% кешбек з кожного поповнення балансу."
+        path="/referral"
       />
       {/* 1. Header */}
       <div className="pb-2">
@@ -93,7 +93,7 @@ export default function Partners() {
           </span>
           <div>
             <h1 className="text-xl font-bold leading-tight text-white">
-              Партнерська програма
+              Реферальна програма
             </h1>
             <p className="text-xs leading-relaxed text-pwa-gray/70">
               Запрошуйте друзів і заробляйте з кожного їх поповнення

@@ -42,7 +42,7 @@ export default function Purchases() {
 
   return (
     <div className="px-5 py-6 animate-fade-in">
-      <div className="flex items-center gap-3 mb-4">
+      <div className="flex items-center gap-3 mb-6">
         <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-pwa-yellow/10 text-pwa-yellow">
           <PurchasesIcon size={22} />
         </div>
@@ -97,7 +97,7 @@ export default function Purchases() {
               )}
 
               {isRevealed && (
-                <div className="bg-pwa-black rounded-xl p-4">
+                <div className="bg-pwa-black rounded-xl p-5">
                   <p className="text-xs font-medium text-pwa-gray/70 mb-2">Дані товару:</p>
                   <pre className="text-white text-xs whitespace-pre-wrap break-all font-mono leading-relaxed">
                     {revealedData[purchase.id]}

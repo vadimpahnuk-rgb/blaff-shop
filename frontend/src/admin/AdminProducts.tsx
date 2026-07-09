@@ -8,7 +8,8 @@ import {
   getProductItems,
   deleteProductItem,
 } from '../api/admin';
-import type { Product, ProductItem } from '../types';
+import { getCategories } from '../api/categories';
+import type { Product, ProductItem, Category } from '../types';
 import Loading from '../components/Loading';
 import EmptyState from '../components/EmptyState';
 
@@ -35,6 +36,7 @@ export default function AdminProducts() {
   const [editingId, setEditingId] = useState<number | null>(null);
   const [form, setForm] = useState<ProductForm>(emptyForm);
   const [saving, setSaving] = useState(false);
+  const [categories, setCategories] = useState<Category[]>([]);
 
   // Items manager state
   const [itemsProduct, setItemsProduct] = useState<Product | null>(null);
@@ -52,6 +54,10 @@ export default function AdminProducts() {
   };
 
   useEffect(() => { loadProducts(); }, []);
+
+  useEffect(() => {
+    getCategories().then(setCategories).catch(() => {});
+  }, []);
 
   const handleSave = async () => {
     setSaving(true);
@@ -194,13 +200,18 @@ export default function AdminProducts() {
                   onChange={(e) => setForm({ ...form, price: e.target.value })}
                   className="w-full bg-pwa-black border border-pwa-border rounded-lg px-3 py-2 text-white text-sm outline-none focus:border-pwa-yellow/50"
                 />
-                <input
-                  type="number"
-                  placeholder="ID категорії"
+                <select
                   value={form.category_id}
                   onChange={(e) => setForm({ ...form, category_id: e.target.value })}
                   className="w-full bg-pwa-black border border-pwa-border rounded-lg px-3 py-2 text-white text-sm outline-none focus:border-pwa-yellow/50"
-                />
+                >
+                  {categories.length === 0 && <option value="1">Завантаження...</option>}
+                  {categories.map((cat) => (
+                    <option key={cat.id} value={cat.id} className="bg-pwa-dark text-white">
+                      {cat.name}
+                    </option>
+                  ))}
+                </select>
               </div>
               <p className="text-pwa-gray/70 text-xs">
                 Наявність визначається кількістю доданих одиниць — керуйте ними через «Одиниці» у списку товарів.

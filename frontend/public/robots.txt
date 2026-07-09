@@ -1,0 +1,12 @@
+User-agent: *
+Allow: /
+Allow: /catalog
+Allow: /support
+Allow: /terms
+Allow: /partners
+Disallow: /deposit
+Disallow: /purchases
+Disallow: /profile
+Disallow: /admin
+
+Sitemap: https://pwa-x.com/sitemap.xml

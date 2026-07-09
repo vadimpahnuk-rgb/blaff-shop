@@ -1,5 +1,6 @@
 import { useEffect, useState, useCallback } from 'react';
 import { BrowserRouter, Routes, Route, useLocation, useNavigate } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import { initAuth } from './api/auth';
 import { getBalance } from './api/user';
 import { useTelegram } from './hooks/useTelegram';
@@ -92,6 +93,31 @@ function AppContent() {
 
   return (
     <div className="app-shell h-full flex flex-col bg-pwa-black text-white safe-area-left safe-area-right">
+      <Helmet>
+        <script type="application/ld+json">
+          {JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'Organization',
+            name: 'BLA SHOP',
+            url: 'https://pwa-x.com',
+            logo: 'https://pwa-x.com/favicon.svg',
+            description:
+              'Цифрові товари для медіабаєрів: акаунти Facebook, Business Manager, проксі та інструменти.',
+            sameAs: ['https://t.me/BLA_TL'],
+          })}
+        </script>
+        <script type="application/ld+json">
+          {JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'WebSite',
+            name: 'BLA SHOP',
+            url: 'https://pwa-x.com',
+            description:
+              'Цифрові товари для медіабаєрів. Акаунти Facebook, Business Manager, проксі — швидко, надійно, цілодобово.',
+            inLanguage: ['uk', 'ru', 'en'],
+          })}
+        </script>
+      </Helmet>
       <AuthContext.Provider value={{ user, isAdmin }}>
       {/* Header - hidden on admin routes */}
       {!isAdminRoute && (

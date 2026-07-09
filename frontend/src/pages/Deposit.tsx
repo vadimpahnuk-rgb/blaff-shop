@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { createDeposit } from '../api/user';
 import Loading from '../components/Loading';
+import SEO from '../components/SEO';
 import type { DepositResponse } from '../types';
 
 const depositAmounts = [20, 50, 100, 200, 500, 1000];
@@ -58,7 +59,7 @@ export default function Deposit() {
           </p>
 
           {/* Amount to send */}
-          <div className="bg-pwa-black rounded-xl p-4 mb-3 text-center">
+          <div className="bg-pwa-black rounded-xl p-5 mb-3 text-center">
             <p className="text-xs font-medium text-pwa-gray/70 mb-2">Відправте точно:</p>
             {deposit.pay_amount != null ? (
               <p className="text-white text-3xl font-extrabold leading-none break-all select-all">
@@ -71,13 +72,13 @@ export default function Deposit() {
           </div>
 
           {/* Payment ID */}
-          <div className="bg-pwa-black rounded-xl p-4 mb-3">
+          <div className="bg-pwa-black rounded-xl p-5 mb-3">
             <p className="text-xs font-medium text-pwa-gray/70 mb-2">ID платежу:</p>
             <p className="text-white text-sm font-mono break-all">{deposit.payment_id}</p>
           </div>
 
           {/* Address */}
-          <div className="bg-pwa-black rounded-xl p-4 mb-3">
+          <div className="bg-pwa-black rounded-xl p-5 mb-3">
             <p className="text-xs font-medium text-pwa-gray/70 mb-2">Адреса для оплати:</p>
             <p className="text-white text-xs font-mono break-all select-all">{deposit.address}</p>
           </div>
@@ -107,8 +108,14 @@ export default function Deposit() {
 
   return (
     <div className="px-5 py-6 animate-fade-in">
+      <SEO
+        title="Поповнення балансу"
+        description="Поповніть баланс BLA SHOP для покупки цифрових товарів. Мінімальна сума поповнення: $20."
+        path="/deposit"
+        noindex
+      />
       <h1 className="text-xl font-bold text-white mb-1">Поповнення балансу</h1>
-      <p className="text-sm font-medium text-pwa-gray/70 mb-4">Виберіть суму для поповнення</p>
+      <p className="text-sm font-medium text-pwa-gray/70 mb-6">Виберіть суму для поповнення</p>
 
       {/* Preset amounts */}
       <div className="grid grid-cols-3 gap-4 mb-4">

@@ -6,6 +6,7 @@ import type { Product, Category } from '../types';
 import ProductCard from '../components/ProductCard';
 import Loading from '../components/Loading';
 import EmptyState from '../components/EmptyState';
+import SEO from '../components/SEO';
 import { SearchIcon, CloseIcon } from '../icons';
 
 export default function Catalog() {
@@ -58,16 +59,21 @@ export default function Catalog() {
   if (loading) return <Loading text="Завантаження товарів..." />;
 
   return (
-    <div className="px-5 py-6 animate-fade-in">
+    <div className="px-5 py-7 animate-fade-in">
+      <SEO
+        title="Каталог"
+        description="Каталог цифрових товарів для медіабаєрів: Facebook акаунти, Business Manager, проксі та інструменти."
+        path="/catalog"
+      />
       {/* Section title */}
-      <div className="flex items-baseline justify-between mb-4">
+      <div className="flex items-baseline justify-between mb-6">
         <h1 className="text-xl font-bold text-white">Каталог</h1>
         <span className="text-xs font-medium text-pwa-gray/70 tabular-nums">{filteredProducts.length} товарів</span>
       </div>
 
       {/* Products grid */}
       {filteredProducts.length > 0 ? (
-        <div className="grid grid-cols-1 gap-4 pb-4">
+        <div className="grid grid-cols-1 gap-3 pb-4">
           {filteredProducts.map((product) => (
             <ProductCard
               key={product.id}

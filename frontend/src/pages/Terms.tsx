@@ -1,7 +1,14 @@
+import SEO from '../components/SEO';
+
 export default function Terms() {
   return (
     <div className="px-5 py-6 animate-fade-in">
-      <h1 className="text-xl font-bold text-white mb-4">Умови використання</h1>
+      <SEO
+        title="Умови використання"
+        description="Умови використання BLA SHOP. Опис послуг, оплата та повернення, конфіденційність та відповідальність."
+        path="/terms"
+      />
+      <h1 className="text-xl font-bold text-white mb-6">Умови використання</h1>
 
       <div className="space-y-4">
         <section className="rounded-2xl border border-pwa-border/50 bg-pwa-dark p-6">

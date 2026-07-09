@@ -1,13 +1,19 @@
+import SEO from '../components/SEO';
 import { SupportIcon, ChevronRightIcon, TermsIcon } from '../icons';
 
 export default function Support() {
   return (
     <div className="px-5 py-6 animate-fade-in">
-      <h1 className="text-xl font-bold text-white mb-4">Підтримка</h1>
+      <SEO
+        title="Підтримка"
+        description="Підтримка BLA SHOP — зв'яжіться з нами через Telegram. Відповіді на часті питання про поповнення, покупки та повернення."
+        path="/support"
+      />
+      <h1 className="text-xl font-bold text-white mb-6">Підтримка</h1>
 
       <div className="space-y-4">
         <div className="rounded-2xl border border-pwa-border/50 bg-pwa-dark p-6">
-          <h3 className="flex items-center gap-2 text-white text-[15px] font-semibold mb-3">
+          <h3 className="flex items-center gap-3 text-white text-[15px] font-semibold mb-3">
             <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-pwa-light text-pwa-yellow">
               <SupportIcon size={18} />
             </span>
@@ -36,7 +42,7 @@ export default function Support() {
         </a>
 
         <div className="rounded-2xl border border-pwa-border/50 bg-pwa-dark p-6">
-          <h3 className="flex items-center gap-2 text-white text-[15px] font-semibold mb-4">
+          <h3 className="flex items-center gap-3 text-white text-[15px] font-semibold mb-4">
             <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-pwa-light text-pwa-yellow">
               <TermsIcon size={18} />
             </span>

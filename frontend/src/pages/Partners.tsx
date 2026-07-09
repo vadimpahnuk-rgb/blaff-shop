@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { getReferralStats, withdrawReferralBalance } from '../api/referrals';
 import type { ReferralStats } from '../types';
 import Loading from '../components/Loading';
+import SEO from '../components/SEO';
 import { PartnersIcon, WalletIcon, ProfileIcon, ToolsIcon } from '../icons';
 
 export default function Partners() {
@@ -79,6 +80,11 @@ export default function Partners() {
 
   return (
     <div className="space-y-4 px-5 py-6 animate-fade-in">
+      <SEO
+        title="Партнерська програма"
+        description="Партнерська програма BLA SHOP — запрошуйте друзів та отримуйте 3% кешбек з кожного поповнення балансу."
+        path="/partners"
+      />
       {/* 1. Header */}
       <div className="pb-2">
         <div className="mb-3 flex items-center gap-3">
@@ -114,7 +120,7 @@ export default function Partners() {
 
       {/* 3. Referral balance card */}
       <div className="rounded-2xl border border-pwa-border/50 bg-gradient-to-b from-pwa-dark to-[#141414] p-6">
-        <div className="mb-3 flex items-center gap-2">
+        <div className="mb-3 flex items-center gap-3">
           <WalletIcon size={16} className="text-pwa-yellow/70" />
           <span className="text-xs font-semibold uppercase tracking-[0.18em] text-pwa-gray">
             Реферальний баланс
@@ -155,7 +161,7 @@ export default function Partners() {
 
       {/* 4. How it works */}
       <div className="rounded-2xl border border-pwa-border/50 bg-pwa-dark p-6">
-        <h3 className="mb-4 flex items-center gap-2 text-[15px] font-semibold text-white">
+        <h3 className="mb-4 flex items-center gap-3 text-[15px] font-semibold text-white">
           <span className="flex h-6 w-6 items-center justify-center rounded-lg bg-pwa-yellow/15 text-pwa-yellow">
             <ToolsIcon size={14} />
           </span>
@@ -196,7 +202,7 @@ export default function Partners() {
         <h3 className="mb-3 text-[15px] font-semibold text-white">
           Ваше реферальне посилання
         </h3>
-        <div className="mb-3 flex items-center gap-3 rounded-xl border border-pwa-border/50 bg-pwa-black px-4 py-3.5">
+        <div className="mb-3 flex items-center gap-3 rounded-xl border border-pwa-border/50 bg-pwa-black p-5">
           <PartnersIcon size={16} className="shrink-0 text-pwa-gray/50" />
           <p className="min-w-0 flex-1 truncate font-mono text-xs text-pwa-gray/80">
             {stats.referral_link}
@@ -225,7 +231,7 @@ export default function Partners() {
             {stats.referred_users.map((u) => (
               <div
                 key={u.id}
-                className="flex items-center gap-3.5 rounded-xl border border-pwa-border/30 bg-pwa-black/60 px-4 py-3.5"
+                className="flex items-center gap-3.5 rounded-xl border border-pwa-border/30 bg-pwa-black/60 p-5"
               >
                 <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-pwa-light/40 text-pwa-gray/60">
                   <ProfileIcon size={16} />

@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { getProduct, purchaseProduct } from '../api/products';
 import type { Product } from '../types';
 import Loading from '../components/Loading';
+import SEO from '../components/SEO';
 
 export default function ProductDetail() {
   const { id } = useParams<{ id: string }>();
@@ -61,7 +62,7 @@ export default function ProductDetail() {
             ID покупки: #{purchaseResult.purchase_id}
             {purchaseResult.quantity > 1 && ` • ${purchaseResult.quantity} шт`}
           </p>
-          <div className="bg-pwa-black rounded-xl border border-pwa-border/50 p-4 mb-4 text-left">
+          <div className="bg-pwa-black rounded-xl border border-pwa-border/50 p-5 mb-4 text-left">
             <p className="text-xs font-medium text-pwa-gray/70 mb-2">Дані товару:</p>
             <pre className="text-white text-sm whitespace-pre-wrap break-all font-mono">
               {purchaseResult.product_data}
@@ -80,8 +81,12 @@ export default function ProductDetail() {
 
   return (
     <div className="px-5 py-6 animate-fade-in">
-      {/* Name */}
-      <h1 className="text-xl font-bold text-white mb-4">{product.name}</h1>
+      <SEO
+        title={product.name}
+        description={product.description || `Купити ${product.name} — цифровий товар для медіабаєрів. Ціна: $${product.price.toFixed(2)}.`}
+        path={`/product/${product.id}`}
+      />
+      <h1 className="text-xl font-bold text-white mb-6">{product.name}</h1>
 
       {/* Description */}
       {product.description && (
@@ -98,7 +103,7 @@ export default function ProductDetail() {
         </div>
         <div className="bg-pwa-dark rounded-2xl border border-pwa-border/50 p-6">
           <p className="text-xs font-medium text-pwa-gray/70 mb-1">Наявність</p>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-3">
             <div
               className={`w-2 h-2 rounded-full ${
                 product.stock > 0 ? 'bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.6)]' : 'bg-red-500'
@@ -113,13 +118,13 @@ export default function ProductDetail() {
 
       {/* Quantity selector */}
       {product.stock > 0 && (
-        <div className="bg-pwa-dark rounded-xl p-4 mb-4">
+        <div className="bg-pwa-dark rounded-xl p-5 mb-4">
           <p className="text-xs font-medium text-pwa-gray/70 mb-3">Кількість:</p>
           <div className="flex items-center">
             <button
               onClick={() => setQuantity((q) => Math.max(1, q - 1))}
               disabled={quantity <= 1}
-              className="px-3 py-1.5 rounded-l-xl bg-pwa-dark border border-pwa-border/50 text-white text-sm font-semibold transition-all active:scale-[0.97] disabled:text-pwa-gray/40 disabled:active:scale-100"
+              className="px-3.5 py-2 rounded-l-xl bg-pwa-dark border border-pwa-border/50 text-white text-sm font-semibold transition-all active:scale-[0.97] disabled:text-pwa-gray/40 disabled:active:scale-100"
             >
               −
             </button>
@@ -133,12 +138,12 @@ export default function ProductDetail() {
                 const v = parseInt(e.target.value, 10);
                 setQuantity(Number.isNaN(v) ? 1 : Math.min(product.stock, Math.max(1, v)));
               }}
-              className="w-16 py-1.5 bg-pwa-black border border-pwa-border/50 rounded-xl text-center text-white font-semibold text-sm tabular-nums focus:outline-none focus:border-pwa-yellow/50 [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+              className="w-16 py-2 bg-pwa-black border border-pwa-border/50 rounded-xl text-center text-white font-semibold text-sm tabular-nums focus:outline-none focus:border-pwa-yellow/50 [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
             />
             <button
               onClick={() => setQuantity((q) => Math.min(product.stock, q + 1))}
               disabled={quantity >= product.stock}
-              className="px-3 py-1.5 rounded-r-xl bg-pwa-dark border border-pwa-border/50 text-white text-sm font-semibold transition-all active:scale-[0.97] disabled:text-pwa-gray/40 disabled:active:scale-100"
+              className="px-3.5 py-2 rounded-r-xl bg-pwa-dark border border-pwa-border/50 text-white text-sm font-semibold transition-all active:scale-[0.97] disabled:text-pwa-gray/40 disabled:active:scale-100"
             >
               +
             </button>
@@ -157,7 +162,7 @@ export default function ProductDetail() {
         }`}
       >
         {buying ? (
-          <span className="flex items-center justify-center gap-2">
+          <span className="flex items-center justify-center gap-3">
             <span className="w-4 h-4 border-2 border-pwa-black border-t-transparent rounded-full animate-spin" />
             Обробка...
           </span>

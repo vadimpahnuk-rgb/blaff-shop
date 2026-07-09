@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { getCategories } from '../api/categories';
 import type { Category } from '../types';
 import Loading from '../components/Loading';
+import SEO from '../components/SEO';
 import {
   BlaLogo,
   FacebookIcon,
@@ -49,8 +50,12 @@ export default function Home() {
 
   return (
     <div className="px-5 py-6 animate-fade-in">
+      <SEO
+        title="Головна"
+        description="Цифрові товари для медіабаєрів: акаунти Facebook, Business Manager, проксі та інструменти. Швидко, надійно, цілодобово."
+      />
       {/* Hero */}
-      <div className="flex flex-col items-center text-center mb-8 animate-fade-up">
+      <div className="flex flex-col items-center text-center mb-10 animate-fade-up">
         <div className="hero-glow mb-4">
           <BlaLogo size={76} className="relative z-10 rounded-3xl shadow-2xl" />
         </div>

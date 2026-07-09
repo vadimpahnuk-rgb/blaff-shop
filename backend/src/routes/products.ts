@@ -59,6 +59,7 @@ router.get('/', async (req, res, next) => {
         price: products.price,
         stock: availableItemsCount,
         tags: products.tags,
+        image_url: products.imageUrl,
         is_active: products.isActive,
         created_at: products.createdAt,
         category: {
@@ -101,6 +102,7 @@ router.get('/:id', async (req, res, next) => {
         price: products.price,
         stock: availableItemsCount,
         tags: products.tags,
+        image_url: products.imageUrl,
         is_active: products.isActive,
         created_at: products.createdAt,
         category: {

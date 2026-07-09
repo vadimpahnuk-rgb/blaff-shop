@@ -50,6 +50,7 @@ export const products = pgTable('products', {
   name: varchar('name', { length: 255 }).notNull(),
   description: text('description'),
   price: numeric('price', { precision: 18, scale: 8 }).notNull(),
+  imageUrl: varchar('image_url', { length: 500 }),
   stock: integer('stock').notNull().default(0),
   tags: text('tags').array(),
   data: text('data'),

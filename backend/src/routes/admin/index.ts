@@ -50,6 +50,7 @@ router.get('/products', async (_req, res, next) => {
             and ${productItems.isSold} = true
         )`,
         tags: products.tags,
+        image_url: products.imageUrl,
         data: products.data,
         is_active: products.isActive,
         created_at: products.createdAt,
@@ -83,6 +84,7 @@ router.post('/products', async (req, res, next) => {
       stock,
       tags,
       data,
+      image_url,
       is_active,
     } = req.body;
 
@@ -100,6 +102,7 @@ router.post('/products', async (req, res, next) => {
         price: String(price),
         stock: stock ?? 0,
         tags: tags ?? [],
+        imageUrl: image_url ?? null,
         data: data ?? null,
         isActive: is_active !== undefined ? is_active : true,
       })
@@ -131,6 +134,7 @@ router.put('/products/:id', async (req, res, next) => {
       stock,
       tags,
       data,
+      image_url,
       is_active,
     } = req.body;
 
@@ -144,6 +148,7 @@ router.put('/products/:id', async (req, res, next) => {
         ...(stock !== undefined && { stock }),
         ...(tags !== undefined && { tags }),
         ...(data !== undefined && { data }),
+        ...(image_url !== undefined && { imageUrl: image_url }),
         ...(is_active !== undefined && { isActive: is_active }),
       })
       .where(eq(products.id, id))

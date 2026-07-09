@@ -88,6 +88,17 @@ export default function ProductDetail() {
       />
       <h1 className="text-xl font-bold text-white mb-6">{product.name}</h1>
 
+      {/* Product image */}
+      {product.image_url && (
+        <div className="rounded-2xl overflow-hidden border border-pwa-border/50 mb-4">
+          <img
+            src={product.image_url}
+            alt={product.name}
+            className="w-full h-48 object-cover"
+          />
+        </div>
+      )}
+
       {/* Description */}
       {product.description && (
         <div className="bg-pwa-dark rounded-2xl border border-pwa-border/50 p-6 mb-4">

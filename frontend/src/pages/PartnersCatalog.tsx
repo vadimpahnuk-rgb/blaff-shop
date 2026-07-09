@@ -15,6 +15,7 @@ import {
   AntidetectIcon,
   TrackerIcon,
   CloakingIcon,
+  PartnerProgramsIcon,
   ChevronRightIcon,
   type IconProps,
 } from '../icons';
@@ -27,6 +28,7 @@ const PARTNER_SLUGS = [
   'antidetect',
   'trackers',
   'cloaking',
+  'partner-programs',
 ] as const;
 
 const CATEGORY_ICONS: Record<string, ComponentType<IconProps>> = {
@@ -37,6 +39,7 @@ const CATEGORY_ICONS: Record<string, ComponentType<IconProps>> = {
   antidetect: AntidetectIcon,
   trackers: TrackerIcon,
   cloaking: CloakingIcon,
+  'partner-programs': PartnerProgramsIcon,
 };
 
 const CATEGORY_LABELS: Record<string, string> = {
@@ -47,6 +50,7 @@ const CATEGORY_LABELS: Record<string, string> = {
   antidetect: 'Антидетект-браузери',
   trackers: 'Трекери',
   cloaking: 'Клоакінг-сервіси',
+  'partner-programs': 'Партнерські програми',
 };
 
 export default function PartnersCatalog() {

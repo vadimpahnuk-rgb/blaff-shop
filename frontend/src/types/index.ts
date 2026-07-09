@@ -23,6 +23,7 @@ export interface Product {
   category_name?: string;
   name: string;
   description?: string;
+  image_url?: string;
   price: number;
   /** Derived: count of unsold product items. */
   stock: number;

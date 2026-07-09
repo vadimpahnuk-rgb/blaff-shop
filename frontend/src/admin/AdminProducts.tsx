@@ -19,6 +19,7 @@ interface ProductForm {
   price: string;
   tags: string;
   category_id: string;
+  image_url: string;
 }
 
 const emptyForm: ProductForm = {
@@ -27,6 +28,7 @@ const emptyForm: ProductForm = {
   price: '',
   tags: '',
   category_id: '1',
+  image_url: '',
 };
 
 export default function AdminProducts() {
@@ -68,6 +70,7 @@ export default function AdminProducts() {
         price: parseFloat(form.price),
         tags: form.tags.split(',').map((t) => t.trim()).filter(Boolean),
         category_id: parseInt(form.category_id),
+        image_url: form.image_url || undefined,
       };
 
       if (editingId) {
@@ -94,6 +97,7 @@ export default function AdminProducts() {
       price: product.price.toString(),
       tags: product.tags?.join(', ') || '',
       category_id: product.category_id.toString(),
+      image_url: product.image_url || '',
     });
     setEditingId(product.id);
     setShowForm(true);
@@ -213,6 +217,12 @@ export default function AdminProducts() {
                   ))}
                 </select>
               </div>
+              <input
+                placeholder="URL зображення (необов'язково)"
+                value={form.image_url}
+                onChange={(e) => setForm({ ...form, image_url: e.target.value })}
+                className="w-full bg-pwa-black border border-pwa-border rounded-lg px-3 py-2 text-white text-sm outline-none focus:border-pwa-yellow/50"
+              />
               <p className="text-pwa-gray/70 text-xs">
                 Наявність визначається кількістю доданих одиниць — керуйте ними через «Одиниці» у списку товарів.
               </p>

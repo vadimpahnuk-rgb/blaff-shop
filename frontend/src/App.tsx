@@ -15,7 +15,7 @@ import Deposit from './pages/Deposit';
 import Purchases from './pages/Purchases';
 import Support from './pages/Support';
 import Terms from './pages/Terms';
-import Partners from './pages/Partners';
+import PartnersCatalog from './pages/PartnersCatalog';
 import AdminLayout from './admin/AdminLayout';
 import AdminDashboard from './admin/AdminDashboard';
 import AdminProducts from './admin/AdminProducts';
@@ -146,7 +146,7 @@ function AppContent() {
           <Route path="/purchases" element={<Purchases />} />
           <Route path="/support" element={<Support />} />
           <Route path="/terms" element={<Terms />} />
-          <Route path="/partners" element={<Partners />} />
+          <Route path="/partners" element={<PartnersCatalog />} />
           <Route path="/profile" element={<Home />} />
         </Routes>
       </main>

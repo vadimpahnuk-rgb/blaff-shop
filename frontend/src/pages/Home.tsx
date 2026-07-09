@@ -25,7 +25,7 @@ const HOME_TILES: HomeTile[] = [
   { label: 'Facebook Accounts', Icon: FacebookIcon, slug: 'facebook-accounts' },
   { label: 'Business Manager', Icon: BusinessIcon, slug: 'business-managers' },
   { label: 'Агентські кабінети', Icon: AgencyIcon, slug: 'agency-cabinets' },
-  { label: 'Партнери', Icon: PartnersIcon, slug: 'partners' },
+  { label: 'Партнери', Icon: PartnersIcon, to: '/partners' },
 ];
 
 export default function Home() {

@@ -37,6 +37,12 @@ async function seed() {
     { name: 'Фарм ФБ', slug: 'farm-fb', icon: '👤', sortOrder: 5 },
     { name: 'Агентські кабінети', slug: 'agency-cabinets', icon: '🏢', sortOrder: 6 },
     { name: 'Партнери', slug: 'partners', icon: '🤝', sortOrder: 7 },
+    { name: 'Spy-сервіси', slug: 'spy-services', icon: '🕵️', sortOrder: 8 },
+    { name: 'PWA', slug: 'pwa', icon: '📲', sortOrder: 9 },
+    { name: 'Дизайнери', slug: 'designers', icon: '🎨', sortOrder: 10 },
+    { name: 'Антидетект-браузери', slug: 'antidetect', icon: '🛡️', sortOrder: 11 },
+    { name: 'Трекери', slug: 'trackers', icon: '📊', sortOrder: 12 },
+    { name: 'Клоакінг-сервіси', slug: 'cloaking', icon: '🎭', sortOrder: 13 },
   ];
 
   const categoryIdBySlug: Record<string, number> = {};

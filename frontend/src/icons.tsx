@@ -207,6 +207,57 @@ export const PartnersIcon = (p: IconProps) => (
   </Svg>
 );
 
+/* ── New partner-service categories ─────────────────────── */
+export const SpyIcon = (p: IconProps) => (
+  <Svg {...p}>
+    <circle cx="12" cy="12" r="3" />
+    <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" />
+    <circle cx="12" cy="12" r="1.5" fill="currentColor" stroke="none" />
+  </Svg>
+);
+
+export const PwaIcon = (p: IconProps) => (
+  <Svg {...p}>
+    <rect x="5" y="2" width="14" height="20" rx="2.5" />
+    <path d="M9 17h6" />
+    <rect x="9" y="5" width="6" height="6" rx="1" />
+  </Svg>
+);
+
+export const DesignerIcon = (p: IconProps) => (
+  <Svg {...p}>
+    <circle cx="12" cy="12" r="9" />
+    <circle cx="12" cy="12" r="3" />
+    <circle cx="12" cy="12" r="1" fill="currentColor" stroke="none" />
+    <path d="M12 3v3M12 18v3M3 12h3M18 12h3" />
+  </Svg>
+);
+
+export const AntidetectIcon = (p: IconProps) => (
+  <Svg {...p}>
+    <path d="M12 3a9 9 0 0 0-9 9 9 9 0 0 0 9 9 9 9 0 0 0 9-9 9 9 0 0 0-9-9Z" />
+    <path d="M12 7v5l3 3" />
+    <path d="M6.5 6.5 12 12" />
+  </Svg>
+);
+
+export const TrackerIcon = (p: IconProps) => (
+  <Svg {...p}>
+    <rect x="4" y="14" width="4" height="6" rx="1" />
+    <rect x="10" y="9" width="4" height="11" rx="1" />
+    <rect x="16" y="4" width="4" height="16" rx="1" />
+    <path d="M4 5v16M20 5v16" />
+  </Svg>
+);
+
+export const CloakingIcon = (p: IconProps) => (
+  <Svg {...p}>
+    <path d="M4 6c0-1.1.9-2 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6Z" />
+    <circle cx="12" cy="10" r="3" />
+    <path d="M8 17c0-2 1.8-3 4-3s4 1 4 3" />
+  </Svg>
+);
+
 /* ── Brand mark ─────────────────────────────────────────── */
 export const BlaLogo = ({ size = 40, ...props }: IconProps) => (
   <svg width={size} height={size} viewBox="0 0 40 40" fill="none" {...props}>

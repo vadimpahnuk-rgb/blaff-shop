@@ -13,6 +13,7 @@ import Catalog from './pages/Catalog';
 import ProductDetail from './pages/ProductDetail';
 import Deposit from './pages/Deposit';
 import Purchases from './pages/Purchases';
+import Profile from './pages/Profile';
 import Support from './pages/Support';
 import Terms from './pages/Terms';
 import Partners from './pages/Partners';
@@ -22,6 +23,7 @@ import AdminDashboard from './admin/AdminDashboard';
 import AdminProducts from './admin/AdminProducts';
 import AdminUsers from './admin/AdminUsers';
 import AdminTransactions from './admin/AdminTransactions';
+import AdminWithdrawals from './admin/AdminWithdrawals';
 import Loading from './components/Loading';
 
 const PUBLIC_PATHS = ['/support', '/terms', '/partners', '/referral'];
@@ -137,6 +139,7 @@ function AppContent() {
             <Route path="products" element={<AdminProducts />} />
             <Route path="users" element={<AdminUsers />} />
             <Route path="transactions" element={<AdminTransactions />} />
+            <Route path="withdrawals" element={<AdminWithdrawals />} />
           </Route>
 
           {/* User routes */}
@@ -149,7 +152,7 @@ function AppContent() {
           <Route path="/terms" element={<Terms />} />
           <Route path="/partners" element={<PartnersCatalog />} />
           <Route path="/referral" element={<Partners />} />
-          <Route path="/profile" element={<Home />} />
+          <Route path="/profile" element={<Profile />} />
         </Routes>
       </main>
 

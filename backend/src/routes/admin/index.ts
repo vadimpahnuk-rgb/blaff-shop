@@ -8,6 +8,7 @@ import {
   transactions,
   purchases,
   productItems,
+  withdrawals,
 } from '../../db/schema';
 import { authMiddleware } from '../../middleware/auth';
 import { adminMiddleware } from '../../middleware/admin';
@@ -654,6 +655,96 @@ router.get('/stats', async (_req, res, next) => {
         sales: Number(p.units_sold),
       })),
     });
+  } catch (err) {
+    next(err);
+  }
+});
+
+/* ------------------------------------------------------------------ */
+/*  Withdrawals                                                       */
+/* ------------------------------------------------------------------ */
+
+/**
+ * GET /api/admin/withdrawals — list all withdrawals
+ */
+router.get('/withdrawals', async (_req, res, next) => {
+  try {
+    const list = await db
+      .select({
+        id: withdrawals.id,
+        user_id: withdrawals.userId,
+        amount: withdrawals.amount,
+        fee: withdrawals.fee,
+        net_amount: withdrawals.netAmount,
+        wallet_address: withdrawals.walletAddress,
+        status: withdrawals.status,
+        created_at: withdrawals.createdAt,
+        updated_at: withdrawals.updatedAt,
+        user: {
+          id: users.id,
+          telegram_id: users.telegramId,
+          username: users.username,
+        },
+      })
+      .from(withdrawals)
+      .leftJoin(users, eq(withdrawals.userId, users.id))
+      .orderBy(desc(withdrawals.createdAt))
+      .limit(50);
+    res.json(list);
+  } catch (err) {
+    next(err);
+  }
+});
+
+/**
+ * PUT /api/admin/withdrawals/:id/status — approve/reject
+ */
+router.put('/withdrawals/:id/status', async (req, res, next) => {
+  try {
+    const id = Number(req.params.id);
+    if (!Number.isInteger(id)) {
+      res.status(400).json({ error: 'Invalid withdrawal id' });
+      return;
+    }
+
+    const { status } = req.body;
+    if (!['completed', 'rejected'].includes(status)) {
+      res.status(400).json({ error: 'Invalid status' });
+      return;
+    }
+
+    const [withdrawal] = await db
+      .select()
+      .from(withdrawals)
+      .where(eq(withdrawals.id, id))
+      .limit(1);
+
+    if (!withdrawal || withdrawal.status !== 'pending') {
+      res.status(400).json({ error: 'Withdrawal not found or already processed' });
+      return;
+    }
+
+    if (status === 'rejected') {
+      // Refund the money
+      await db.transaction(async (tx) => {
+        await tx
+          .update(withdrawals)
+          .set({ status: 'rejected', updatedAt: new Date() })
+          .where(eq(withdrawals.id, id));
+
+        await tx
+          .update(users)
+          .set({ balance: sql`${users.balance} + ${withdrawal.amount}` })
+          .where(eq(users.id, withdrawal.userId));
+      });
+    } else {
+      await db
+        .update(withdrawals)
+        .set({ status: 'completed', updatedAt: new Date() })
+        .where(eq(withdrawals.id, id));
+    }
+
+    res.json({ success: true });
   } catch (err) {
     next(err);
   }

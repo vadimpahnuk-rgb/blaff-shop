@@ -93,6 +93,23 @@ export interface ReferralStats {
   referred_users: ReferredUser[];
 }
 
+export interface Withdrawal {
+  id: number;
+  user_id: number;
+  amount: number;
+  fee: number;
+  net_amount: number;
+  wallet_address: string;
+  status: 'pending' | 'completed' | 'rejected';
+  created_at: string;
+  updated_at?: string;
+}
+
+export interface WithdrawRequest {
+  amount: number;
+  wallet_address: string;
+}
+
 export interface AdminStats {
   total_users: number;
   total_products: number;

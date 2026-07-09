@@ -97,6 +97,21 @@ CREATE INDEX IF NOT EXISTS idx_referrals_referrer   ON referrals(referrer_id);
 CREATE INDEX IF NOT EXISTS idx_product_items_product ON product_items(product_id);
 CREATE INDEX IF NOT EXISTS idx_product_items_unsold  ON product_items(product_id) WHERE is_sold = FALSE;
 
+-- Withdrawals table
+DO $$ BEGIN CREATE TYPE withdrawal_status AS ENUM ('pending', 'completed', 'rejected'); EXCEPTION WHEN duplicate_object THEN null; END $$;
+CREATE TABLE IF NOT EXISTS withdrawals (
+  id            SERIAL PRIMARY KEY,
+  user_id       INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  amount        NUMERIC(18, 8) NOT NULL,
+  fee           NUMERIC(18, 8) NOT NULL,
+  net_amount    NUMERIC(18, 8) NOT NULL,
+  wallet_address VARCHAR(255) NOT NULL,
+  status        withdrawal_status NOT NULL DEFAULT 'pending',
+  created_at    TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at    TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS idx_withdrawals_user ON withdrawals(user_id);
+
 -- One-time seed: copy legacy product.data into product_items, one item per
 -- stock unit, for products that have data but no items yet. Idempotent via
 -- the NOT EXISTS guard.

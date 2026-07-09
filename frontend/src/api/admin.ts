@@ -1,5 +1,5 @@
 import client, { num } from './client';
-import type { Product, ProductItem, User, Transaction, AdminStats } from '../types';
+import type { Product, ProductItem, User, Transaction, AdminStats, Withdrawal } from '../types';
 
 const normProduct = (p: Product): Product => ({ ...p, price: num(p.price) });
 const normUser = (u: User): User => ({ ...u, balance: num(u.balance) });
@@ -75,4 +75,13 @@ export async function getAdminStats(): Promise<AdminStats> {
     sales_week: num(d.sales_week),
     sales_month: num(d.sales_month),
   };
+}
+
+export async function getAdminWithdrawals(): Promise<Withdrawal[]> {
+  const response = await client.get('/admin/withdrawals');
+  return response.data.map((w: any) => ({ ...w, amount: num(w.amount), fee: num(w.fee), net_amount: num(w.net_amount) }));
+}
+
+export async function updateWithdrawalStatus(id: number, status: string): Promise<void> {
+  await client.put(`/admin/withdrawals/${id}/status`, { status });
 }

@@ -10,6 +10,7 @@ const adminTabs = [
   { label: 'Товари', path: '/admin/products' },
   { label: 'Користувачі', path: '/admin/users' },
   { label: 'Транзакції', path: '/admin/transactions' },
+  { label: 'Виведення', path: '/admin/withdrawals' },
 ];
 
 export default function AdminLayout() {

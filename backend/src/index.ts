@@ -11,6 +11,7 @@ import purchaseRouter from './routes/purchase';
 import depositRouter from './routes/deposit';
 import webhooksRouter from './routes/webhooks';
 import adminRouter from './routes/admin';
+import withdrawalsRouter from './routes/withdrawals';
 
 const app = express();
 const PORT = Number(process.env.PORT) || 3001;
@@ -51,6 +52,7 @@ app.use('/api/purchase', purchaseRouter);
 app.use('/api/deposit', depositRouter);
 app.use('/api/webhooks', webhooksRouter);
 app.use('/api/admin', adminRouter);
+app.use('/api/user/withdrawals', withdrawalsRouter);
 
 /* ------------------------------------------------------------------ */
 /*  Global error handler                                               */

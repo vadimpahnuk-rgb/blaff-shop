@@ -128,7 +128,23 @@ export const referrals = pgTable('referrals', {
   createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
 });
 
+/**
+ * withdrawals
+ */
+export const withdrawals = pgTable('withdrawals', {
+  id: serial('id').primaryKey(),
+  userId: integer('user_id').notNull().references(() => users.id, { onDelete: 'cascade' }),
+  amount: numeric('amount', { precision: 18, scale: 8 }).notNull(),
+  fee: numeric('fee', { precision: 18, scale: 8 }).notNull(),
+  netAmount: numeric('net_amount', { precision: 18, scale: 8 }).notNull(),
+  walletAddress: varchar('wallet_address', { length: 255 }).notNull(),
+  status: varchar('status', { length: 20 }).notNull().default('pending'),
+  createdAt: timestamp('created_at', { withTimezone: true }).defaultNow(),
+  updatedAt: timestamp('updated_at', { withTimezone: true }).defaultNow(),
+});
+
 // ---- Select types ----
+export type Withdrawal = InferSelectModel<typeof withdrawals>;
 export type User = InferSelectModel<typeof users>;
 export type Category = InferSelectModel<typeof categories>;
 export type Product = InferSelectModel<typeof products>;
@@ -145,3 +161,4 @@ export type NewTransaction = InferInsertModel<typeof transactions>;
 export type NewPurchase = InferInsertModel<typeof purchases>;
 export type NewProductItem = InferInsertModel<typeof productItems>;
 export type NewReferral = InferInsertModel<typeof referrals>;
+export type NewWithdrawal = InferInsertModel<typeof withdrawals>;
